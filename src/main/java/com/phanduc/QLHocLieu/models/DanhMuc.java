@@ -1,13 +1,16 @@
 package com.phanduc.QLHocLieu.models;
 
-import jakarta.persistence.*;
-
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 @Entity
 @Table(name = "danhmuc")
 public class DanhMuc {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "maDanhMuc")
     private String maDanhMuc;
+    @Column(name = "tenDanhMuc")
     private String tenDanhMuc;
 
     public DanhMuc() {

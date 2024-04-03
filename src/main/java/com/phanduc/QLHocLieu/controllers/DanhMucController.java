@@ -27,6 +27,7 @@ public class DanhMucController {
             System.out.println("Tên danh mục: " + danhMuc.getTenDanhMuc());
         }
         // Thêm danh sách danh mục vào model map để trả về cho view
+        modelMap.addAttribute("name","Phan Đức");
         modelMap.addAttribute("danhmucs", danhMucs);
 
         // Trả về tên view để hiển thị
