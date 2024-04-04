@@ -5,10 +5,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping(path = "user")
+@RequestMapping(path = "info")
 public class NguoiDungController {
-    //http://localhost:8080/user/info
-    @GetMapping("/info")
+    //http://localhost:8080/info/user
+    @GetMapping("/user")
     public String infoUser() {
         return "UserInfo";
     }

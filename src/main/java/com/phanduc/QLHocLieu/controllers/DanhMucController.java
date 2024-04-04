@@ -7,9 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping(path = "danhmuc")
@@ -19,18 +21,7 @@ public class DanhMucController {
     @GetMapping("")
     public String getAllDanhMuc(ModelMap modelMap) {
         List<DanhMuc> danhMucs = danhMucRepository.findAll();
-
-        // In danh sách danh mục ra console
-        System.out.println("Danh sách Danh mục:");
-        for (DanhMuc danhMuc : danhMucs) {
-            System.out.println("Mã danh mục: " + danhMuc.getMaDanhMuc());
-            System.out.println("Tên danh mục: " + danhMuc.getTenDanhMuc());
-        }
-        // Thêm danh sách danh mục vào model map để trả về cho view
-        modelMap.addAttribute("name","Phan Đức");
         modelMap.addAttribute("danhmucs", danhMucs);
-
-        // Trả về tên view để hiển thị
         return "DanhMuc";
     }
 }

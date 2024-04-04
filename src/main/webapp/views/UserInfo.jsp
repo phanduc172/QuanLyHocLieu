@@ -14,11 +14,25 @@
 
 </head>
 <body>
+
+<%--<c:choose>--%>
+<%--  <c:when test="${not empty loggedInUser}">--%>
+<%--    <script>--%>
+<%--      alert("Đăng nhập thành công");--%>
+<%--    </script>--%>
+<%--  </c:when>--%>
+<%--  <c:otherwise>--%>
+<%--    <script>--%>
+<%--      alert("Đăng nhập không thành công");--%>
+<%--    </script>--%>
+<%--  </c:otherwise>--%>
+<%--</c:choose>--%>
+
 <header>
   <nav class="navbar navbar-expand-lg bg-light fixed-top" style="z-index: 1080">
     <div class="container">
-      <img class="me-2" src="/images/PD.png" alt="logo" style="height: 40px;">
       <a class="navbar-brand" href="#">
+        <img class="me-2" src="/images/PD.png" alt="logo" style="height: 40px;">
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
               aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -46,44 +60,117 @@
             <a class="nav-link" href="#">Liên hệ</a>
           </li>
         </ul>
+
         <div class="input-group ms-auto" style="width: 400px">
           <input type="text" class="form-control" placeholder="Tìm kiếm tài liệu, giáo trình,..." />
           <button class="btn btn-outline-secondary" type="button" id="button-addon2">
             <i class="bi bi-search"></i>
           </button>
         </div>
-        <div class="ms-auto">
-          <!-- Button trigger modal -->
-          <button type="button" class="btn d-flex align-items-center" data-bs-toggle="modal"
-                  data-bs-target="#infoModal">
-            <img src="/images/avt1.png" alt="" class="border rounded me-2" style="height: 35px;">
-            <h6 class="m-0">Phan Đức</h6>
-          </button>
-          <!-- Modal -->
-          <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-               aria-hidden="true">
-            <div class="modal-dialog modal-info">
-              <div class="modal-content small-modal-content">
-                <div class="modal-body p-1">
-                  <ul class="fs-6">
-                    <a href="#">
-                      <li class="my-3">Thông tin cá nhân</li>
-                    </a>
-                    <a href="">
-                      <li class="my-3">Quản lý tài liệu</li>
-                    </a>
-                    <a href="">
-                      <li class="my-3">Đổi mật khẩu</li>
-                    </a>
-                    <a href="">
-                      <li class="my-3">Đăng xuất</li>
-                    </a>
-                  </ul>
+        <c:choose>
+          <c:when test="${empty loggedInUser}">
+            <!-- Hiển thị nút và modal cho thành viên -->
+            <div class="ms-auto">
+              <!-- Button trigger modal -->
+              <button type="button" class="btn btn-light border" data-bs-toggle="modal" data-bs-target="#thanhVienModal">
+                <i class="bi bi-person-circle"></i> Thành viên
+              </button>
+              <!-- Modal Thành Viên-->
+              <div class="modal fade" id="thanhVienModal" tabindex="-1" aria-labelledby="loginRegisterModalLabel"
+                   aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content modalLogin">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="loginRegisterModalLabel">
+                        Thành viên
+                      </h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <ul class="nav nav-tabs">
+                        <li class="nav-item">
+                          <a class="nav-link active" data-bs-toggle="tab" href="#loginForm">Đăng nhập</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" data-bs-toggle="tab" href="#registerForm">Đăng ký</a>
+                        </li>
+                      </ul>
+                      <div class="tab-content mt-3">
+                        <div id="loginForm" class="tab-pane fade show active">
+                          <form method="post" action="/login">
+                            <fieldset>
+                              <div class="form-group mb-3">
+                                <input class="form-control" placeholder="Nhập tên người dùng" name="tenNguoiDung"
+                                       type="text" />
+                              </div>
+                              <div class="form-group mb-3">
+                                <input class="form-control" placeholder="Nhập mật khẩu" name="matKhau" type="password"
+                                       value="" />
+                              </div>
+                              <input class="btn btn-md btn btn-secondary btn-block" type="submit" value="Đăng nhập" />
+                            </fieldset>
+                          </form>
+                        </div>
+                        <div id="registerForm" class="tab-pane fade">
+                          <form method="post" action="">
+                            <fieldset>
+                              <div class="form-group mb-3">
+                                <input class="form-control" placeholder="Nhập họ tên" name="" type="text" />
+                              </div>
+                              <div class="form-group mb-3">
+                                <input class="form-control" placeholder="Nhập tên đăng nhập" name="" type="text" />
+                              </div>
+                              <div class="form-group mb-3">
+                                <input class="form-control" placeholder="Nhập mật khẩu" type="password" name=""
+                                       value="" />
+                              </div>
+                              <input class="btn btn-md btn btn-secondary btn-block" type="submit" value="Đăng ký" />
+                            </fieldset>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
+          </c:when>
+          <c:otherwise>
+            <%--Modals Thông tin cá nhân--%>
+            <div class="ms-auto">
+              <!-- Button trigger modal -->
+              <button type="button" class="btn d-flex align-items-center" data-bs-toggle="modal"
+                      data-bs-target="#infoModal">
+                <img src="/images/avt1.png" alt="" class="border rounded me-2" style="height: 35px;">
+                <h6 class="m-0">Phan Đức</h6>
+              </button>
+              <!-- Modal -->
+              <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                   aria-hidden="true">
+                <div class="modal-dialog modal-info">
+                  <div class="modal-content small-modal-content">
+                    <div class="modal-body p-1">
+                      <ul class="fs-6">
+                        <a href="#">
+                          <li class="my-3">Thông tin cá nhân</li>
+                        </a>
+                        <a href="">
+                          <li class="my-3">Quản lý tài liệu</li>
+                        </a>
+                        <a href="">
+                          <li class="my-3">Đổi mật khẩu</li>
+                        </a>
+                        <a href="/logout">
+                          <li class="my-3">Đăng xuất</li>
+                        </a>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </c:otherwise>
+        </c:choose>
       </div>
     </div>
   </nav>

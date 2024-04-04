@@ -1,5 +1,6 @@
 package com.phanduc.QLHocLieu.models;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -16,6 +17,7 @@ public class TaiLieu {
     private String anhTaiLieu;
     private String taiLenBoi;
     private Date ngayTaiLen;
+    @Column(name = "SLTaiXuong")
     private int soLuotTaiXuong;
     private String maDanhMuc;
     private String maChuyenNganh;
