@@ -2,6 +2,7 @@ package com.phanduc.QLHocLieu.controllers;
 
 import com.phanduc.QLHocLieu.models.DanhMuc;
 import com.phanduc.QLHocLieu.repositories.DanhMucRepository;
+import com.phanduc.QLHocLieu.repositories.NguoiDungRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -15,7 +16,6 @@ import java.util.List;
 public class DanhMucController {
     @Autowired
     private DanhMucRepository danhMucRepository;
-
     @GetMapping("")
     public String getAllDanhMuc(ModelMap modelMap) {
         List<DanhMuc> danhMucs = danhMucRepository.findAll();

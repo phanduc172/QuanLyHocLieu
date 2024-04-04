@@ -8,9 +8,7 @@ import javax.persistence.Table;
 @Table(name = "danhmuc")
 public class DanhMuc {
     @Id
-    @Column(name = "maDanhMuc")
     private String maDanhMuc;
-    @Column(name = "tenDanhMuc")
     private String tenDanhMuc;
 
     public DanhMuc() {

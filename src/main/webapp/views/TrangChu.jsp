@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +9,8 @@
   <title>Quản lý học liệu - Trường Đại học Khoa học Huế</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="/css/style.css">
+
 </head>
 
 <body>
@@ -16,7 +18,7 @@
     <nav class="navbar navbar-expand-lg bg-light fixed-top" style="z-index: 1080">
       <div class="container">
         <a class="navbar-brand" href="#">
-          <img class="me-2" src="PD.png" alt="logo" style="height: 40px;">
+          <img class="me-2" src="/images/PD.png" alt="logo" style="height: 40px;">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
           aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -53,11 +55,11 @@
           </div>
           <div class="ms-auto">
             <!-- Button trigger modal -->
-            <button type="button" class="btn btn-light border" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            <button type="button" class="btn btn-light border" data-bs-toggle="modal" data-bs-target="#thanhVienModal">
               <i class="bi bi-person-circle"></i> Thành viên
             </button>
-            <!-- Modal -->
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="loginRegisterModalLabel"
+            <!-- Modal Thành Viên-->
+            <div class="modal fade" id="thanhVienModal" tabindex="-1" aria-labelledby="loginRegisterModalLabel"
               aria-hidden="true">
               <div class="modal-dialog">
                 <div class="modal-content modalLogin">
@@ -78,14 +80,14 @@
                     </ul>
                     <div class="tab-content mt-3">
                       <div id="loginForm" class="tab-pane fade show active">
-                        <form method="post" action="">
+                        <form method="post" action="/login">
                           <fieldset>
                             <div class="form-group mb-3">
-                              <input class="form-control" placeholder="Nhập tên người dùng" name="username"
+                              <input class="form-control" placeholder="Nhập tên người dùng" name="tenNguoiDung"
                                 type="text" />
                             </div>
                             <div class="form-group mb-3">
-                              <input class="form-control" placeholder="Nhập mật khẩu" name="password" type="password"
+                              <input class="form-control" placeholder="Nhập mật khẩu" name="matKhau" type="password"
                                 value="" />
                             </div>
                             <input class="btn btn-md btn btn-secondary btn-block" type="submit" value="Đăng nhập" />
@@ -115,6 +117,39 @@
               </div>
             </div>
           </div>
+          <%--Modals Thông tin cá nhân--%>
+<%--          <div class="ms-auto">--%>
+<%--            <!-- Button trigger modal -->--%>
+<%--            <button type="button" class="btn d-flex align-items-center" data-bs-toggle="modal"--%>
+<%--                    data-bs-target="#infoModal">--%>
+<%--              <img src="/images/avt1.png" alt="" class="border rounded me-2" style="height: 35px;">--%>
+<%--              <h6 class="m-0">Phan Đức</h6>--%>
+<%--            </button>--%>
+<%--            <!-- Modal -->--%>
+<%--            <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="exampleModalLabel"--%>
+<%--                 aria-hidden="true">--%>
+<%--              <div class="modal-dialog modal-info">--%>
+<%--                <div class="modal-content small-modal-content">--%>
+<%--                  <div class="modal-body p-1">--%>
+<%--                    <ul class="fs-6">--%>
+<%--                      <a href="#">--%>
+<%--                        <li class="my-3">Thông tin cá nhân</li>--%>
+<%--                      </a>--%>
+<%--                      <a href="">--%>
+<%--                        <li class="my-3">Quản lý tài liệu</li>--%>
+<%--                      </a>--%>
+<%--                      <a href="">--%>
+<%--                        <li class="my-3">Đổi mật khẩu</li>--%>
+<%--                      </a>--%>
+<%--                      <a href="">--%>
+<%--                        <li class="my-3">Đăng xuất</li>--%>
+<%--                      </a>--%>
+<%--                    </ul>--%>
+<%--                  </div>--%>
+<%--                </div>--%>
+<%--              </div>--%>
+<%--            </div>--%>
+<%--          </div>--%>
         </div>
       </div>
     </nav>
@@ -123,15 +158,11 @@
     <div class="row">
       <div class="col-2">
         <h5 class="text-center">Thể loại</h5>
+        <c:forEach var="danhmuc" items="${danhMucs}">
         <ul class="list-group">
-          <li class="list-group-item">Thể loại 1</li>
-          <li class="list-group-item">Thể loại 1</li>
-          <li class="list-group-item">Thể loại 1</li>
-          <li class="list-group-item">Thể loại 1</li>
-          <li class="list-group-item">Thể loại 1</li>
-          <li class="list-group-item">Thể loại 1</li>
-          <li class="list-group-item">Thể loại 1</li>
+          <li class="list-group-item mt-2"><td>${danhmuc.tenDanhMuc}</td></li>
         </ul>
+        </c:forEach>
       </div>
       <div class="col-8">
         <div id="carouselMain" class="carousel slide mb-3" data-bs-ride="carousel">
@@ -173,7 +204,7 @@
           <div class="col-md-4 mb-3">
             <a href="document.html">
               <div class="card">
-                <img src="./images/1.jpg" class="card-img-top" alt="..." />
+                <img src="/images/1.jpg" class="card-img-top" alt="..." />
                 <div class="card-body">
                   <h5 class="card-title">Tên tài liệu</h5>
                   <p class="card-text">Mô tả ngắn về tài liệu.</p>
@@ -184,7 +215,7 @@
           <div class="col-md-4 mb-3">
             <a href="#">
               <div class="card">
-                <img src="./images/9.jpg" class="card-img-top" alt="..." />
+                <img src="/images/9.jpg" class="card-img-top" alt="..." />
                 <div class="card-body">
                   <h5 class="card-title">Tên tài liệu</h5>
                   <p class="card-text">Mô tả ngắn về tài liệu.</p>
@@ -206,7 +237,7 @@
           <div class="col-md-4 mb-3">
             <a href="#">
               <div class="card">
-                <img src="./images/3.jpg" class="card-img-top" alt="..." />
+                <img src="/images/3.jpg" class="card-img-top" alt="..." />
                 <div class="card-body">
                   <h5 class="card-title">Tên tài liệu</h5>
                   <p class="card-text">Mô tả ngắn về tài liệu.</p>
@@ -217,7 +248,7 @@
           <div class="col-md-4 mb-3">
             <a href="#">
               <div class="card">
-                <img src="./images/4.jpg" class="card-img-top" alt="..." />
+                <img src="/images/4.jpg" class="card-img-top" alt="..." />
                 <div class="card-body">
                   <h5 class="card-title">Tên tài liệu</h5>
                   <p class="card-text">Mô tả ngắn về tài liệu.</p>
@@ -228,7 +259,7 @@
           <div class="col-md-4 mb-3">
             <a href="#">
               <div class="card">
-                <img src="./images/5.jpg" class="card-img-top" alt="..." />
+                <img src="/images/5.jpg" class="card-img-top" alt="..." />
                 <div class="card-body">
                   <h5 class="card-title">Tên tài liệu</h5>
                   <p class="card-text">Mô tả ngắn về tài liệu.</p>
@@ -917,7 +948,35 @@
     </div>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Thêm script sau vào phần cuối của trang HTML -->
+<%--  <script>--%>
+<%--    document.getElementById("loginForm").addEventListener("submit", function (event) {--%>
+<%--      // Ngăn chặn hành động mặc định của form--%>
+<%--      event.preventDefault();--%>
+<%--      // Hiển thị thông báo toast--%>
+<%--      var toast = new bootstrap.Toast(document.getElementById("loginToast"));--%>
+<%--      toast.show();--%>
+<%--      // Sau khi hiển thị thông báo toast, bạn có thể chuyển hướng người dùng hoặc thực hiện các hành động khác--%>
+<%--    });--%>
+<%--  </script>--%>
+
+<%--  &lt;%&ndash;Toast&ndash;%&gt;--%>
+<%--  <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">--%>
+<%--    <!-- Toast -->--%>
+<%--    <div id="loginToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">--%>
+<%--      <div class="toast-header bg-success">--%>
+<%--        <strong class="me-auto text-white">Thông báo</strong>--%>
+<%--        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>--%>
+<%--      </div>--%>
+<%--      <div class="toast-body fs-6">--%>
+<%--        Đăng nhập thành công!--%>
+<%--      </div>--%>
+<%--    </div>--%>
+<%--  </div>--%>
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
