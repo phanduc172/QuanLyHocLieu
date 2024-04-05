@@ -30,7 +30,7 @@
   <header>
     <nav class="navbar navbar-expand-lg bg-light fixed-top" style="z-index: 1080">
       <div class="container">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="/trangchu">
           <img class="me-2" src="/images/PD.png" alt="logo" style="height: 40px;">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -41,7 +41,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav fw-bold">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">Trang chủ</a>
+              <a class="nav-link active" aria-current="page" href="/trangchu">Trang chủ</a>
             </li>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -135,13 +135,20 @@
             </div>
           </c:when>
           <c:otherwise>
+          <%--Tải lên tài liệu--%>
+            <div class="ms-auto">
+              <a href="#" class="btn btn-light border p-2 rounded-pill">
+                <span class="fw-bold">Tải lên</span>
+                <i class="bi bi-cloud-upload ms-2"></i>
+              </a>
+            </div>
           <%--Modals Thông tin cá nhân--%>
             <div class="ms-auto">
               <!-- Button trigger modal -->
               <button type="button" class="btn d-flex align-items-center" data-bs-toggle="modal"
                       data-bs-target="#infoModal">
                 <img src="/images/avt1.png" alt="" class="border rounded me-2" style="height: 35px;">
-                <h6 class="m-0">Phan Đức</h6>
+                <h6 class="m-0"><c:out value="${nguoiDung.hoTen}" /></h6>
               </button>
               <!-- Modal -->
               <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -150,10 +157,10 @@
                   <div class="modal-content small-modal-content">
                     <div class="modal-body p-1">
                       <ul class="fs-6">
-                        <a href="/info/user">
+                        <a href="/userinfo/${loggedInUser.maNguoiDung}">
                           <li class="my-3">Thông tin cá nhân</li>
                         </a>
-                        <a href="">
+                        <a href="/userinfo/${loggedInUser.maNguoiDung}">
                           <li class="my-3">Quản lý tài liệu</li>
                         </a>
                         <a href="">
@@ -182,7 +189,7 @@
         <c:forEach var="danhmuc" items="${danhMucs}">
           <ul class="list-group">
             <li class="list-group-item mt-2">
-              <a class="text-decoration-none" href="/trangchu/danhmuc/${danhmuc.maDanhMuc}">${danhmuc.tenDanhMuc}</a>
+              <a class="text-decoration-none" href="/danhmuc/${danhmuc.maDanhMuc}">${danhmuc.tenDanhMuc}</a>
             </li>
           </ul>
         </c:forEach>
@@ -226,7 +233,7 @@
         <div class="row mt-3">
           <c:forEach var="tailieu" items="${taiLieus}">
           <div class="col-md-4 mb-3">
-            <a href="document.html">
+            <a href="/document/${tailieu.maTaiLieu}">
               <div class="card">
                 <img src="${tailieu.anhTaiLieu}" class="card-img-top" alt="..." />
                 <div class="card-body">

@@ -5,7 +5,6 @@ import com.phanduc.QLHocLieu.repositories.NguoiDungRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,7 +19,7 @@ public class DangNhapController {
     @RequestMapping(value = "/login", method = {RequestMethod.GET, RequestMethod.POST})
     public String login(@RequestParam String tenNguoiDung, @RequestParam String matKhau, HttpSession session, Model model) {
         NguoiDung nguoiDung = nguoiDungRepository.findByTenNguoiDungAndMatKhau(tenNguoiDung, matKhau);
-        if (nguoiDung != null) {
+        if (nguoiDung != null && "2".equals(nguoiDung.getMaVaiTro())) {
             // Lưu thông tin đăng nhập vào session
             session.setAttribute("loggedInUser", nguoiDung);
 //            model.addAttribute("loggedInUser", "true");

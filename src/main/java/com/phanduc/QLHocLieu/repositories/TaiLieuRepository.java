@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface TaiLieuRepository extends JpaRepository<TaiLieu,String> {
     List<TaiLieu> findByMaDanhMuc(String maDanhMuc);
-
+    List<TaiLieu> findByTaiLenBoi(String taiLenBoi);
 }

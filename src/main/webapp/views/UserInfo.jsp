@@ -31,7 +31,7 @@
 <header>
   <nav class="navbar navbar-expand-lg bg-light fixed-top" style="z-index: 1080">
     <div class="container">
-      <a class="navbar-brand" href="#">
+      <a class="navbar-brand" href="/trangchu">
         <img class="me-2" src="/images/PD.png" alt="logo" style="height: 40px;">
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -142,7 +142,7 @@
               <button type="button" class="btn d-flex align-items-center" data-bs-toggle="modal"
                       data-bs-target="#infoModal">
                 <img src="/images/avt1.png" alt="" class="border rounded me-2" style="height: 35px;">
-                <h6 class="m-0">Phan Đức</h6>
+                <h6 class="m-0"><c:out value="${nguoiDung.hoTen}" /></h6>
               </button>
               <!-- Modal -->
               <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -184,10 +184,10 @@
           <div class="position-relative">
             <img id="userAvatar" src="/images/avt.png" alt="User Avatar" class="rounded-circle mb-3" data-bs-toggle="modal" data-bs-target="#changeAvatarModal">
           </div>
-          <h5 class="card-title">Phan Đức</h5>
-          <p class="card-text text-start ms-4">Tên người dùng: nguyenvana</p>
-          <p class="card-text text-start ms-4">Mật khẩu: password1</p>
-          <p class="card-text text-start ms-4">Email: nguyenvana@example.com</p>
+          <h5 class="card-title"><c:out value="${nguoiDung.hoTen}" /></h5>
+          <p class="card-text text-start ms-4">Tên người dùng: <c:out value="${nguoiDung.tenNguoiDung}" /></p>
+          <p class="card-text text-start ms-4">Mật khẩu: <c:out value="${nguoiDung.matKhau}" /></p>
+          <p class="card-text text-start ms-4">Email: <c:out value="${nguoiDung.email}" /></p>
           <!-- Button trigger modal -->
           <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editProfileModal">
             Chỉnh sửa thông tin cá nhân
@@ -198,7 +198,7 @@
       <!-- Modal đổi ảnh -->
       <div class="modal fade" id="changeAvatarModal" tabindex="-1" aria-labelledby="changeAvatarModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-          <div class="modal-content">
+          <div class="modal-content modalEditImage">
             <div class="modal-header">
               <h5 class="modal-title" id="changeAvatarModalLabel">Đổi ảnh đại diện</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -231,20 +231,21 @@
                 <!-- Các trường thông tin cá nhân cần chỉnh sửa -->
                 <div class="mb-3">
                   <label for="fullName" class="form-label">Họ và tên:</label>
-                  <input type="text" class="form-control" id="fullName">
+                  <input type="text" class="form-control" id="fullName" data-fullname="${nguoiDung.hoTen}">
                 </div>
                 <div class="mb-3">
                   <label for="username" class="form-label">Tên người dùng:</label>
-                  <input type="text" class="form-control" id="username">
+                  <input type="text" class="form-control" id="username" data-username="${nguoiDung.tenNguoiDung}">
                 </div>
                 <div class="mb-3">
                   <label for="email" class="form-label">Email:</label>
-                  <input type="email" class="form-control" id="email">
+                  <input type="email" class="form-control" id="email" data-email="${nguoiDung.email}">
                 </div>
                 <!-- Nút lưu chỉnh sửa -->
                 <button type="submit" class="btn btn-success">Lưu thay đổi</button>
               </form>
             </div>
+
           </div>
         </div>
       </div>
@@ -267,35 +268,19 @@
           Danh sách tài liệu đã tải lên
         </div>
         <ul class="list-group list-group-flush">
-          <li class="list-group-item d-flex justify-content-between align-items-center">
-            Tài liệu 1
-            <div>
-              <button class="btn btn-sm btn-outline-primary me-1" title="Sửa"><i class="fas fa-edit"></i></button>
-              <button class="btn btn-sm btn-outline-danger" title="Xóa"><i class="fas fa-trash-alt"></i></button>
-            </div>
-          </li>
-          <li class="list-group-item d-flex justify-content-between align-items-center">
-            Tài liệu 2
-            <div>
-              <button class="btn btn-sm btn-outline-primary me-1" title="Sửa"><i class="fas fa-edit"></i></button>
-              <button class="btn btn-sm btn-outline-danger" title="Xóa"><i class="fas fa-trash-alt"></i></button>
-            </div>
-          </li>
-          <li class="list-group-item d-flex justify-content-between align-items-center">
-            Tài liệu 3
-            <div>
-              <button class="btn btn-sm btn-outline-primary me-1" title="Sửa"><i class="fas fa-edit"></i></button>
-              <button class="btn btn-sm btn-outline-danger" title="Xóa"><i class="fas fa-trash-alt"></i></button>
-            </div>
-          </li>
-          <li class="list-group-item d-flex justify-content-between align-items-center">
-            Tài liệu 4
-            <div>
-              <button class="btn btn-sm btn-outline-primary me-1" title="Sửa"><i class="fas fa-edit"></i></button>
-              <button class="btn btn-sm btn-outline-danger" title="Xóa"><i class="fas fa-trash-alt"></i></button>
-            </div>
-          </li>
+          <c:forEach var="taiLieu" items="${taiLieus}">
+            <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+              <div class="d-flex align-items-center">
+                <span class="fs-6">${taiLieu.tieuDe}</span>
+              </div>
+              <div>
+                <button class="btn btn-sm btn-outline-primary me-1" title="Sửa"><i class="fas fa-edit"></i></button>
+                <button class="btn btn-sm btn-outline-danger" title="Xóa"><i class="fas fa-trash-alt"></i></button>
+              </div>
+            </li>
+          </c:forEach>
         </ul>
+
       </div>
 
     </div>

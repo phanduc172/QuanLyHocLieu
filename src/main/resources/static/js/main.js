@@ -18,25 +18,27 @@
 //   Random màu item
   document.addEventListener("DOMContentLoaded", function() {
     var items = document.getElementsByClassName("item");
-    var colors = ['bg-danger','bg-warning','bg-success', 'bg-primary']; // Mảng các lớp màu Bootstrap
+    var colors = ['bg-danger','bg-warning','bg-success', 'bg-primary'];
     for (var i = 0; i < items.length; i++) {
-      items[i].classList.add(colors[i % colors.length]); // Sử dụng toán tử % để lặp lại mảng màu nếu số lượng màu ít hơn số lượng item
+      items[i].classList.add(colors[i % colors.length]);
     }
   });
 
-// Điền thông tin cá nhân vào input của modal chỉnh sửa
-$(document).ready(function () {
-    // Khi modal chỉnh sửa thông tin cá nhân được hiển thị
-    $('#editProfileModal').on('show.bs.modal', function (event) {
-        // Điền thông tin cá nhân vào các input tương ứng trong modal
-        var fullName = 'Phan Đức';
-        var username = 'nguyenvana';
-        var email = 'nguyenvana@example.com';
+    // Điền thông tin cá nhân vào input của modal chỉnh sửa
+    // Trong JavaScript
+    $(document).ready(function () {
+        $('#editProfileModal').on('show.bs.modal', function (event) {
+            var fullName = $('#fullName').data('fullname');
+            var username = $('#username').data('username');
+            var email = $('#email').data('email');
 
-        $('#fullName').val(fullName);
-        $('#username').val(username);
-        $('#email').val(email);
+            $('#fullName').val(fullName);
+            $('#username').val(username);
+            $('#email').val(email);
+        });
     });
-});
+
+
+
 
   

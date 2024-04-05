@@ -12,7 +12,6 @@ public class NguoiDung {
     private String maNguoiDung;
     @Column(name = "TenNguoiDung")
     private String tenNguoiDung;
-
     @Column(name = "MatKhau")
     private String matKhau;
     private String hoTen;
