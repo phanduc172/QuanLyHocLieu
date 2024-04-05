@@ -11,7 +11,6 @@
   <link rel="stylesheet" href="/css/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-<your-integrity-hash>" crossorigin="anonymous" />
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
 </head>
 <body>
 
@@ -61,7 +60,7 @@
           </li>
         </ul>
 
-        <div class="input-group ms-auto" style="width: 400px">
+        <div class="input-group ms-auto" style="width:350px">
           <input type="text" class="form-control" placeholder="Tìm kiếm tài liệu, giáo trình,..." />
           <button class="btn btn-outline-secondary" type="button" id="button-addon2">
             <i class="bi bi-search"></i>
@@ -136,6 +135,13 @@
             </div>
           </c:when>
           <c:otherwise>
+            <%--Tải lên tài liệu--%>
+            <div class="ms-auto">
+              <a href="#" class="btn btn-light border p-2 rounded-pill">
+                <span class="fw-bold">Tải lên</span>
+                <i class="bi bi-cloud-upload ms-2"></i>
+              </a>
+            </div>
             <%--Modals Thông tin cá nhân--%>
             <div class="ms-auto">
               <!-- Button trigger modal -->
@@ -151,19 +157,46 @@
                   <div class="modal-content small-modal-content">
                     <div class="modal-body p-1">
                       <ul class="fs-6">
-                        <a href="#">
+                        <a href="/userinfo/${loggedInUser.maNguoiDung}">
                           <li class="my-3">Thông tin cá nhân</li>
                         </a>
-                        <a href="">
+                        <a href="/userinfo/${loggedInUser.maNguoiDung}">
                           <li class="my-3">Quản lý tài liệu</li>
                         </a>
-                        <a href="">
-                          <li class="my-3">Đổi mật khẩu</li>
-                        </a>
+                        <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#changePasswordModal">Đổi mật khẩu</a>
                         <a href="/logout">
                           <li class="my-3">Đăng xuất</li>
                         </a>
                       </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <%--Modal Đổi mật khẩu--%>
+              <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="changePasswordModalLabel">Đổi mật khẩu</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <!-- Form đổi mật khẩu -->
+                      <form>
+                        <div class="mb-3">
+                          <label for="currentPassword" class="form-label">Mật khẩu hiện tại</label>
+                          <input type="password" class="form-control" id="currentPassword" required>
+                        </div>
+                        <div class="mb-3">
+                          <label for="newPassword" class="form-label">Mật khẩu mới</label>
+                          <input type="password" class="form-control" id="newPassword" required>
+                        </div>
+                        <div class="mb-3">
+                          <label for="confirmNewPassword" class="form-label">Xác nhận mật khẩu mới</label>
+                          <input type="password" class="form-control" id="confirmNewPassword" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Đổi mật khẩu</button>
+                      </form>
                     </div>
                   </div>
                 </div>
@@ -197,8 +230,8 @@
 
       <!-- Modal đổi ảnh -->
       <div class="modal fade" id="changeAvatarModal" tabindex="-1" aria-labelledby="changeAvatarModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content modalEditImage">
+        <div class="modal-dialog" style="margin-top: 100px">
+          <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="changeAvatarModalLabel">Đổi ảnh đại diện</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

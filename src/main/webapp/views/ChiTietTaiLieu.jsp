@@ -61,7 +61,7 @@
                     </li>
                 </ul>
 
-                <div class="input-group ms-auto" style="width: 400px">
+                <div class="input-group ms-auto" style="width: 350px">
                     <input type="text" class="form-control" placeholder="Tìm kiếm tài liệu, giáo trình,..." />
                     <button class="btn btn-outline-secondary" type="button" id="button-addon2">
                         <i class="bi bi-search"></i>
@@ -78,8 +78,8 @@
                             <!-- Modal Thành Viên-->
                             <div class="modal fade" id="thanhVienModal" tabindex="-1" aria-labelledby="loginRegisterModalLabel"
                                  aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content modalLogin">
+                                <div class="modal-dialog modalUser">
+                                    <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="loginRegisterModalLabel">
                                                 Thành viên
@@ -136,6 +136,13 @@
                         </div>
                     </c:when>
                     <c:otherwise>
+                        <%--Tải lên tài liệu--%>
+                        <div class="ms-auto">
+                            <a href="#" class="btn btn-light border p-2 rounded-pill">
+                                <span class="fw-bold">Tải lên</span>
+                                <i class="bi bi-cloud-upload ms-2"></i>
+                            </a>
+                        </div>
                         <%--Modals Thông tin cá nhân--%>
                         <div class="ms-auto">
                             <!-- Button trigger modal -->

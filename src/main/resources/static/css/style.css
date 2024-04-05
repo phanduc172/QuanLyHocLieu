@@ -5,10 +5,6 @@ html,body {
     min-width: 580px;
 }
 
-.modalLogin .modalEditImage{
-    margin-top: 100px;
-}
-
 .truncate-text {
     display: block;
     width: 80%;
@@ -21,6 +17,11 @@ html,body {
 .main {
     margin-top: 80px;
 }
+
+.modalUser .modalEditImage{
+    margin-top: 100px;
+}
+
 
 .modal-info {
     position: relative;
