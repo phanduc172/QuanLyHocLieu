@@ -2,7 +2,7 @@ html,body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    min-width: 580px;
+    min-width: 576px;
 }
 
 .truncate-text {
@@ -78,3 +78,11 @@ html,body {
     height: 800px;
 }
 
+.card-img-top {
+    height: 250px;
+    object-fit: contain;
+}
+
+.modelUser {
+    margin-top: 100px;
+}

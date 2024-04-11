@@ -1,0 +1,6 @@
+/* Media query cho màn hình nhỏ hơn 1200px */
+@media (max-width: 1200px) {
+    .ms-auto {
+        margin: 10px 0 0 0 !important;
+    }
+}

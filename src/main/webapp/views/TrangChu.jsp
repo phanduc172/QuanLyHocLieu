@@ -10,6 +10,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
   <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/reponsive.css">
 
 </head>
 
@@ -28,7 +29,7 @@
 <%--  </c:choose>--%>
 
   <header>
-    <nav class="navbar navbar-expand-lg bg-light fixed-top" style="z-index: 1080">
+    <nav class="navbar navbar-expand-xl bg-light fixed-top" style="z-index: 1080">
       <div class="container">
         <a class="navbar-brand" href="/trangchu">
           <img class="me-2" src="/images/PD.png" alt="logo" style="height: 40px;">
@@ -61,7 +62,7 @@
           </ul>
 
           <div class="input-group ms-auto" style="width: 350px">
-            <input type="text" class="form-control" placeholder="Tìm kiếm tài liệu, giáo trình,..." />
+            <input type="text" class="form-control search-input" placeholder="Tìm kiếm tài liệu, giáo trình,..." />
             <button class="btn btn-outline-secondary" type="button" id="button-addon2">
               <i class="bi bi-search"></i>
             </button>
@@ -77,8 +78,8 @@
             <!-- Modal Thành Viên-->
               <div class="modal fade" id="thanhVienModal" tabindex="-1" aria-labelledby="loginRegisterModalLabel"
                 aria-hidden="true">
-                <div class="modal-dialog modalUser">
-                  <div class="modal-content">
+                <div class="modal-dialog">
+                  <div class="modal-content modelUser ">
                     <div class="modal-header">
                       <h5 class="modal-title" id="loginRegisterModalLabel">
                         Thành viên
@@ -137,12 +138,12 @@
           <c:otherwise>
           <%--Tải lên tài liệu--%>
             <div class="ms-auto">
-              <a href="#" class="btn btn-light border p-2 rounded-pill">
-                <span class="fw-bold">Tải lên</span>
-                <i class="bi bi-cloud-upload ms-2"></i>
+              <a href="#" class="btn btn-light border  border-2 border-dark p-2 px-3 rounded-pill">
+                <span class="fw-bold text-dark">Tải lên</span>
+                <i class="bi bi-cloud-upload ms-2 text-dark"></i>
               </a>
             </div>
-          <%--Modals Thông tin cá nhân--%>
+            <%--Modals Thông tin cá nhân--%>
             <div class="ms-auto">
               <!-- Button trigger modal -->
               <button type="button" class="btn d-flex align-items-center" data-bs-toggle="modal"
@@ -150,7 +151,7 @@
                 <img src="/images/avt1.png" alt="" class="border rounded me-2" style="height: 35px;">
                 <h6 class="m-0"><c:out value="${nguoiDung.hoTen}" /></h6>
               </button>
-              <!-- Modal -->
+              <!-- Modal Info -->
               <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                    aria-hidden="true">
                 <div class="modal-dialog modal-info">
@@ -184,8 +185,8 @@
 
   <div class="container-fluid main" >
     <div class="row">
-      <div class="col-2">
-        <h5 class="text-center">Thể loại</h5>
+      <div class="col-2 col-md-2 d-none d-md-block">
+        <h5 class="text-center fw-bold">Thể loại</h5>
         <c:forEach var="danhmuc" items="${danhMucs}">
           <ul class="list-group">
             <li class="list-group-item mt-2">
@@ -194,7 +195,7 @@
           </ul>
         </c:forEach>
       </div>
-      <div class="col-8">
+      <div class="col-sm-12 col-md-10 col-lg-10 col-xl-8">
         <div id="carouselMain" class="carousel slide mb-3" data-bs-ride="carousel">
           <div class="carousel-indicators">
             <button type="button" data-bs-target="#carouselMain" data-bs-slide-to="0" class="active"
@@ -214,7 +215,7 @@
                 style="height: 350px;">
             </div>
             <div class="carousel-item">
-              <img src="https://via.placeholder.com/100" class="d-block w-100" alt="..."
+              <img src="https://media.store123doc.com/images/event/event_upload_dissertation.jpg" class="d-block w-100" alt="..."
                 style="height: 350px;">
             </div>
           </div>
@@ -229,31 +230,52 @@
             <span class="visually-hidden">Next</span>
           </button>
         </div>
-        <h4 class="text-center">Tài liệu nổi bật</h4>
-        <div class="row mt-3">
-          <c:forEach var="tailieu" items="${taiLieus}">
-          <div class="col-md-4 mb-3">
-            <a href="/document/${tailieu.maTaiLieu}">
-              <div class="card">
-                <img src="${tailieu.anhTaiLieu}" class="card-img-top" alt="..." />
-                <div class="card-body">
-                  <h5 class="card-title">${tailieu.tieuDe}</h5>
-                  <p class="card-text">${tailieu.moTa}</p>
-                </div>
+        <h4 class="text-center my-4 fw-bold">Tài liệu nổi bật</h4>
+        <div class="row mt-2">
+          <c:choose>
+            <c:when test="${empty taiLieus}">
+              <div class="">
+                <br><br><br>
+                <h4 class="text-center text-danger mt-3" style="font-weight: bold;">Không có tài liệu thuộc danh mục này</h4>
               </div>
-            </a>
-          </div>
-          </c:forEach>
+            </c:when>
+            <c:otherwise>
+              <c:forEach var="tailieu" items="${taiLieus}">
+                <div class="col-6 col-sm-4 col-md-4 col-xl-4 col-lg-4 col-xxl-3 mb-3">
+                  <a href="/document/${tailieu.maTaiLieu}">
+                    <div class="card p-1" style="width: 210px;height: 350px;">
+                      <img src="${tailieu.anhTaiLieu}" class="card-img-top" alt="..." />
+                      <div class="card-body">
+                        <h5 class="card-title">${tailieu.tieuDe}</h5>
+                          <%-- <p class="card-text truncate-text">${tailieu.moTa}</p> --%>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+              </c:forEach>
+            </c:otherwise>
+          </c:choose>
         </div>
       </div>
-      <div class="col-2">
-        <h5 class="text-center">Hoạt động gần đây</h5>
+      <div class="col-2 d-none d-xl-block">
+        <h5 class="text-center fw-bold">Hoạt động gần đây</h5>
         <ul class="list-group">
           <li class="list-group-item">
             <div class="d-flex align-items-center justify-content-center text-center">
               <img
                 src="https://images.unsplash.com/photo-1599898534595-953006e0ba6b?q=80&w=1929&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                 class="rounded-circle me-2" width="50" height="50" alt="Avatar">
+              <div>
+                <strong>Người Dùng</strong>
+                <p>Hoạt động 1</p>
+              </div>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="d-flex align-items-center justify-content-center text-center">
+              <img
+                      src="https://images.unsplash.com/photo-1599898534595-953006e0ba6b?q=80&w=1929&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                      class="rounded-circle me-2" width="50" height="50" alt="Avatar">
               <div>
                 <strong>Người Dùng</strong>
                 <p>Hoạt động 1</p>
@@ -329,7 +351,7 @@
         </ul>
       </div>
     </div>
-    <h4 class="text-center mb-3">Tài liệu mới đăng</h4>
+    <h4 class="text-center my-4 fw-bold">Tài liệu mới đăng</h4>
     <div class="row">
       <div class="col-3">
         <div class="bg-success p-3 mb-4 text-white fw-bold fs-6 rounded text-center">

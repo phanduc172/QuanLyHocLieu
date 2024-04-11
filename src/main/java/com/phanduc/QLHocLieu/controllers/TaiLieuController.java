@@ -51,7 +51,8 @@ public class TaiLieuController {
         modelMap.addAttribute("danhMucs", danhMucs);
         if (taiLieus == null || taiLieus.isEmpty()) {
             System.out.println("Không tìm thấy tài liệu với mã danh mục: " + maDanhMuc);
-            return "notfound";
+            modelMap.addAttribute("message", "Không có tài liệu thuộc danh mục này");
+            return "TrangChu";
         } else {
             modelMap.addAttribute("taiLieus", taiLieus);
             return "TrangChu";
