@@ -7,79 +7,68 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Quản lý học liệu - Trường Đại học Khoa học Huế</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
   <link rel="stylesheet" href="/css/style.css">
   <link rel="stylesheet" href="/css/reponsive.css">
-
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 
+
 <body>
-<%--  <c:choose>--%>
-<%--    <c:when test="${not empty loggedInUser}">--%>
-<%--      <script>--%>
-<%--        alert("Đăng nhập thành công");--%>
-<%--      </script>--%>
-<%--    </c:when>--%>
-<%--    <c:otherwise>--%>
-<%--      <script>--%>
-<%--        alert("Đăng nhập không thành công");--%>
-<%--      </script>--%>
-<%--    </c:otherwise>--%>
-<%--  </c:choose>--%>
 
   <header>
-    <nav class="navbar navbar-expand-xl bg-light fixed-top" style="z-index: 1080">
-      <div class="container">
-        <a class="navbar-brand" href="/trangchu">
-          <img class="me-2" src="/images/PD.png" alt="logo" style="height: 40px;">
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <!-- Navbar Collapse -->
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav fw-bold">
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="/trangchu">Trang chủ</a>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Danh mục
-              </a>
-              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li><a class="dropdown-item" href="#">Khoa</a></li>
-                <li><a class="dropdown-item" href="#">Ngành học</a></li>
-              </ul>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Giới thiệu</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Liên hệ</a>
-            </li>
-          </ul>
+  <nav class="navbar navbar-expand-xl bg-light fixed-top" style="z-index: 1080">
+    <div class="container">
+      <a class="navbar-brand" href="/trangchu">
+        <img class="me-2" src="/images/PD.png" alt="logo" style="height: 40px;">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+              aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <!-- Navbar Collapse -->
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav fw-bold">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">Trang chủ</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Danh mục
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li><a class="dropdown-item" href="#">Khoa</a></li>
+              <li><a class="dropdown-item" href="#">Ngành học</a></li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Giới thiệu</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Liên hệ</a>
+          </li>
+        </ul>
 
-          <div class="input-group ms-auto" style="width: 350px">
-            <input type="text" class="form-control search-input" placeholder="Tìm kiếm tài liệu, giáo trình,..." />
-            <button class="btn btn-outline-secondary" type="button" id="button-addon2">
-              <i class="bi bi-search"></i>
-            </button>
-          </div>
-          <c:choose>
+        <div class="input-group ms-auto" style="width:350px">
+          <input type="text" class="form-control" placeholder="Tìm kiếm tài liệu, giáo trình,..." />
+          <button class="btn btn-outline-secondary" type="button" id="button-addon2">
+            <i class="bi bi-search"></i>
+          </button>
+        </div>
+        <c:choose>
           <c:when test="${empty loggedInUser}">
-          <!-- Hiển thị nút và modal cho thành viên -->
-          <div class="ms-auto">
-            <!-- Button trigger modal -->
-            <button type="button" class="btn btn-light border" data-bs-toggle="modal" data-bs-target="#thanhVienModal">
-              <i class="bi bi-person-circle"></i> Thành viên
-            </button>
-            <!-- Modal Thành Viên-->
+            <!-- Hiển thị nút và modal cho thành viên -->
+            <div class="ms-auto">
+              <!-- Button trigger modal -->
+              <button type="button" class="btn btn-light border" data-bs-toggle="modal" data-bs-target="#thanhVienModal">
+                <i class="bi bi-person-circle"></i> Thành viên
+              </button>
+              <!-- Modal Thành Viên-->
               <div class="modal fade" id="thanhVienModal" tabindex="-1" aria-labelledby="loginRegisterModalLabel"
-                aria-hidden="true">
+                   aria-hidden="true">
                 <div class="modal-dialog">
-                  <div class="modal-content modelUser ">
+                  <div class="modal-content modelUser">
                     <div class="modal-header">
                       <h5 class="modal-title" id="loginRegisterModalLabel">
                         Thành viên
@@ -100,14 +89,12 @@
                           <form method="post" action="/login">
                             <fieldset>
                               <div class="form-group mb-3">
-                                <input class="form-control" placeholder="Nhập tên người dùng" name="tenNguoiDung"
-                                  type="text" />
+                                <input class="form-control" placeholder="Nhập tên người dùng" name="tenNguoiDung" type="text" />
                               </div>
                               <div class="form-group mb-3">
-                                <input class="form-control" placeholder="Nhập mật khẩu" name="matKhau" type="password"
-                                  value="" />
+                                <input class="form-control" placeholder="Nhập mật khẩu" name="matKhau" type="password" value="" />
                               </div>
-                              <input class="btn btn-md btn btn-secondary btn-block" type="submit" value="Đăng nhập" />
+                              <button class="btn btn-md btn btn-secondary btn-block" type="submit" id="loginButton">Đăng nhập</button>
                             </fieldset>
                           </form>
                         </div>
@@ -122,7 +109,7 @@
                               </div>
                               <div class="form-group mb-3">
                                 <input class="form-control" placeholder="Nhập mật khẩu" type="password" name=""
-                                  value="" />
+                                       value="" />
                               </div>
                               <input class="btn btn-md btn btn-secondary btn-block" type="submit" value="Đăng ký" />
                             </fieldset>
@@ -136,11 +123,11 @@
             </div>
           </c:when>
           <c:otherwise>
-          <%--Tải lên tài liệu--%>
+            <%--Tải lên tài liệu--%>
             <div class="ms-auto">
-              <a href="#" class="btn btn-light border  border-2 border-dark p-2 px-3 rounded-pill">
-                <span class="fw-bold text-dark">Tải lên</span>
-                <i class="bi bi-cloud-upload ms-2 text-dark"></i>
+              <a href="/uploadfile" class="btn btn-light border p-2 rounded-pill">
+                <span class="fw-bold">Tải lên</span>
+                <i class="bi bi-cloud-upload ms-2"></i>
               </a>
             </div>
             <%--Modals Thông tin cá nhân--%>
@@ -151,7 +138,7 @@
                 <img src="/images/avt1.png" alt="" class="border rounded me-2" style="height: 35px;">
                 <h6 class="m-0"><c:out value="${nguoiDung.hoTen}" /></h6>
               </button>
-              <!-- Modal Info -->
+              <!-- Modal -->
               <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                    aria-hidden="true">
                 <div class="modal-dialog modal-info">
@@ -164,10 +151,8 @@
                         <a href="/userinfo/${loggedInUser.maNguoiDung}">
                           <li class="my-3">Quản lý tài liệu</li>
                         </a>
-                        <a href="">
-                          <li class="my-3">Đổi mật khẩu</li>
-                        </a>
-                        <a href="/logout">
+                        <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#changePasswordModal">Đổi mật khẩu</a>
+                        <a href="/logout" id="logoutButton">
                           <li class="my-3">Đăng xuất</li>
                         </a>
                       </ul>
@@ -175,13 +160,42 @@
                   </div>
                 </div>
               </div>
+                <%--Modal Đổi mật khẩu--%>
+              <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="changePasswordModalLabel">Đổi mật khẩu</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <!-- Form đổi mật khẩu -->
+                      <form>
+                        <div class="mb-3">
+                          <label for="currentPassword" class="form-label">Mật khẩu hiện tại</label>
+                          <input type="password" class="form-control" id="currentPassword" required>
+                        </div>
+                        <div class="mb-3">
+                          <label for="newPassword" class="form-label">Mật khẩu mới</label>
+                          <input type="password" class="form-control" id="newPassword" required>
+                        </div>
+                        <div class="mb-3">
+                          <label for="confirmNewPassword" class="form-label">Xác nhận mật khẩu mới</label>
+                          <input type="password" class="form-control" id="confirmNewPassword" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Đổi mật khẩu</button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </c:otherwise>
-          </c:choose>
-        </div>
+        </c:choose>
       </div>
-    </nav>
-  </header>
+    </div>
+  </nav>
+</header>
 
   <div class="container-fluid main" >
     <div class="row">
@@ -241,16 +255,18 @@
             </c:when>
             <c:otherwise>
               <c:forEach var="tailieu" items="${taiLieus}">
-                <div class="col-6 col-sm-4 col-md-4 col-xl-4 col-lg-4 col-xxl-3 mb-3">
-                  <a href="/document/${tailieu.maTaiLieu}">
-                    <div class="card p-1" style="width: 210px;height: 350px;">
-                      <img src="${tailieu.anhTaiLieu}" class="card-img-top" alt="..." />
-                      <div class="card-body">
-                        <h5 class="card-title">${tailieu.tieuDe}</h5>
-                          <%-- <p class="card-text truncate-text">${tailieu.moTa}</p> --%>
+                <div class="col-6 col-sm-6 col-md-4 col-xl-4 col-lg-4 col-xxl-3 mb-3">
+                  <div class="d-flex justify-content-center">
+                    <a class="text-decoration-none" href="/document/${tailieu.maTaiLieu}">
+                      <div class="card p-1" style="width: 210px;height: 350px;">
+                        <img src="${tailieu.anhTaiLieu}" class="card-img-top" alt="..." />
+                        <div class="card-body">
+                          <h5 class="card-title">${tailieu.tieuDe}</h5>
+                            <%-- <p class="card-text truncate-text">${tailieu.moTa}</p> --%>
+                        </div>
                       </div>
-                    </div>
-                  </a>
+                    </a>
+                  </div>
                 </div>
               </c:forEach>
             </c:otherwise>
@@ -927,13 +943,66 @@
       </div>
     </div>
   </div>
+
   <footer>
     <div class="p-3 text-center bg-light text-danger fw-bold   fs-6">
       Copyright © 2024. Designed by Phan Đức
     </div>
   </footer>
 
+  <%-- Kiểm tra loggedInUser và hiển thị modal nếu có --%>
+  <%-- Kiểm tra loggedInUser và hiển thị modal nếu có --%>
+  <c:choose>
+    <c:when test="${not empty loggedInUser}">
+      <!-- Modal hiển thị thông báo đăng nhập thành công -->
+      <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+          <div class="modal-content border border-3 rounded-circle" style="width: 300px; height: 300px;">
+            <div class="modal-body d-flex justify-content-center align-items-center p-0">
+              <div class="text-success text-center p-0 mb-4">
+                <i class="bi bi-check-circle icon-login"></i>
+                <h2 class="text-center mt-2 fw-bold">Đăng nhập <br> thành công!</h2>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </c:when>
+    <c:otherwise>
+      <!-- Modal hiển thị thông báo đăng nhập thất bại -->
+      <div class="modal fade" id="failureModal" tabindex="-1" aria-labelledby="failureModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+          <div class="modal-content border border-3 rounded-circle" style="width: 300px; height: 300px;">
+            <div class="modal-body d-flex justify-content-center align-items-center p-0">
+              <div class="text-danger text-center p-0 mb-4">
+                <i class="bi bi-exclamation-circle icon-login"></i>
+                <h2 class="text-center mt-2 fw-bold">Đăng nhập <br> thất bại!</h2>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </c:otherwise>
+  </c:choose>
+
+
+  <script>
+    $(document).ready(function() {
+      if (${not empty loggedInUser}) {
+        $('#successModal').modal('show');
+      } else {
+        $('#failureModal').modal('show');
+      }
+      // Tự đóng modal sau 800ms
+      setTimeout(function() {
+        $('#successModal, #failureModal').modal('hide');
+      }, 800);
+    });
+
+  </script>
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 
 </html>

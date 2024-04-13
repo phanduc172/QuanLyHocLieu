@@ -137,7 +137,7 @@
           <c:otherwise>
             <%--Tải lên tài liệu--%>
             <div class="ms-auto">
-              <a href="#" class="btn btn-light border p-2 rounded-pill">
+              <a href="/uploadfile" class="btn btn-light border p-2 rounded-pill">
                 <span class="fw-bold">Tải lên</span>
                 <i class="bi bi-cloud-upload ms-2"></i>
               </a>
@@ -325,10 +325,6 @@
     Copyright © 2024. Designed by Phan Đức
   </div>
 </footer>
-
-
-
-
 
 <script src="/js/main.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>

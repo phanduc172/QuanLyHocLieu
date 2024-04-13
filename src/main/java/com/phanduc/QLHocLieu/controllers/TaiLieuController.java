@@ -79,6 +79,12 @@ public class TaiLieuController {
             return "notfound";
         }
     }
+    @GetMapping("uploadfile")
+    public String uploadDocument(ModelMap modelMap, HttpSession session) {
+        NguoiDung nguoiDung = (NguoiDung) session.getAttribute("loggedInUser");
+        modelMap.addAttribute("nguoiDung", nguoiDung);
+        return "TaiLenTaiLieu";
+    }
 
 
 

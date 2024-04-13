@@ -15,14 +15,15 @@
         $(this).data('down', false);
         });
     });
-//   Random màu item
-  document.addEventListener("DOMContentLoaded", function() {
-    var items = document.getElementsByClassName("item");
-    var colors = ['bg-danger','bg-warning','bg-success', 'bg-primary'];
-    for (var i = 0; i < items.length; i++) {
-      items[i].classList.add(colors[i % colors.length]);
-    }
-  });
+
+    //Random màu item
+      document.addEventListener("DOMContentLoaded", function() {
+        var items = document.getElementsByClassName("item");
+        var colors = ['bg-danger','bg-warning','bg-success', 'bg-primary'];
+        for (var i = 0; i < items.length; i++) {
+          items[i].classList.add(colors[i % colors.length]);
+        }
+      });
 
     // Điền thông tin cá nhân vào input của modal chỉnh sửa
     // Trong JavaScript
