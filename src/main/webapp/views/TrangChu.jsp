@@ -16,6 +16,7 @@
 
 
 <body>
+  <%@ include file="ui/modal_login.jsp" %>
 
   <header>
   <nav class="navbar navbar-expand-xl bg-light fixed-top" style="z-index: 1080">
@@ -950,59 +951,7 @@
     </div>
   </footer>
 
-  <%-- Kiểm tra loggedInUser và hiển thị modal nếu có --%>
-  <%-- Kiểm tra loggedInUser và hiển thị modal nếu có --%>
-  <c:choose>
-    <c:when test="${not empty loggedInUser}">
-      <!-- Modal hiển thị thông báo đăng nhập thành công -->
-      <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-sm">
-          <div class="modal-content border border-3 rounded-circle" style="width: 300px; height: 300px;">
-            <div class="modal-body d-flex justify-content-center align-items-center p-0">
-              <div class="text-success text-center p-0 mb-4">
-                <i class="bi bi-check-circle icon-login"></i>
-                <h2 class="text-center mt-2 fw-bold">Đăng nhập <br> thành công!</h2>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </c:when>
-    <c:otherwise>
-      <!-- Modal hiển thị thông báo đăng nhập thất bại -->
-      <div class="modal fade" id="failureModal" tabindex="-1" aria-labelledby="failureModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-sm">
-          <div class="modal-content border border-3 rounded-circle" style="width: 300px; height: 300px;">
-            <div class="modal-body d-flex justify-content-center align-items-center p-0">
-              <div class="text-danger text-center p-0 mb-4">
-                <i class="bi bi-exclamation-circle icon-login"></i>
-                <h2 class="text-center mt-2 fw-bold">Đăng nhập <br> thất bại!</h2>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </c:otherwise>
-  </c:choose>
-
-
-  <script>
-    $(document).ready(function() {
-      if (${not empty loggedInUser}) {
-        $('#successModal').modal('show');
-      } else {
-        $('#failureModal').modal('show');
-      }
-      // Tự đóng modal sau 800ms
-      setTimeout(function() {
-        $('#successModal, #failureModal').modal('hide');
-      }, 800);
-    });
-
-  </script>
-
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-
 </body>
 
 </html>

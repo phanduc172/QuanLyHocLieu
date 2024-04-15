@@ -22,12 +22,13 @@ public class DangNhapController {
         if (nguoiDung != null && "2".equals(nguoiDung.getMaVaiTro())) {
             // Lưu thông tin đăng nhập vào session
             session.setAttribute("loggedInUser", nguoiDung);
-//            model.addAttribute("loggedInUser", "true");
             System.out.println("Đăng nhập thành công");
-            return "redirect:/trangchu";
+            return "redirect:/trangchu?statusLogin=true";
         } else {
             System.out.println("Đăng nhập không thành công");
-            return "redirect:/trangchu";
+            session.setAttribute("notLoggedInUser", nguoiDung);
+            model.addAttribute("notLoggedInUser", true); // Truyền giá trị true cho biến notLoggedInUser
+            return "redirect:/trangchu?statusLogin=false";
         }
     }
 

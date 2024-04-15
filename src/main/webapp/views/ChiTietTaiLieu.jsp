@@ -15,18 +15,6 @@
 </head>
 
 <body>
-<%--  <c:choose>--%>
-<%--    <c:when test="${not empty loggedInUser}">--%>
-<%--      <script>--%>
-<%--        alert("Đăng nhập thành công");--%>
-<%--      </script>--%>
-<%--    </c:when>--%>
-<%--    <c:otherwise>--%>
-<%--      <script>--%>
-<%--        alert("Đăng nhập không thành công");--%>
-<%--      </script>--%>
-<%--    </c:otherwise>--%>
-<%--  </c:choose>--%>
 
 <header>
     <nav class="navbar navbar-expand-lg bg-light fixed-top" style="z-index: 1080">
