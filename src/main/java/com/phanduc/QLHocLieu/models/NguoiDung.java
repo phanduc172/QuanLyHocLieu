@@ -27,8 +27,8 @@ public class NguoiDung {
     }
 
     public NguoiDung() {
+        this.anh = "/images/avt.png";
     }
-
     public NguoiDung(Integer maNguoiDung, String tenNguoiDung, String matKhau, String hoTen, String anh, String email, int maVaiTro) {
         this.maNguoiDung = maNguoiDung;
         this.tenNguoiDung = tenNguoiDung;

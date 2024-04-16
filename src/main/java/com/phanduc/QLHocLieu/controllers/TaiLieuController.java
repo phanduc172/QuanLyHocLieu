@@ -70,7 +70,8 @@ public class TaiLieuController {
         modelMap.addAttribute("nguoiDung", nguoiDung);
         if (optionalTaiLieu.isPresent()) {
             TaiLieu taiLieu = optionalTaiLieu.get();
-            // Thêm bất kỳ xử lý khác nếu cần
+            String nguoiTaiLen = taiLieuRepository.findHoTenByMaNguoiDung(taiLieu.getTaiLenBoi());
+            modelMap.addAttribute("nguoiTaiLen", nguoiTaiLen);
             modelMap.addAttribute("taiLieu", taiLieu);
             return "ChiTietTaiLieu";
         } else {

@@ -17,7 +17,6 @@
 
 <body>
   <%@ include file="ui/modal_login.jsp" %>
-
   <header>
   <nav class="navbar navbar-expand-xl bg-light fixed-top" style="z-index: 1080">
     <div class="container">
@@ -137,7 +136,7 @@
               <!-- Button trigger modal -->
               <button type="button" class="btn d-flex align-items-center" data-bs-toggle="modal"
                       data-bs-target="#infoModal">
-                <img src="/images/avt.png" alt="" class="border rounded me-2" style="height: 35px;">
+                <img src="${nguoiDung.anh}" alt="" class="border rounded me-2" style="height: 35px;">
                 <h6 class="m-0"><c:out value="${nguoiDung.hoTen}" /></h6>
               </button>
               <!-- Modal -->

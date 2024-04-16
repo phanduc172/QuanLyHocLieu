@@ -24,7 +24,7 @@ public class NguoiDungValidator implements Validator {
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "matKhau", "NotEmpty.nguoiDung.matKhau");
 
-        if (nguoiDung.getMatKhau().length() < 6) {
+        if (nguoiDung.getMatKhau().length() < 3) {
             errors.rejectValue("matKhau", "Size.nguoiDung.matKhau");
         }
     }

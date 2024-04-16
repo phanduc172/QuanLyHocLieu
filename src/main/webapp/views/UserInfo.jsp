@@ -134,7 +134,7 @@
               <!-- Button trigger modal -->
               <button type="button" class="btn d-flex align-items-center" data-bs-toggle="modal"
                       data-bs-target="#infoModal">
-                <img src="/images/avt.png" alt="" class="border rounded me-2" style="height: 35px;">
+                <img src="${nguoiDung.anh}" alt="" class="border rounded me-2" style="height: 35px;">
                 <h6 class="m-0"><c:out value="${nguoiDung.hoTen}" /></h6>
               </button>
               <!-- Modal -->
@@ -202,7 +202,7 @@
       <div class="card">
         <div class="card-body text-center">
           <div class="position-relative">
-            <img id="userAvatar" src="/images/avt.png" alt="User Avatar" class="rounded-circle mb-3" data-bs-toggle="modal" data-bs-target="#changeAvatarModal">
+            <img id="userAvatar" src="${nguoiDung.anh}" alt="User Avatar" class="rounded-circle mb-3" data-bs-toggle="modal" data-bs-target="#changeAvatarModal">
           </div>
           <h5 class="card-title"><c:out value="${nguoiDung.hoTen}" /></h5>
           <p class="card-text text-start ms-4">Tên người dùng: <c:out value="${nguoiDung.tenNguoiDung}" /></p>
@@ -223,18 +223,20 @@
               <h5 class="modal-title" id="changeAvatarModalLabel">Đổi ảnh đại diện</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-              <!-- Nơi để người dùng chọn ảnh mới -->
-              <!-- Ví dụ: -->
-              <input type="file" accept="image/*">
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-              <button type="button" class="btn btn-primary">Lưu thay đổi</button>
-            </div>
+            <form class="m-0" id="changeAvatarForm" action="/userinfo/update-avatar" method="post" enctype="multipart/form-data">
+              <div class="modal-body">
+                <!-- Nơi để người dùng chọn ảnh mới -->
+                <input type="file" name="file" id="avatarFile" accept="image/*">
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
+
 
 
       <!-- Modal chỉnh sửa thông tin cá nhân -->
@@ -251,15 +253,15 @@
                 <!-- Các trường thông tin cá nhân cần chỉnh sửa -->
                 <div class="mb-3">
                   <label for="fullName" class="form-label">Họ và tên:</label>
-                  <input type="text" class="form-control" id="fullName" name="hoTen" data-fullname="${nguoiDung.hoTen}">
+                  <input type="text" class="form-control" id="fullName" name="hoTen" data-fullname="${nguoiDung.hoTen} " required>
                 </div>
                 <div class="mb-3">
                   <label for="username" class="form-label">Tên người dùng:</label>
-                  <input type="text" class="form-control" id="username" name="tenNguoiDung" data-username="${nguoiDung.tenNguoiDung}">
+                  <input type="text" class="form-control" id="username" name="tenNguoiDung" data-username="${nguoiDung.tenNguoiDung} " required>
                 </div>
                 <div class="mb-3">
                   <label for="email" class="form-label">Email:</label>
-                  <input type="email" class="form-control" id="email" name="email" data-email="${nguoiDung.email}">
+                  <input type="email" class="form-control" id="email" name="email" data-email="${nguoiDung.email}" required>
                 </div>
                 <!-- Nút lưu chỉnh sửa -->
                 <button type="submit" class="btn btn-success">Lưu thay đổi</button>
@@ -274,14 +276,13 @@
     <div class="col-md-12 col-lg-8">
       <h5 class="mb-3">Quản lý tài liệu</h5>
       <div class="card">
-        <ul class="list-unstyled d-flex flex-wrap justify-content-between p-2 mx-5 m-0">
-          <li class="px-2"><a href="#" class="text-decoration-none">Đã duyệt(1)</a></li>
-          <li class="px-2"><a href="#" class="text-decoration-none">Chờ duyệt(2)</a></li>
-          <li class="px-2"><a href="#" class="text-decoration-none">Từ chối(0)</a></li>
-          <li class="px-2"><a href="#" class="text-decoration-none">Bị trùng(0)</a></li>
+        <ul class="list-unstyled d-flex flex-wrap justify-content-around m-0">
+          <li class="px-5 py-2 docHover"><a href="#" class="text-decoration-none">Đã duyệt(1)</a></li>
+          <li class="px-5 py-2 docHover"><a href="#" class="text-decoration-none">Chờ duyệt(2)</a></li>
+          <li class="px-5 py-2 docHover"><a href="#" class="text-decoration-none">Từ chối(0)</a></li>
+<%--          <li class="px-5 py-2 docHover"><a href="#" class="text-decoration-none">Bị trùng(0)</a></li>--%>
         </ul>
       </div>
-
 
       <div class="card mt-3">
         <div class="card-header">
@@ -312,6 +313,14 @@
     Copyright © 2024. Designed by Phan Đức
   </div>
 </footer>
+
+<script !src="">
+  window.onload = function() {
+    if (window.history.replaceState) {
+      window.history.replaceState(null, null, window.location.href);
+    }
+  };
+</script>
 
 <script src="/js/main.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>

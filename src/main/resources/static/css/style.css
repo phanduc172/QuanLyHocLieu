@@ -68,7 +68,14 @@ html,body {
 
 #userAvatar {
     width: 150px;
+    cursor: pointer;
 }
+
+
+#userAvatar:hover {
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
 
 .pdf-container {
     width: 100%;

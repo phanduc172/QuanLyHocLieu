@@ -208,7 +208,7 @@
                             <img src="${nguoiDung.anh}" class="img-fluid rounded-start me-3" alt="Avatar" style="max-width: 50px">
                         </div>
                         <div>
-                            <p class="card-text m-0">Tải lên: ${nguoiDung.hoTen}</p>
+                            <p class="card-text m-0">Tải lên: ${nguoiTaiLen}</p>
                             <p class="card-text m-0">Báo cáo tài liệu</p>
                         </div>
                     </div>

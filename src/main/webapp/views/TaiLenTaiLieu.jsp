@@ -134,7 +134,7 @@
                             <!-- Button trigger modal -->
                             <button type="button" class="btn d-flex align-items-center" data-bs-toggle="modal"
                                     data-bs-target="#infoModal">
-                                <img src="/images/avt1.png" alt="" class="border rounded me-2" style="height: 35px;">
+                                <img src="${nguoiDung.anh}" alt="" class="border rounded me-2" style="height: 35px;">
                                 <h6 class="m-0"><c:out value="${nguoiDung.hoTen}" /></h6>
                             </button>
                             <!-- Modal -->
