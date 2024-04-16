@@ -1,29 +1,28 @@
 package com.phanduc.QLHocLieu.models;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "vaitro")
 public class VaiTro {
     @Id
-    private String maVaiTro;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer maVaiTro;
     private String tenVaiTro;
 
     public VaiTro() {
     }
 
-    public VaiTro(String maVaiTro, String tenVaiTro) {
+    public VaiTro(Integer maVaiTro, String tenVaiTro) {
         this.maVaiTro = maVaiTro;
         this.tenVaiTro = tenVaiTro;
     }
 
-    public String getMaVaiTro() {
+    public Integer getMaVaiTro() {
         return maVaiTro;
     }
 
-    public void setMaVaiTro(String maVaiTro) {
+    public void setMaVaiTro(Integer maVaiTro) {
         this.maVaiTro = maVaiTro;
     }
 

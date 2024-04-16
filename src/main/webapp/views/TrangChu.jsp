@@ -40,6 +40,7 @@
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
               <li><a class="dropdown-item" href="#">Khoa</a></li>
+              <li><hr class="dropdown-divider"></li>
               <li><a class="dropdown-item" href="#">Ngành học</a></li>
             </ul>
           </li>
@@ -51,12 +52,13 @@
           </li>
         </ul>
 
-        <div class="input-group ms-auto" style="width:350px">
-          <input type="text" class="form-control" placeholder="Tìm kiếm tài liệu, giáo trình,..." />
-          <button class="btn btn-outline-secondary" type="button" id="button-addon2">
+        <form action="/search/{keyword}" method="post" class="input-group ms-auto" style="width:350px" >
+          <input id="searchInput" name="keyword" type="text" class="form-control" placeholder="Tìm kiếm tài liệu, giáo trình,..." />
+          <button class="btn btn-outline-secondary" type="submit" id="searchButton">
             <i class="bi bi-search"></i>
           </button>
-        </div>
+        </form>
+
         <c:choose>
           <c:when test="${empty loggedInUser}">
             <!-- Hiển thị nút và modal cho thành viên -->
@@ -90,27 +92,26 @@
                           <form method="post" action="/login">
                             <fieldset>
                               <div class="form-group mb-3">
-                                <input class="form-control" placeholder="Nhập tên người dùng" name="tenNguoiDung" type="text" />
+                                <input class="form-control" placeholder="Nhập tên người dùng" name="tenNguoiDung" type="text" required/>
                               </div>
                               <div class="form-group mb-3">
-                                <input class="form-control" placeholder="Nhập mật khẩu" name="matKhau" type="password" value="" />
+                                <input class="form-control" placeholder="Nhập mật khẩu" name="matKhau" type="password" value="" required/>
                               </div>
                               <button class="btn btn-md btn btn-secondary btn-block" type="submit" id="loginButton">Đăng nhập</button>
                             </fieldset>
                           </form>
                         </div>
                         <div id="registerForm" class="tab-pane fade">
-                          <form method="post" action="">
+                          <form method="post" action="/register">
                             <fieldset>
                               <div class="form-group mb-3">
-                                <input class="form-control" placeholder="Nhập họ tên" name="" type="text" />
+                                <input class="form-control" placeholder="Nhập họ tên" name="hoTen" type="text" required/>
                               </div>
                               <div class="form-group mb-3">
-                                <input class="form-control" placeholder="Nhập tên đăng nhập" name="" type="text" />
+                                <input class="form-control" placeholder="Nhập tên đăng nhập" name="tenNguoiDung" type="text" required/>
                               </div>
                               <div class="form-group mb-3">
-                                <input class="form-control" placeholder="Nhập mật khẩu" type="password" name=""
-                                       value="" />
+                                <input class="form-control" placeholder="Nhập mật khẩu" type="password" name="matKhau" value="" required/>
                               </div>
                               <input class="btn btn-md btn btn-secondary btn-block" type="submit" value="Đăng ký" />
                             </fieldset>
@@ -136,7 +137,7 @@
               <!-- Button trigger modal -->
               <button type="button" class="btn d-flex align-items-center" data-bs-toggle="modal"
                       data-bs-target="#infoModal">
-                <img src="/images/avt1.png" alt="" class="border rounded me-2" style="height: 35px;">
+                <img src="/images/avt.png" alt="" class="border rounded me-2" style="height: 35px;">
                 <h6 class="m-0"><c:out value="${nguoiDung.hoTen}" /></h6>
               </button>
               <!-- Modal -->
@@ -200,17 +201,17 @@
 
   <div class="container-fluid main" >
     <div class="row">
-      <div class="col-2 col-md-2 d-none d-md-block">
+      <div class="col-2 col-md-2 d-none d-lg-block">
         <h5 class="text-center fw-bold">Thể loại</h5>
         <c:forEach var="danhmuc" items="${danhMucs}">
           <ul class="list-group">
-            <li class="list-group-item mt-2">
+            <li class="list-group-item mt-2 ">
               <a class="text-decoration-none" href="/danhmuc/${danhmuc.maDanhMuc}">${danhmuc.tenDanhMuc}</a>
             </li>
           </ul>
         </c:forEach>
       </div>
-      <div class="col-sm-12 col-md-10 col-lg-10 col-xl-8">
+      <div class="col-sm-12 col-md-12 col-lg-10 col-xl-8">
         <div id="carouselMain" class="carousel slide mb-3" data-bs-ride="carousel">
           <div class="carousel-indicators">
             <button type="button" data-bs-target="#carouselMain" data-bs-slide-to="0" class="active"
@@ -259,7 +260,7 @@
                 <div class="col-6 col-sm-6 col-md-4 col-xl-4 col-lg-4 col-xxl-3 mb-3">
                   <div class="d-flex justify-content-center">
                     <a class="text-decoration-none" href="/document/${tailieu.maTaiLieu}">
-                      <div class="card p-1" style="width: 210px;height: 350px;">
+                      <div class="card p-1 docHover" style="width: 210px;height: 350px;">
                         <img src="${tailieu.anhTaiLieu}" class="card-img-top" alt="..." />
                         <div class="card-body">
                           <h5 class="card-title">${tailieu.tieuDe}</h5>
@@ -950,6 +951,7 @@
       Copyright © 2024. Designed by Phan Đức
     </div>
   </footer>
+
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>

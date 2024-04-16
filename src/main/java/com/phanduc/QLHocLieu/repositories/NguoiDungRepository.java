@@ -5,6 +5,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface NguoiDungRepository extends JpaRepository<NguoiDung, String> {
     NguoiDung findByTenNguoiDungAndMatKhau(String tenNguoiDung, String matKhau);
+    NguoiDung getUserByMaNguoiDung(Integer maNguoiDung);
+
+    NguoiDung findByTenNguoiDung(String tenNguoiDung);
 
     default void printUser(String tenNguoiDung, String matKhau) {
         NguoiDung nguoiDung = findByTenNguoiDungAndMatKhau(tenNguoiDung, matKhau);

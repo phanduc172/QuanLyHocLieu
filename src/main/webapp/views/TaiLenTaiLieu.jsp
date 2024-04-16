@@ -7,15 +7,16 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Quản lý học liệu - Trường Đại học Khoa học Huế</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/reponsive.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 </head>
 
 <body>
-    <header>
+<header>
     <nav class="navbar navbar-expand-xl bg-light fixed-top" style="z-index: 1080">
         <div class="container">
             <a class="navbar-brand" href="/trangchu">
@@ -29,7 +30,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav fw-bold">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/trangchu">Trang chủ</a>
+                        <a class="nav-link active" aria-current="page" href="#">Trang chủ</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -48,8 +49,8 @@
                     </li>
                 </ul>
 
-                <div class="input-group ms-auto" style="width: 350px">
-                    <input type="text" class="form-control search-input" placeholder="Tìm kiếm tài liệu, giáo trình,..." />
+                <div class="input-group ms-auto" style="width:350px">
+                    <input type="text" class="form-control" placeholder="Tìm kiếm tài liệu, giáo trình,..." />
                     <button class="btn btn-outline-secondary" type="button" id="button-addon2">
                         <i class="bi bi-search"></i>
                     </button>
@@ -66,7 +67,7 @@
                             <div class="modal fade" id="thanhVienModal" tabindex="-1" aria-labelledby="loginRegisterModalLabel"
                                  aria-hidden="true">
                                 <div class="modal-dialog">
-                                    <div class="modal-content modelUser ">
+                                    <div class="modal-content modelUser">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="loginRegisterModalLabel">
                                                 Thành viên
@@ -87,14 +88,12 @@
                                                     <form method="post" action="/login">
                                                         <fieldset>
                                                             <div class="form-group mb-3">
-                                                                <input class="form-control" placeholder="Nhập tên người dùng" name="tenNguoiDung"
-                                                                       type="text" />
+                                                                <input class="form-control" placeholder="Nhập tên người dùng" name="tenNguoiDung" type="text" />
                                                             </div>
                                                             <div class="form-group mb-3">
-                                                                <input class="form-control" placeholder="Nhập mật khẩu" name="matKhau" type="password"
-                                                                       value="" />
+                                                                <input class="form-control" placeholder="Nhập mật khẩu" name="matKhau" type="password" value="" />
                                                             </div>
-                                                            <input class="btn btn-md btn btn-secondary btn-block" type="submit" value="Đăng nhập" />
+                                                            <button class="btn btn-md btn btn-secondary btn-block" type="submit" id="loginButton">Đăng nhập</button>
                                                         </fieldset>
                                                     </form>
                                                 </div>
@@ -123,6 +122,13 @@
                         </div>
                     </c:when>
                     <c:otherwise>
+                        <%--Tải lên tài liệu--%>
+                        <div class="ms-auto">
+                            <a href="/uploadfile" class="btn btn-light border p-2 rounded-pill">
+                                <span class="fw-bold">Tải lên</span>
+                                <i class="bi bi-cloud-upload ms-2"></i>
+                            </a>
+                        </div>
                         <%--Modals Thông tin cá nhân--%>
                         <div class="ms-auto">
                             <!-- Button trigger modal -->
@@ -131,7 +137,7 @@
                                 <img src="/images/avt1.png" alt="" class="border rounded me-2" style="height: 35px;">
                                 <h6 class="m-0"><c:out value="${nguoiDung.hoTen}" /></h6>
                             </button>
-                            <!-- Modal Info -->
+                            <!-- Modal -->
                             <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                                  aria-hidden="true">
                                 <div class="modal-dialog modal-info">
@@ -144,13 +150,40 @@
                                                 <a href="/userinfo/${loggedInUser.maNguoiDung}">
                                                     <li class="my-3">Quản lý tài liệu</li>
                                                 </a>
-                                                <a href="">
-                                                    <li class="my-3">Đổi mật khẩu</li>
-                                                </a>
-                                                <a href="/logout">
+                                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#changePasswordModal">Đổi mật khẩu</a>
+                                                <a href="/logout" id="logoutButton">
                                                     <li class="my-3">Đăng xuất</li>
                                                 </a>
                                             </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                                <%--Modal Đổi mật khẩu--%>
+                            <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="changePasswordModalLabel">Đổi mật khẩu</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <!-- Form đổi mật khẩu -->
+                                            <form>
+                                                <div class="mb-3">
+                                                    <label for="currentPassword" class="form-label">Mật khẩu hiện tại</label>
+                                                    <input type="password" class="form-control" id="currentPassword" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="newPassword" class="form-label">Mật khẩu mới</label>
+                                                    <input type="password" class="form-control" id="newPassword" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="confirmNewPassword" class="form-label">Xác nhận mật khẩu mới</label>
+                                                    <input type="password" class="form-control" id="confirmNewPassword" required>
+                                                </div>
+                                                <button type="submit" class="btn btn-primary">Đổi mật khẩu</button>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>

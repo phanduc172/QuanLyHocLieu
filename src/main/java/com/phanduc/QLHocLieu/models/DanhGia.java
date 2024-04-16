@@ -1,49 +1,48 @@
 package com.phanduc.QLHocLieu.models;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "danhgia")
 public class DanhGia {
     @Id
-    private String maDanhGia;
-    private String maTaiLieu;
-    private String maNguoiDung;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int maDanhGia;
+    private int maTaiLieu;
+    private int maNguoiDung;
     private int giaTriDanhGia;
 
     public DanhGia() {
     }
 
-    public DanhGia(String maDanhGia, String maTaiLieu, String maNguoiDung, int giaTriDanhGia) {
+    public DanhGia(Integer maDanhGia, Integer maTaiLieu, Integer maNguoiDung, int giaTriDanhGia) {
         this.maDanhGia = maDanhGia;
         this.maTaiLieu = maTaiLieu;
         this.maNguoiDung = maNguoiDung;
         this.giaTriDanhGia = giaTriDanhGia;
     }
 
-    public String getMaDanhGia() {
+    public Integer getMaDanhGia() {
         return maDanhGia;
     }
 
-    public void setMaDanhGia(String maDanhGia) {
+    public void setMaDanhGia(Integer maDanhGia) {
         this.maDanhGia = maDanhGia;
     }
 
-    public String getMaTaiLieu() {
+    public Integer getMaTaiLieu() {
         return maTaiLieu;
     }
 
-    public void setMaTaiLieu(String maTaiLieu) {
+    public void setMaTaiLieu(Integer maTaiLieu) {
         this.maTaiLieu = maTaiLieu;
     }
 
-    public String getMaNguoiDung() {
+    public Integer getMaNguoiDung() {
         return maNguoiDung;
     }
 
-    public void setMaNguoiDung(String maNguoiDung) {
+    public void setMaNguoiDung(Integer maNguoiDung) {
         this.maNguoiDung = maNguoiDung;
     }
 

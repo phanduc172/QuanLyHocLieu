@@ -1,23 +1,22 @@
 package com.phanduc.QLHocLieu.models;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import java.util.Date;
 @Entity
 @Table(name = "truycaptailieu")
 public class TruyCapTaiLieu {
     @Id
-    private String maTruyCapTaiLieu;
-    private String maTaiLieu;
-    private String maNguoiDung;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer maTruyCapTaiLieu;
+    private Integer maTaiLieu;
+    private Integer maNguoiDung;
     private Date ngayTruyCap;
     private int soLanTruyCap;
 
     public TruyCapTaiLieu() {
     }
 
-    public TruyCapTaiLieu(String maTruyCapTaiLieu, String maTaiLieu, String maNguoiDung, Date ngayTruyCap, int soLanTruyCap) {
+    public TruyCapTaiLieu(Integer maTruyCapTaiLieu, Integer maTaiLieu, Integer maNguoiDung, Date ngayTruyCap, int soLanTruyCap) {
         this.maTruyCapTaiLieu = maTruyCapTaiLieu;
         this.maTaiLieu = maTaiLieu;
         this.maNguoiDung = maNguoiDung;
@@ -25,27 +24,27 @@ public class TruyCapTaiLieu {
         this.soLanTruyCap = soLanTruyCap;
     }
 
-    public String getMaTruyCapTaiLieu() {
+    public Integer getMaTruyCapTaiLieu() {
         return maTruyCapTaiLieu;
     }
 
-    public void setMaTruyCapTaiLieu(String maTruyCapTaiLieu) {
+    public void setMaTruyCapTaiLieu(Integer maTruyCapTaiLieu) {
         this.maTruyCapTaiLieu = maTruyCapTaiLieu;
     }
 
-    public String getMaTaiLieu() {
+    public Integer getMaTaiLieu() {
         return maTaiLieu;
     }
 
-    public void setMaTaiLieu(String maTaiLieu) {
+    public void setMaTaiLieu(Integer maTaiLieu) {
         this.maTaiLieu = maTaiLieu;
     }
 
-    public String getMaNguoiDung() {
+    public Integer getMaNguoiDung() {
         return maNguoiDung;
     }
 
-    public void setMaNguoiDung(String maNguoiDung) {
+    public void setMaNguoiDung(Integer maNguoiDung) {
         this.maNguoiDung = maNguoiDung;
     }
 

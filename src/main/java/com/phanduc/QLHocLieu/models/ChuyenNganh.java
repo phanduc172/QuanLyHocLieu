@@ -10,12 +10,12 @@ public class ChuyenNganh {
     @Id
     private String maChuyenNganh;
     private String tenChuyenNganh;
-    private String maKhoa;
+    private Integer maKhoa;
 
     public ChuyenNganh() {
     }
 
-    public ChuyenNganh(String maChuyenNganh, String tenChuyenNganh, String maKhoa) {
+    public ChuyenNganh(String maChuyenNganh, String tenChuyenNganh, Integer maKhoa) {
         this.maChuyenNganh = maChuyenNganh;
         this.tenChuyenNganh = tenChuyenNganh;
         this.maKhoa = maKhoa;
@@ -37,11 +37,11 @@ public class ChuyenNganh {
         this.tenChuyenNganh = tenChuyenNganh;
     }
 
-    public String getMaKhoa() {
+    public Integer getMaKhoa() {
         return maKhoa;
     }
 
-    public void setMaKhoa(String maKhoa) {
+    public void setMaKhoa(Integer maKhoa) {
         this.maKhoa = maKhoa;
     }
 }

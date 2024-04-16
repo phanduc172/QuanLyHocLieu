@@ -19,7 +19,7 @@ public class DangNhapController {
     @RequestMapping(value = "/login", method = {RequestMethod.GET, RequestMethod.POST})
     public String login(@RequestParam String tenNguoiDung, @RequestParam String matKhau, HttpSession session, Model model) {
         NguoiDung nguoiDung = nguoiDungRepository.findByTenNguoiDungAndMatKhau(tenNguoiDung, matKhau);
-        if (nguoiDung != null && "2".equals(nguoiDung.getMaVaiTro())) {
+        if (nguoiDung != null && nguoiDung.getMaVaiTro()==2) {
             // Lưu thông tin đăng nhập vào session
             session.setAttribute("loggedInUser", nguoiDung);
             System.out.println("Đăng nhập thành công");
@@ -27,7 +27,7 @@ public class DangNhapController {
         } else {
             System.out.println("Đăng nhập không thành công");
             session.setAttribute("notLoggedInUser", nguoiDung);
-            model.addAttribute("notLoggedInUser", true); // Truyền giá trị true cho biến notLoggedInUser
+            model.addAttribute("notLoggedInUser", true);
             return "redirect:/trangchu?statusLogin=false";
         }
     }

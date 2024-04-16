@@ -1,15 +1,13 @@
 package com.phanduc.QLHocLieu.models;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "nguoidung")
 public class NguoiDung {
     @Id
-    private String maNguoiDung;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer maNguoiDung;
     @Column(name = "TenNguoiDung")
     private String tenNguoiDung;
     @Column(name = "MatKhau")
@@ -17,12 +15,21 @@ public class NguoiDung {
     private String hoTen;
     private String anh;
     private String email;
-    private String maVaiTro;
+    @Column(name = "maVaiTro", columnDefinition = "INT DEFAULT 2")
+    private int maVaiTro;
+
+    // Phương thức được gọi tự động trước khi lưu thực thể vào cơ sở dữ liệu
+    @PrePersist
+    public void prePersist() {
+        if (maVaiTro == 0) {
+            maVaiTro = 2;
+        }
+    }
 
     public NguoiDung() {
     }
 
-    public NguoiDung(String maNguoiDung, String tenNguoiDung, String matKhau, String hoTen, String anh, String email, String maVaiTro) {
+    public NguoiDung(Integer maNguoiDung, String tenNguoiDung, String matKhau, String hoTen, String anh, String email, int maVaiTro) {
         this.maNguoiDung = maNguoiDung;
         this.tenNguoiDung = tenNguoiDung;
         this.matKhau = matKhau;
@@ -32,11 +39,11 @@ public class NguoiDung {
         this.maVaiTro = maVaiTro;
     }
 
-    public String getMaNguoiDung() {
+    public Integer getMaNguoiDung() {
         return maNguoiDung;
     }
 
-    public void setMaNguoiDung(String maNguoiDung) {
+    public void setMaNguoiDung(Integer maNguoiDung) {
         this.maNguoiDung = maNguoiDung;
     }
 
@@ -80,11 +87,11 @@ public class NguoiDung {
         this.email = email;
     }
 
-    public String getMaVaiTro() {
+    public int getMaVaiTro() {
         return maVaiTro;
     }
 
-    public void setMaVaiTro(String maVaiTro) {
+    public void setMaVaiTro(int maVaiTro) {
         this.maVaiTro = maVaiTro;
     }
 }

@@ -1,22 +1,23 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %><!DOCTYPE html>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>User Profile</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <title>Quản lý học liệu - Trường Đại học Khoa học Huế</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
-  <link rel="stylesheet" href="/css/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-<your-integrity-hash>" crossorigin="anonymous" />
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/reponsive.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <body>
 
 
 <header>
-  <nav class="navbar navbar-expand-lg bg-light fixed-top" style="z-index: 1080">
+  <nav class="navbar navbar-expand-xl bg-light fixed-top" style="z-index: 1080">
     <div class="container">
       <a class="navbar-brand" href="/trangchu">
         <img class="me-2" src="/images/PD.png" alt="logo" style="height: 40px;">
@@ -66,7 +67,7 @@
               <div class="modal fade" id="thanhVienModal" tabindex="-1" aria-labelledby="loginRegisterModalLabel"
                    aria-hidden="true">
                 <div class="modal-dialog">
-                  <div class="modal-content modalLogin">
+                  <div class="modal-content modelUser">
                     <div class="modal-header">
                       <h5 class="modal-title" id="loginRegisterModalLabel">
                         Thành viên
@@ -87,14 +88,12 @@
                           <form method="post" action="/login">
                             <fieldset>
                               <div class="form-group mb-3">
-                                <input class="form-control" placeholder="Nhập tên người dùng" name="tenNguoiDung"
-                                       type="text" />
+                                <input class="form-control" placeholder="Nhập tên người dùng" name="tenNguoiDung" type="text" />
                               </div>
                               <div class="form-group mb-3">
-                                <input class="form-control" placeholder="Nhập mật khẩu" name="matKhau" type="password"
-                                       value="" />
+                                <input class="form-control" placeholder="Nhập mật khẩu" name="matKhau" type="password" value="" />
                               </div>
-                              <input class="btn btn-md btn btn-secondary btn-block" type="submit" value="Đăng nhập" />
+                              <button class="btn btn-md btn btn-secondary btn-block" type="submit" id="loginButton">Đăng nhập</button>
                             </fieldset>
                           </form>
                         </div>
@@ -135,7 +134,7 @@
               <!-- Button trigger modal -->
               <button type="button" class="btn d-flex align-items-center" data-bs-toggle="modal"
                       data-bs-target="#infoModal">
-                <img src="/images/avt1.png" alt="" class="border rounded me-2" style="height: 35px;">
+                <img src="/images/avt.png" alt="" class="border rounded me-2" style="height: 35px;">
                 <h6 class="m-0"><c:out value="${nguoiDung.hoTen}" /></h6>
               </button>
               <!-- Modal -->
@@ -152,7 +151,7 @@
                           <li class="my-3">Quản lý tài liệu</li>
                         </a>
                         <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#changePasswordModal">Đổi mật khẩu</a>
-                        <a href="/logout">
+                        <a href="/logout" id="logoutButton">
                           <li class="my-3">Đăng xuất</li>
                         </a>
                       </ul>
@@ -160,7 +159,7 @@
                   </div>
                 </div>
               </div>
-              <%--Modal Đổi mật khẩu--%>
+                <%--Modal Đổi mật khẩu--%>
               <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                   <div class="modal-content">
@@ -248,19 +247,19 @@
             </div>
             <div class="modal-body">
               <!-- Đặt biểu mẫu chỉnh sửa thông tin cá nhân tại đây -->
-              <form>
+              <form method="post" action="/userinfo/update">
                 <!-- Các trường thông tin cá nhân cần chỉnh sửa -->
                 <div class="mb-3">
                   <label for="fullName" class="form-label">Họ và tên:</label>
-                  <input type="text" class="form-control" id="fullName" data-fullname="${nguoiDung.hoTen}">
+                  <input type="text" class="form-control" id="fullName" name="hoTen" data-fullname="${nguoiDung.hoTen}">
                 </div>
                 <div class="mb-3">
                   <label for="username" class="form-label">Tên người dùng:</label>
-                  <input type="text" class="form-control" id="username" data-username="${nguoiDung.tenNguoiDung}">
+                  <input type="text" class="form-control" id="username" name="tenNguoiDung" data-username="${nguoiDung.tenNguoiDung}">
                 </div>
                 <div class="mb-3">
                   <label for="email" class="form-label">Email:</label>
-                  <input type="email" class="form-control" id="email" data-email="${nguoiDung.email}">
+                  <input type="email" class="form-control" id="email" name="email" data-email="${nguoiDung.email}">
                 </div>
                 <!-- Nút lưu chỉnh sửa -->
                 <button type="submit" class="btn btn-success">Lưu thay đổi</button>

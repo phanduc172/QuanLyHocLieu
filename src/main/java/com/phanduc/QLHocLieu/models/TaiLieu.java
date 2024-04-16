@@ -1,31 +1,29 @@
 package com.phanduc.QLHocLieu.models;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import java.util.Date;
 @Entity
 @Table(name = "tailieu")
 public class TaiLieu {
     @Id
-    private String maTaiLieu;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer maTaiLieu;
     private String tieuDe;
     private String moTa;
     private String duongDanTep;
     private String anhTaiLieu;
-    private String taiLenBoi;
+    private Integer taiLenBoi;
     private Date ngayTaiLen;
     @Column(name = "SLTaiXuong")
     private int soLuotTaiXuong;
-    private String maDanhMuc;
+    private Integer maDanhMuc;
     private String maChuyenNganh;
 
     public TaiLieu() {
     }
 
-    public TaiLieu(String maTaiLieu, String tieuDe, String moTa, String duongDanTep, String anhTaiLieu, String taiLenBoi, Date ngayTaiLen, int soLuotTaiXuong, String maDanhMuc, String maChuyenNganh) {
+    public TaiLieu(Integer maTaiLieu, String tieuDe, String moTa, String duongDanTep, String anhTaiLieu, Integer taiLenBoi, Date ngayTaiLen, int soLuotTaiXuong, Integer maDanhMuc, String maChuyenNganh) {
         this.maTaiLieu = maTaiLieu;
         this.tieuDe = tieuDe;
         this.moTa = moTa;
@@ -38,11 +36,11 @@ public class TaiLieu {
         this.maChuyenNganh = maChuyenNganh;
     }
 
-    public String getMaTaiLieu() {
+    public int getMaTaiLieu() {
         return maTaiLieu;
     }
 
-    public void setMaTaiLieu(String maTaiLieu) {
+    public void setMaTaiLieu(int maTaiLieu) {
         this.maTaiLieu = maTaiLieu;
     }
 
@@ -78,11 +76,11 @@ public class TaiLieu {
         this.anhTaiLieu = anhTaiLieu;
     }
 
-    public String getTaiLenBoi() {
+    public Integer getTaiLenBoi() {
         return taiLenBoi;
     }
 
-    public void setTaiLenBoi(String taiLenBoi) {
+    public void setTaiLenBoi(Integer taiLenBoi) {
         this.taiLenBoi = taiLenBoi;
     }
 
@@ -102,11 +100,11 @@ public class TaiLieu {
         this.soLuotTaiXuong = soLuotTaiXuong;
     }
 
-    public String getMaDanhMuc() {
+    public Integer getMaDanhMuc() {
         return maDanhMuc;
     }
 
-    public void setMaDanhMuc(String maDanhMuc) {
+    public void setMaDanhMuc(Integer maDanhMuc) {
         this.maDanhMuc = maDanhMuc;
     }
 

@@ -14,6 +14,9 @@ html,body {
     text-decoration: none;
 }
 
+.navbar {
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+}
 .main {
     margin-top: 80px;
 }
@@ -21,7 +24,6 @@ html,body {
 .modalUser .modalEditImage{
     margin-top: 100px;
 }
-
 
 .modal-info {
     position: relative;
@@ -61,7 +63,7 @@ html,body {
 }
 
 .overflow-auto::-webkit-scrollbar {
-    display: none; /* Ẩn thanh cuộn trình duyệt */
+    display: none;
 }
 
 #userAvatar {
@@ -90,4 +92,25 @@ html,body {
 .icon-login {
     font-size: 4rem;
 }
+
+.docHover {
+    transition: box-shadow 0.3s;
+}
+
+.docHover:hover {
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+
+.list-group-item:hover {
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    background-color: #cce6ff;
+    cursor: pointer;
+}
+
+.list-group-item:hover a {
+    color: #000080;
+}
+
+
 

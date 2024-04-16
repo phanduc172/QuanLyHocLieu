@@ -1,8 +1,6 @@
 package com.phanduc.QLHocLieu.models;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import java.util.Date;
 
@@ -10,16 +8,17 @@ import java.util.Date;
 @Table(name = "binhluan")
 public class BinhLuan {
     @Id
-    private String maBinhLuan;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer maBinhLuan;
     private String maTaiLieu;
-    private String maNguoiDung;
+    private int maNguoiDung;
     private Date ngayBinhLuan;
     private String noiDung;
 
     public BinhLuan() {
     }
 
-    public BinhLuan(String maBinhLuan, String maTaiLieu, String maNguoiDung, Date ngayBinhLuan, String noiDung) {
+    public BinhLuan(Integer maBinhLuan, String maTaiLieu, Integer maNguoiDung, Date ngayBinhLuan, String noiDung) {
         this.maBinhLuan = maBinhLuan;
         this.maTaiLieu = maTaiLieu;
         this.maNguoiDung = maNguoiDung;
@@ -27,11 +26,11 @@ public class BinhLuan {
         this.noiDung = noiDung;
     }
 
-    public String getMaBinhLuan() {
+    public Integer getMaBinhLuan() {
         return maBinhLuan;
     }
 
-    public void setMaBinhLuan(String maBinhLuan) {
+    public void setMaBinhLuan(Integer maBinhLuan) {
         this.maBinhLuan = maBinhLuan;
     }
 
@@ -43,11 +42,11 @@ public class BinhLuan {
         this.maTaiLieu = maTaiLieu;
     }
 
-    public String getMaNguoiDung() {
+    public Integer getMaNguoiDung() {
         return maNguoiDung;
     }
 
-    public void setMaNguoiDung(String maNguoiDung) {
+    public void setMaNguoiDung(Integer maNguoiDung) {
         this.maNguoiDung = maNguoiDung;
     }
 

@@ -3,4 +3,8 @@
     .ms-auto {
         margin: 10px 0 0 0 !important;
     }
+
+    .dropdown-menu {
+        max-width: 350px;
+    }
 }
