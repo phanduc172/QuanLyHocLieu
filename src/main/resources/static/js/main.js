@@ -40,6 +40,24 @@
     });
 
 
+    // Hàm cập nhật danh sách chuyên ngành khi người dùng chọn khoa
+    $(document).ready(function() {
+        $('#faculty').change(function() {
+            var selectedFaculty = $(this).val();
+            $.ajax({
+                type: 'GET',
+                url: '/getChuyenNganh',
+                data: {faculty: selectedFaculty},
+                success: function(data) {
+                    $('#major').empty();
+                    $.each(data, function(index, major) {
+                        $('#major').append('<option value="' + major.maChuyenNganh + '">' + major.tenChuyenNganh + '</option>');
+                    });
+                }
+            });
+        });
+    });
+
 
 
   

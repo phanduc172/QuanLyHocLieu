@@ -51,12 +51,13 @@
                     </li>
                 </ul>
 
-                <div class="input-group ms-auto" style="width:350px">
-                    <input type="text" class="form-control" placeholder="Tìm kiếm tài liệu, giáo trình,..." />
-                    <button class="btn btn-outline-secondary" type="button" id="button-addon2">
+                <form action="/search/{keyword}" method="post" class="input-group ms-auto" style="width:350px" >
+                    <input id="searchInput" name="keyword" type="text" class="form-control" placeholder="Tìm kiếm tài liệu, giáo trình,..." />
+                    <button class="btn btn-outline-secondary" type="submit" id="searchButton">
                         <i class="bi bi-search"></i>
                     </button>
-                </div>
+                </form>
+
                 <c:choose>
                     <c:when test="${empty loggedInUser}">
                         <!-- Hiển thị nút và modal cho thành viên -->
@@ -100,16 +101,16 @@
                                                     </form>
                                                 </div>
                                                 <div id="registerForm" class="tab-pane fade">
-                                                    <form method="post" action="">
+                                                    <form method="post" action="/register">
                                                         <fieldset>
                                                             <div class="form-group mb-3">
-                                                                <input class="form-control" placeholder="Nhập họ tên" name="" type="text" required/>
+                                                                <input class="form-control" placeholder="Nhập họ tên" name="hoTen" type="text" required/>
                                                             </div>
                                                             <div class="form-group mb-3">
-                                                                <input class="form-control" placeholder="Nhập tên đăng nhập" name="" type="text" required/>
+                                                                <input class="form-control" placeholder="Nhập tên đăng nhập" name="tenNguoiDung" type="text" required/>
                                                             </div>
                                                             <div class="form-group mb-3">
-                                                                <input class="form-control" placeholder="Nhập mật khẩu" type="password" name="" value="" required/>
+                                                                <input class="form-control" placeholder="Nhập mật khẩu" type="password" name="matKhau" value="" required/>
                                                             </div>
                                                             <input class="btn btn-md btn btn-secondary btn-block" type="submit" value="Đăng ký" />
                                                         </fieldset>
@@ -170,21 +171,22 @@
                                         </div>
                                         <div class="modal-body">
                                             <!-- Form đổi mật khẩu -->
-                                            <form>
+                                            <form method="post" action="/changepassword">
                                                 <div class="mb-3">
                                                     <label for="currentPassword" class="form-label">Mật khẩu hiện tại</label>
-                                                    <input type="password" class="form-control" id="currentPassword" required>
+                                                    <input type="password" class="form-control" id="currentPassword" name="currentPassword" required>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="newPassword" class="form-label">Mật khẩu mới</label>
-                                                    <input type="password" class="form-control" id="newPassword" required>
+                                                    <input type="password" class="form-control" id="newPassword" name="newPassword" required>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="confirmNewPassword" class="form-label">Xác nhận mật khẩu mới</label>
-                                                    <input type="password" class="form-control" id="confirmNewPassword" required>
+                                                    <input type="password" name="confirmNewPassword" class="form-control" id="confirmNewPassword" required>
                                                 </div>
                                                 <button type="submit" class="btn btn-primary">Đổi mật khẩu</button>
                                             </form>
+
                                         </div>
                                     </div>
                                 </div>

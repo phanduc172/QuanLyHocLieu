@@ -16,7 +16,7 @@
 </head>
 
 <body>
-<header>
+    <header>
     <nav class="navbar navbar-expand-xl bg-light fixed-top" style="z-index: 1080">
         <div class="container">
             <a class="navbar-brand" href="/trangchu">
@@ -38,6 +38,7 @@
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" href="#">Khoa</a></li>
+                            <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="#">Ngành học</a></li>
                         </ul>
                     </li>
@@ -49,12 +50,13 @@
                     </li>
                 </ul>
 
-                <div class="input-group ms-auto" style="width:350px">
-                    <input type="text" class="form-control" placeholder="Tìm kiếm tài liệu, giáo trình,..." />
-                    <button class="btn btn-outline-secondary" type="button" id="button-addon2">
+                <form action="/search/{keyword}" method="post" class="input-group ms-auto" style="width:350px" >
+                    <input id="searchInput" name="keyword" type="text" class="form-control" placeholder="Tìm kiếm tài liệu, giáo trình,..." />
+                    <button class="btn btn-outline-secondary" type="submit" id="searchButton">
                         <i class="bi bi-search"></i>
                     </button>
-                </div>
+                </form>
+
                 <c:choose>
                     <c:when test="${empty loggedInUser}">
                         <!-- Hiển thị nút và modal cho thành viên -->
@@ -88,27 +90,26 @@
                                                     <form method="post" action="/login">
                                                         <fieldset>
                                                             <div class="form-group mb-3">
-                                                                <input class="form-control" placeholder="Nhập tên người dùng" name="tenNguoiDung" type="text" />
+                                                                <input class="form-control" placeholder="Nhập tên người dùng" name="tenNguoiDung" type="text" required/>
                                                             </div>
                                                             <div class="form-group mb-3">
-                                                                <input class="form-control" placeholder="Nhập mật khẩu" name="matKhau" type="password" value="" />
+                                                                <input class="form-control" placeholder="Nhập mật khẩu" name="matKhau" type="password" value="" required/>
                                                             </div>
                                                             <button class="btn btn-md btn btn-secondary btn-block" type="submit" id="loginButton">Đăng nhập</button>
                                                         </fieldset>
                                                     </form>
                                                 </div>
                                                 <div id="registerForm" class="tab-pane fade">
-                                                    <form method="post" action="">
+                                                    <form method="post" action="/register">
                                                         <fieldset>
                                                             <div class="form-group mb-3">
-                                                                <input class="form-control" placeholder="Nhập họ tên" name="" type="text" />
+                                                                <input class="form-control" placeholder="Nhập họ tên" name="hoTen" type="text" required/>
                                                             </div>
                                                             <div class="form-group mb-3">
-                                                                <input class="form-control" placeholder="Nhập tên đăng nhập" name="" type="text" />
+                                                                <input class="form-control" placeholder="Nhập tên đăng nhập" name="tenNguoiDung" type="text" required/>
                                                             </div>
                                                             <div class="form-group mb-3">
-                                                                <input class="form-control" placeholder="Nhập mật khẩu" type="password" name=""
-                                                                       value="" />
+                                                                <input class="form-control" placeholder="Nhập mật khẩu" type="password" name="matKhau" value="" required/>
                                                             </div>
                                                             <input class="btn btn-md btn btn-secondary btn-block" type="submit" value="Đăng ký" />
                                                         </fieldset>
@@ -169,21 +170,22 @@
                                         </div>
                                         <div class="modal-body">
                                             <!-- Form đổi mật khẩu -->
-                                            <form>
+                                            <form method="post" action="/changepassword">
                                                 <div class="mb-3">
                                                     <label for="currentPassword" class="form-label">Mật khẩu hiện tại</label>
-                                                    <input type="password" class="form-control" id="currentPassword" required>
+                                                    <input type="password" class="form-control" id="currentPassword" name="currentPassword" required>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="newPassword" class="form-label">Mật khẩu mới</label>
-                                                    <input type="password" class="form-control" id="newPassword" required>
+                                                    <input type="password" class="form-control" id="newPassword" name="newPassword" required>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="confirmNewPassword" class="form-label">Xác nhận mật khẩu mới</label>
-                                                    <input type="password" class="form-control" id="confirmNewPassword" required>
+                                                    <input type="password" name="confirmNewPassword" class="form-control" id="confirmNewPassword" required>
                                                 </div>
                                                 <button type="submit" class="btn btn-primary">Đổi mật khẩu</button>
                                             </form>
+
                                         </div>
                                     </div>
                                 </div>
@@ -196,7 +198,7 @@
     </nav>
 </header>
 
-    <div class="container main">
+    <div class="container main ">
         <h5 class="fw-bold text-center p-3">Nơi chia sẻ tài liệu học tập của sinh viên trường Đại học Khoa học - Đại học Huế</h5>
         <form action="#" method="post" enctype="multipart/form-data" id="uploadForm">
             <div class="mb-3">
@@ -211,9 +213,9 @@
                 <label for="faculty" class="form-label">Khoa:</label>
                 <select class="form-control" id="faculty" name="faculty" required>
                     <option value="">Chọn Khoa</option>
-                    <option value="khoa1">Khoa 1</option>
-                    <option value="khoa2">Khoa 2</option>
-                    <!-- Thêm các lựa chọn cho các khoa khác -->
+                    <c:forEach items="${listKhoa}" var="khoa">
+                        <option value="${khoa.maKhoa}">${khoa.tenKhoa}</option>
+                    </c:forEach>
                 </select>
             </div>
             <div class="mb-3">
@@ -230,69 +232,62 @@
         </form>
     </div>
 
-
-
-    <footer>
+    <footer class="mt-4">
         <div class="p-3 text-center bg-light text-danger fw-bold   fs-6">
             Copyright © 2024. Designed by Phan Đức
         </div>
     </footer>
 
-    <!-- Toast Đăng nhập -->
-    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1050">
-        <div id="loginSuccessToast" class="toast bg-primary text-white" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-header">
-                <strong class="me-auto">Thông báo</strong>
-                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-            <div class="toast-body">
-                Đăng nhập thành công!
-            </div>
-        </div>
-    </div>
-
-    <!-- JavaScript để kích hoạt Toast -->
-    <script>
-        // Kiểm tra xem biến session 'loggedInUser' có tồn tại hay không
-        var loggedInUser = '<%= session.getAttribute("loggedInUser") %>';
-        if (loggedInUser) {
-            // Nếu tồn tại, hiển thị Toast
-            var loginSuccessToast = document.getElementById('loginSuccessToast');
-            var toast = new bootstrap.Toast(loginSuccessToast);
-            toast.show();
-        }
-    </script>
+<%--    <script !src="">--%>
+<%--        $(document).ready(function() {--%>
+<%--            $('#faculty').change(function() {--%>
+<%--                var selectedFaculty = $(this).val();--%>
+<%--                $.ajax({--%>
+<%--                    type: 'GET',--%>
+<%--                    url: '/getChuyenNganh', // Địa chỉ URL endpoint để lấy danh sách chuyên ngành--%>
+<%--                    data: {faculty: selectedFaculty},--%>
+<%--                    success: function(data) {--%>
+<%--                        $('#major').empty(); // Xóa tất cả các tùy chọn trước đó--%>
+<%--                        $.each(data, function(index, major) {--%>
+<%--                            $('#major').append('<option value="' + major.maChuyenNganh + '">' + major.tenChuyenNganh + '</option>');--%>
+<%--                        });--%>
+<%--                    }--%>
+<%--                });--%>
+<%--            });--%>
+<%--        });--%>
+<%--    </script>--%>
 
 
-    <script !src="">
-        // Đối tượng chứa dữ liệu giả cho các chuyên ngành theo từng khoa
-        var fakeMajors = {
-            "khoa1": ["Chuyên ngành 1", "Chuyên ngành 2", "Chuyên ngành 3"],
-            "khoa2": ["Chuyên ngành A", "Chuyên ngành B", "Chuyên ngành C"],
-            // Thêm các chuyên ngành khác tương ứng với các khoa khác
-        };
+<%--    <script !src="">--%>
+<%--        // Đối tượng chứa dữ liệu giả cho các chuyên ngành theo từng khoa--%>
+<%--        var fakeMajors = {--%>
+<%--            "khoa1": ["Chuyên ngành 1", "Chuyên ngành 2", "Chuyên ngành 3"],--%>
+<%--            "khoa2": ["Chuyên ngành A", "Chuyên ngành B", "Chuyên ngành C"],--%>
+<%--            // Thêm các chuyên ngành khác tương ứng với các khoa khác--%>
+<%--        };--%>
 
-        // Hàm cập nhật danh sách chuyên ngành khi người dùng chọn khoa
-        function updateMajorOptions() {
-            var selectedFaculty = document.getElementById("faculty").value;
-            var majorSelect = document.getElementById("major");
-            majorSelect.innerHTML = ""; // Xóa tất cả các lựa chọn trước đó
+<%--        // Hàm cập nhật danh sách chuyên ngành khi người dùng chọn khoa--%>
+<%--        function updateMajorOptions() {--%>
+<%--            var selectedFaculty = document.getElementById("faculty").value;--%>
+<%--            var majorSelect = document.getElementById("major");--%>
+<%--            majorSelect.innerHTML = ""; // Xóa tất cả các lựa chọn trước đó--%>
 
-            var majors = fakeMajors[selectedFaculty] || [];
-            majors.forEach(function(major) {
-                var option = document.createElement("option");
-                option.value = major;
-                option.text = major;
-                majorSelect.appendChild(option);
-            });
-        }
+<%--            var majors = fakeMajors[selectedFaculty] || [];--%>
+<%--            majors.forEach(function(major) {--%>
+<%--                var option = document.createElement("option");--%>
+<%--                option.value = major;--%>
+<%--                option.text = major;--%>
+<%--                majorSelect.appendChild(option);--%>
+<%--            });--%>
+<%--        }--%>
 
-        // Gán sự kiện onchange cho select khoa để cập nhật danh sách chuyên ngành
-        document.getElementById("faculty").onchange = updateMajorOptions;
+<%--        // Gán sự kiện onchange cho select khoa để cập nhật danh sách chuyên ngành--%>
+<%--        document.getElementById("faculty").onchange = updateMajorOptions;--%>
 
-        // Kích hoạt hàm updateMajorOptions lần đầu khi trang được tải
-        updateMajorOptions();
-    </script>
+<%--        // Kích hoạt hàm updateMajorOptions lần đầu khi trang được tải--%>
+<%--        updateMajorOptions();--%>
+<%--    </script>--%>
+    <script src="/js/main.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 

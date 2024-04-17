@@ -10,6 +10,7 @@ import org.hibernate.annotations.Check;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.view.RedirectView;
@@ -63,13 +64,36 @@ public class NguoiDungController {
     public RedirectView updateAvatar(@RequestParam("file") MultipartFile file, HttpSession session) {
         Integer maNguoiDung = ((NguoiDung) session.getAttribute("loggedInUser")).getMaNguoiDung();
         NguoiDung nguoiDung = nguoiDungRepository.getUserByMaNguoiDung(maNguoiDung);
-        String filePath = storageService.store(file); // Lấy đường dẫn của tệp đã được lưu
+        String filePath = storageService.store(file);
         String prefixedFilePath = "/upload/images/" + filePath;
         nguoiDung.setAnh(prefixedFilePath);
         nguoiDungRepository.save(nguoiDung);
         System.out.println("Đường dẫn của tệp đã được lưu: " + prefixedFilePath);
         System.out.println("Lưu đường dẫn vào CSDL thành công");
         return new RedirectView("/userinfo/" + maNguoiDung.toString());
+    }
+
+    @PostMapping("/changepassword")
+    public String changePassword(@RequestParam("currentPassword") String currentPassword,@RequestParam("newPassword") String newPassword,
+            @RequestParam("confirmNewPassword") String confirmNewPassword,ModelMap modelMap,HttpSession session) {
+        NguoiDung loggedInUser = (NguoiDung) session.getAttribute("loggedInUser");
+        // Kiểm tra xác thực mật khẩu hiện tại
+        if (loggedInUser != null && loggedInUser.getMatKhau().equals(currentPassword)) {
+            // Kiểm tra xác nhận mật khẩu mới
+            if (!newPassword.equals(confirmNewPassword)) {
+                modelMap.addAttribute("error", "Mật khẩu mới và xác nhận mật khẩu không khớp.");
+                System.out.println("Mật khẩu mới không trùng nhau");
+                return "redirect:/userinfo/" + loggedInUser.getMaNguoiDung();
+            }
+            loggedInUser.setMatKhau(newPassword);
+            nguoiDungRepository.save(loggedInUser);
+            modelMap.addAttribute("success", "Mật khẩu đã được thay đổi thành công.");
+            System.out.println("Mật khẩu đã được thay đổi thành công");
+        } else {
+            modelMap.addAttribute("error", "Mật khẩu hiện tại không đúng.");
+            System.out.println("Mật khẩu hiện tại không đúng");
+        }
+        return "redirect:/userinfo/" + loggedInUser.getMaNguoiDung();
     }
 
 

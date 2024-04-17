@@ -1,12 +1,7 @@
 package com.phanduc.QLHocLieu.controllers;
 
-import com.phanduc.QLHocLieu.models.CheckLogin;
-import com.phanduc.QLHocLieu.models.DanhMuc;
-import com.phanduc.QLHocLieu.models.NguoiDung;
-import com.phanduc.QLHocLieu.models.TaiLieu;
-import com.phanduc.QLHocLieu.repositories.DanhMucRepository;
-import com.phanduc.QLHocLieu.repositories.NguoiDungRepository;
-import com.phanduc.QLHocLieu.repositories.TaiLieuRepository;
+import com.phanduc.QLHocLieu.models.*;
+import com.phanduc.QLHocLieu.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,7 +22,10 @@ public class TaiLieuController {
     TaiLieuRepository taiLieuRepository;
     @Autowired
     NguoiDungRepository nguoiDungRepository;
-
+    @Autowired
+    KhoaRepository khoaRepository;
+    @Autowired
+    ChuyenNganhRepository chuyenNganhRepository;
     @GetMapping("/")
     public String home() {
         return "redirect:/trangchu";
@@ -104,12 +102,29 @@ public class TaiLieuController {
     }
 
 
-    @GetMapping("uploadfile")
+    @GetMapping("/uploadfile")
     public String uploadDocument(ModelMap modelMap, HttpSession session) {
         NguoiDung nguoiDung = (NguoiDung) session.getAttribute("loggedInUser");
         modelMap.addAttribute("nguoiDung", nguoiDung);
+
+        List<Khoa> listKhoa = khoaRepository.findAll();
+        modelMap.addAttribute("listKhoa", listKhoa);
+
         return "TaiLenTaiLieu";
     }
+
+
+    //Lấy chuyên ngành để hiển thị khi mà người dùng tải lên tài liệu ở UploadFile
+    @GetMapping("/getChuyenNganh")
+    @ResponseBody
+    public List<ChuyenNganh> getMajorsByFaculty(@RequestParam("faculty") Integer facultyCode) {
+        List<ChuyenNganh> listMajors = chuyenNganhRepository.findKhoaByMaKhoa(facultyCode);
+        return listMajors;
+    }
+
+
+
+
 
 
 }

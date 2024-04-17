@@ -171,21 +171,22 @@
                     </div>
                     <div class="modal-body">
                       <!-- Form đổi mật khẩu -->
-                      <form>
+                      <form method="post" action="/changepassword">
                         <div class="mb-3">
                           <label for="currentPassword" class="form-label">Mật khẩu hiện tại</label>
-                          <input type="password" class="form-control" id="currentPassword" required>
+                          <input type="password" class="form-control" id="currentPassword" name="currentPassword" required>
                         </div>
                         <div class="mb-3">
                           <label for="newPassword" class="form-label">Mật khẩu mới</label>
-                          <input type="password" class="form-control" id="newPassword" required>
+                          <input type="password" class="form-control" id="newPassword" name="newPassword" required>
                         </div>
                         <div class="mb-3">
                           <label for="confirmNewPassword" class="form-label">Xác nhận mật khẩu mới</label>
-                          <input type="password" class="form-control" id="confirmNewPassword" required>
+                          <input type="password" name="confirmNewPassword" class="form-control" id="confirmNewPassword" required>
                         </div>
                         <button type="submit" class="btn btn-primary">Đổi mật khẩu</button>
                       </form>
+
                     </div>
                   </div>
                 </div>
