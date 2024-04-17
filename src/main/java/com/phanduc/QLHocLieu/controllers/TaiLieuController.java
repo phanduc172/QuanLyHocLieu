@@ -71,13 +71,19 @@ public class TaiLieuController {
         if (optionalTaiLieu.isPresent()) {
             TaiLieu taiLieu = optionalTaiLieu.get();
             String nguoiTaiLen = taiLieuRepository.findHoTenByMaNguoiDung(taiLieu.getTaiLenBoi());
+            String docImage = taiLieuRepository.findAnhByMaNguoiDung(taiLieu.getTaiLenBoi());
             modelMap.addAttribute("nguoiTaiLen", nguoiTaiLen);
             modelMap.addAttribute("taiLieu", taiLieu);
+            modelMap.addAttribute("docImage", docImage);
+            System.out.println(docImage);
             return "ChiTietTaiLieu";
         } else {
             return "notfound";
         }
     }
+
+
+
 
     @PostMapping("/search/{keyword}")
     public String timKiemTaiLieu(@RequestParam("keyword") String keyword, ModelMap modelMap, HttpSession session) {

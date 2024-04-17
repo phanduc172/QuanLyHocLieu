@@ -205,7 +205,7 @@
                 <div class="row g-0">
                     <div class="col-md-5 d-flex align-items-center">
                         <div class="ms-3">
-                            <img src="${nguoiDung.anh}" class="img-fluid rounded-start me-3" alt="Avatar" style="max-width: 50px">
+                            <img src="${docImage}" class="img-fluid rounded-start me-3" alt="Avatar" style="max-width: 50px">
                         </div>
                         <div>
                             <p class="card-text m-0">Tải lên: ${nguoiTaiLen}</p>

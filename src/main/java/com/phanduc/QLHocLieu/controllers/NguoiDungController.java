@@ -59,20 +59,6 @@ public class NguoiDungController {
         return "redirect:/userinfo/" + existingUser.getMaNguoiDung();
     }
 
-//    @PostMapping("/userinfo/update-avatar")
-//    public String updateAvatar(@RequestParam("file") MultipartFile file, HttpSession session) {
-//        Integer maNguoiDung = ((NguoiDung) session.getAttribute("loggedInUser")).getMaNguoiDung();
-//        NguoiDung nguoiDung = nguoiDungRepository.getUserByMaNguoiDung(maNguoiDung);
-//        String filePath = storageService.store(file); // Lấy đường dẫn của tệp đã được lưu
-//        // Bây giờ bạn có thể làm bất kỳ điều gì với đường dẫn này, ví dụ: lưu vào CSDL, hiển thị cho người dùng, vv.
-//        String prefixedFilePath = "/images/" + filePath;
-//        nguoiDung.setAnh(prefixedFilePath);
-//        nguoiDungRepository.save(nguoiDung);
-//        System.out.println("Đường dẫn của tệp đã được lưu: " + prefixedFilePath);
-//        System.out.println("Lưu đường dẫn vào CSDL thành công");
-//        return "redirect:/userinfo/" + nguoiDung.getMaNguoiDung().toString();
-//    }
-
     @PostMapping("/userinfo/update-avatar")
     public RedirectView updateAvatar(@RequestParam("file") MultipartFile file, HttpSession session) {
         Integer maNguoiDung = ((NguoiDung) session.getAttribute("loggedInUser")).getMaNguoiDung();
