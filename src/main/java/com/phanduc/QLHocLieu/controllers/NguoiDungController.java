@@ -8,6 +8,7 @@ import com.phanduc.QLHocLieu.repositories.TaiLieuRepository;
 import com.phanduc.QLHocLieu.services.StorageService;
 import org.hibernate.annotations.Check;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -28,7 +29,10 @@ public class NguoiDungController {
     @Autowired
     TaiLieuRepository taiLieuRepository;
     @Autowired
+    @Qualifier("uploadImageService")
     private StorageService storageService;
+
+
     @GetMapping("/userinfo/{id}")
     public String getUserInfoById(@PathVariable("id") Integer maNguoiDung, Model model, HttpSession session) {
 

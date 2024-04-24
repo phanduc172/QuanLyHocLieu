@@ -10,7 +10,7 @@ public class BinhLuan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer maBinhLuan;
-    private String maTaiLieu;
+    private Integer maTaiLieu;
     private int maNguoiDung;
     private Date ngayBinhLuan;
     private String noiDung;
@@ -18,7 +18,7 @@ public class BinhLuan {
     public BinhLuan() {
     }
 
-    public BinhLuan(Integer maBinhLuan, String maTaiLieu, Integer maNguoiDung, Date ngayBinhLuan, String noiDung) {
+    public BinhLuan(Integer maBinhLuan, Integer maTaiLieu, Integer maNguoiDung, Date ngayBinhLuan, String noiDung) {
         this.maBinhLuan = maBinhLuan;
         this.maTaiLieu = maTaiLieu;
         this.maNguoiDung = maNguoiDung;
@@ -34,11 +34,11 @@ public class BinhLuan {
         this.maBinhLuan = maBinhLuan;
     }
 
-    public String getMaTaiLieu() {
+    public Integer getMaTaiLieu() {
         return maTaiLieu;
     }
 
-    public void setMaTaiLieu(String maTaiLieu) {
+    public void setMaTaiLieu(Integer maTaiLieu) {
         this.maTaiLieu = maTaiLieu;
     }
 

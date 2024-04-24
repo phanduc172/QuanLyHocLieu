@@ -2,16 +2,21 @@ package com.phanduc.QLHocLieu.controllers;
 
 import com.phanduc.QLHocLieu.models.*;
 import com.phanduc.QLHocLieu.repositories.*;
+import com.phanduc.QLHocLieu.services.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 
 import javax.servlet.http.HttpSession;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping(path = "")
@@ -26,6 +31,11 @@ public class TaiLieuController {
     KhoaRepository khoaRepository;
     @Autowired
     ChuyenNganhRepository chuyenNganhRepository;
+    @Autowired
+    BinhLuanRepository binhLuanRepository;
+    @Autowired
+    @Qualifier("uploadFileService")
+    private StorageService storageService;
     @GetMapping("/")
     public String home() {
         return "redirect:/trangchu";
@@ -61,23 +71,65 @@ public class TaiLieuController {
         }
     }
 
+//    @GetMapping("/document/{maTaiLieu}")
+//    public String getDocumentById(@PathVariable("maTaiLieu") Integer maTaiLieu, Model modelMap, HttpSession session) {
+//        NguoiDung nguoiDung = (NguoiDung) session.getAttribute("loggedInUser");
+//        Optional<TaiLieu> optionalTaiLieu = taiLieuRepository.findByMaTaiLieu(maTaiLieu);
+//        modelMap.addAttribute("nguoiDung", nguoiDung);
+//        if (optionalTaiLieu.isPresent()) {
+//            TaiLieu taiLieu = optionalTaiLieu.get();
+//            String nguoiTaiLen = taiLieuRepository.findHoTenByMaNguoiDung(taiLieu.getTaiLenBoi());
+//            String docImage = taiLieuRepository.findAnhByMaNguoiDung(taiLieu.getTaiLenBoi());
+//            String urlDoc = taiLieu.getDuongDanTep();
+//            modelMap.addAttribute("nguoiTaiLen", nguoiTaiLen);
+//            modelMap.addAttribute("taiLieu", taiLieu);
+//            modelMap.addAttribute("docImage", docImage);
+//            modelMap.addAttribute("urlDoc", urlDoc);
+//            System.out.println(urlDoc);
+//            System.out.println(docImage);
+//            return "ChiTietTaiLieu";
+//        } else {
+//            return "notfound";
+//        }
+//    }
+
     @GetMapping("/document/{maTaiLieu}")
-    public String getDocumentById(@PathVariable("maTaiLieu") Integer maTaiLieu, Model modelMap, HttpSession session) {
+    public String getDocumentById(@PathVariable("maTaiLieu") Integer maTaiLieu, Model model, HttpSession session) {
         NguoiDung nguoiDung = (NguoiDung) session.getAttribute("loggedInUser");
         Optional<TaiLieu> optionalTaiLieu = taiLieuRepository.findByMaTaiLieu(maTaiLieu);
-        modelMap.addAttribute("nguoiDung", nguoiDung);
-        if (optionalTaiLieu.isPresent()) {
-            TaiLieu taiLieu = optionalTaiLieu.get();
-            String nguoiTaiLen = taiLieuRepository.findHoTenByMaNguoiDung(taiLieu.getTaiLenBoi());
-            String docImage = taiLieuRepository.findAnhByMaNguoiDung(taiLieu.getTaiLenBoi());
-            modelMap.addAttribute("nguoiTaiLen", nguoiTaiLen);
-            modelMap.addAttribute("taiLieu", taiLieu);
-            modelMap.addAttribute("docImage", docImage);
-            System.out.println(docImage);
-            return "ChiTietTaiLieu";
-        } else {
-            return "notfound";
+
+        if (!optionalTaiLieu.isPresent()) {
+            return "redirect:/trangchu";
         }
+
+        TaiLieu taiLieu = optionalTaiLieu.get();
+        String nguoiTaiLen = taiLieuRepository.findHoTenByMaNguoiDung(taiLieu.getTaiLenBoi());
+        String docImage = taiLieuRepository.findAnhByMaNguoiDung(taiLieu.getTaiLenBoi());
+        String urlDoc = taiLieu.getDuongDanTep();
+
+        List<BinhLuan> binhLuans = binhLuanRepository.findByMaTaiLieu(maTaiLieu);
+        List<String> hoTenNguoiBinhLuans = new ArrayList<>();
+        List<String> anhNguoiBinhLuans = new ArrayList<>();
+
+        for (BinhLuan binhLuan : binhLuans) {
+            NguoiDung nguoiBinhLuan = nguoiDungRepository.getUserByMaNguoiDung(binhLuan.getMaNguoiDung());
+            hoTenNguoiBinhLuans.add(nguoiBinhLuan.getHoTen());
+            anhNguoiBinhLuans.add(nguoiBinhLuan.getAnh());
+            System.out.println("Ảnh: " + nguoiBinhLuan.getAnh());
+            System.out.println("Họ tên: " + nguoiBinhLuan.getHoTen());
+            System.out.println("Nội dung bình luận: " + binhLuan.getNoiDung());
+        }
+
+        model.addAttribute("nguoiDung", nguoiDung);
+        model.addAttribute("nguoiTaiLen", nguoiTaiLen);
+        model.addAttribute("taiLieu", taiLieu);
+        model.addAttribute("docImage", docImage);
+        model.addAttribute("urlDoc", urlDoc);
+        model.addAttribute("binhLuans", binhLuans);
+        model.addAttribute("hoTenNguoiBinhLuans", hoTenNguoiBinhLuans);
+        model.addAttribute("anhNguoiBinhLuans", anhNguoiBinhLuans);
+
+        return "ChiTietTaiLieu";
     }
 
 
@@ -113,6 +165,30 @@ public class TaiLieuController {
         return "TaiLenTaiLieu";
     }
 
+    @PostMapping("/uploadfile")
+    public String handleFileUpload(@RequestParam("file") MultipartFile file,
+                                   @RequestParam("title") String title,
+                                   @RequestParam("description") String description,
+                                   @RequestParam("faculty") String faculty,
+                                   @RequestParam("major") String major,
+                                   HttpSession session) {
+        Integer maNguoiDung = ((NguoiDung) session.getAttribute("loggedInUser")).getMaNguoiDung();
+        if (!file.isEmpty()) {
+            try {
+                String fileName = storageService.store(file);
+                System.out.println("Tài liệu tải lên thành công");
+                return "redirect:/userinfo/"+maNguoiDung;
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.out.println("Tài liệu tải lên không thành công");
+                return "redirect:/trangchu";
+            }
+        } else {
+            System.out.println("Không có tài liệu được chọn");
+            return "redirect:/uploadfile";
+        }
+    }
+
 
     //Lấy chuyên ngành để hiển thị khi mà người dùng tải lên tài liệu ở UploadFile
     @GetMapping("/getChuyenNganh")
@@ -122,9 +198,44 @@ public class TaiLieuController {
         return listMajors;
     }
 
+//    @GetMapping("/binhluan/{id}")
+//    public String getBinhLuan(@PathVariable("id") Integer maTaiLieu, ModelMap modelMap) {
+//        List<BinhLuan> binhLuans = binhLuanRepository.findByMaTaiLieu(maTaiLieu);
+//        List<NguoiDung> listBinhLuan = new ArrayList<>();
+//
+//        for (BinhLuan binhLuan : binhLuans) {
+//            NguoiDung nguoiBinhLuan = nguoiDungRepository.getUserByMaNguoiDung(binhLuan.getMaNguoiDung());
+//            listBinhLuan.add(nguoiBinhLuan);
+//
+//            // In ra console thông tin người bình luận và nội dung bình luận
+//            System.out.println("Tên người bình luận: " + nguoiBinhLuan.getTenNguoiDung());
+//            System.out.println("Nội dung bình luận: " + binhLuan.getNoiDung());
+//        }
+//
+//        modelMap.addAttribute("binhLuans", binhLuans);
+//        modelMap.addAttribute("nguoiBinhLuans", listBinhLuan);
+//
+//        return "ChiTietTaiLieu";
+//    }
 
+    @GetMapping("/binhluan/{maTaiLieu}")
+    public ResponseEntity<?> getBinhLuan(@PathVariable("maTaiLieu") Integer maTaiLieu) {
+        List<BinhLuan> binhLuans = binhLuanRepository.findByMaTaiLieu(maTaiLieu);
+        List<NguoiDung> listBinhLuan = new ArrayList<>();
 
+        for (BinhLuan binhLuan : binhLuans) {
+            NguoiDung nguoiBinhLuan = nguoiDungRepository.getUserByMaNguoiDung(binhLuan.getMaNguoiDung());
+            listBinhLuan.add(nguoiBinhLuan);
+        }
 
+        // Tạo một đối tượng Map chứa các danh sách binhLuans và nguoiBinhLuans
+        Map<String, Object> responseData = new HashMap<>();
+        responseData.put("binhLuans", binhLuans);
+        responseData.put("nguoiBinhLuans", listBinhLuan);
+
+        // Trả về ResponseEntity chứa đối tượng Map với định dạng JSON và status là OK
+        return ResponseEntity.ok(responseData);
+    }
 
 
 }

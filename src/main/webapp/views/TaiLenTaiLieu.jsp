@@ -30,7 +30,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav fw-bold">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Trang chủ</a>
+                        <a class="nav-link active" aria-current="page" href="/trangchu">Trang chủ</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -200,7 +200,7 @@
 
     <div class="container main ">
         <h5 class="fw-bold text-center p-3">Nơi chia sẻ tài liệu học tập của sinh viên trường Đại học Khoa học - Đại học Huế</h5>
-        <form action="#" method="post" enctype="multipart/form-data" id="uploadForm">
+        <form action="/uploadfile" method="post" enctype="multipart/form-data" id="uploadForm">
             <div class="mb-3">
                 <label for="title" class="form-label">Tiêu đề:</label>
                 <input type="text" class="form-control" id="title" name="title" required>

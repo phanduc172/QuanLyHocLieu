@@ -5,6 +5,14 @@ html,body {
     min-width: 576px;
 }
 
+.mauxanh {
+    background-color: #428bca; /* Màu xanh (#428bca) */
+}
+
+.maudo {
+    background-color: #ed5650; /* Màu đỏ (#ed5650) */
+}
+
 .truncate-text {
     display: block;
     width: 80%;
@@ -18,7 +26,7 @@ html,body {
     box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
 }
 .main {
-    margin-top: 80px;
+    margin-top: 85px;
 }
 
 .modalUser .modalEditImage{
@@ -119,5 +127,8 @@ html,body {
     color: #000080;
 }
 
+.rating-stars .bi-star-fill {
+    color: gold;
+}
 
 

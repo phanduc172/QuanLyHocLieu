@@ -31,7 +31,7 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav fw-bold">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Trang chủ</a>
+            <a class="nav-link active" aria-current="page" href="/trangchu">Trang chủ</a>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -126,9 +126,9 @@
           <c:otherwise>
             <%--Tải lên tài liệu--%>
             <div class="ms-auto">
-              <a href="/uploadfile" class="btn btn-light border p-2 rounded-pill">
-                <span class="fw-bold">Tải lên</span>
-                <i class="bi bi-cloud-upload ms-2"></i>
+              <a href="/uploadfile" class="border px-3 py-2 rounded-pill maudo docHover text-decoration-none">
+                <span class="fw-bold text-white">Tải lên</span>
+                  <i class="bi bi-cloud-upload text-white ms-2" style="width: 20px; height: 20px"></i>
               </a>
             </div>
             <%--Modals Thông tin cá nhân--%>
@@ -951,6 +951,7 @@
       Copyright © 2024. Designed by Phan Đức
     </div>
   </footer>
+
 
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>

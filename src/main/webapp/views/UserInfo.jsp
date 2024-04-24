@@ -30,7 +30,7 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav fw-bold">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Trang chủ</a>
+            <a class="nav-link active" aria-current="page" href="/trangchu">Trang chủ</a>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -293,12 +293,14 @@
         <ul class="list-group list-group-flush">
           <c:forEach var="taiLieu" items="${taiLieus}">
             <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-              <div class="d-flex align-items-center">
-                <span class="fs-6">${taiLieu.tieuDe}</span>
-              </div>
+              <a href="/document/${taiLieu.maTaiLieu}" class="text-decoration-none">
+                <div class="d-flex align-items-center">
+                  <span class="fs-6">${taiLieu.tieuDe}</span>
+                </div>
+              </a>
               <div>
-                <button class="btn btn-sm btn-outline-primary me-1" title="Sửa"><i class="fas fa-edit"></i></button>
-                <button class="btn btn-sm btn-outline-danger" title="Xóa"><i class="fas fa-trash-alt"></i></button>
+                <button class="btn btn-sm btn-outline-primary me-2" title="Sửa" style="width: 30px;height: 30px;"><i class="fas fa-edit"></i></button>
+                <button class="btn btn-sm btn-outline-danger" title="Xóa" style="width: 30px;height: 30px;"><i class="fas fa-trash-alt"></i></button>
               </div>
             </li>
           </c:forEach>
