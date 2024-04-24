@@ -34,6 +34,8 @@ public class TaiLieuController {
     @Autowired
     BinhLuanRepository binhLuanRepository;
     @Autowired
+    DanhGiaRepository danhGiaRepository;
+    @Autowired
     @Qualifier("uploadFileService")
     private StorageService storageService;
     @GetMapping("/")
@@ -72,25 +74,49 @@ public class TaiLieuController {
     }
 
 //    @GetMapping("/document/{maTaiLieu}")
-//    public String getDocumentById(@PathVariable("maTaiLieu") Integer maTaiLieu, Model modelMap, HttpSession session) {
+//    public String getDocumentById(@PathVariable("maTaiLieu") Integer maTaiLieu, Model model, HttpSession session) {
 //        NguoiDung nguoiDung = (NguoiDung) session.getAttribute("loggedInUser");
 //        Optional<TaiLieu> optionalTaiLieu = taiLieuRepository.findByMaTaiLieu(maTaiLieu);
-//        modelMap.addAttribute("nguoiDung", nguoiDung);
-//        if (optionalTaiLieu.isPresent()) {
-//            TaiLieu taiLieu = optionalTaiLieu.get();
-//            String nguoiTaiLen = taiLieuRepository.findHoTenByMaNguoiDung(taiLieu.getTaiLenBoi());
-//            String docImage = taiLieuRepository.findAnhByMaNguoiDung(taiLieu.getTaiLenBoi());
-//            String urlDoc = taiLieu.getDuongDanTep();
-//            modelMap.addAttribute("nguoiTaiLen", nguoiTaiLen);
-//            modelMap.addAttribute("taiLieu", taiLieu);
-//            modelMap.addAttribute("docImage", docImage);
-//            modelMap.addAttribute("urlDoc", urlDoc);
-//            System.out.println(urlDoc);
-//            System.out.println(docImage);
-//            return "ChiTietTaiLieu";
-//        } else {
-//            return "notfound";
+//
+//        if (!optionalTaiLieu.isPresent()) {
+//            return "redirect:/trangchu";
 //        }
+//
+//        TaiLieu taiLieu = optionalTaiLieu.get();
+//        String nguoiTaiLen = taiLieuRepository.findHoTenByMaNguoiDung(taiLieu.getTaiLenBoi());
+//        String docImage = taiLieuRepository.findAnhByMaNguoiDung(taiLieu.getTaiLenBoi());
+//        String urlDoc = taiLieu.getDuongDanTep();
+//
+//        //C1: Lấy thông tin người bình luận qua maNguoiDung
+////        List<BinhLuan> binhLuans = binhLuanRepository.findByMaTaiLieu(maTaiLieu);
+////        List<String> hoTenNguoiBinhLuans = new ArrayList<>();
+////        List<String> anhNguoiBinhLuans = new ArrayList<>();
+////
+////        for (BinhLuan binhLuan : binhLuans) {
+////            NguoiDung nguoiBinhLuan = nguoiDungRepository.getUserByMaNguoiDung(binhLuan.getMaNguoiDung());
+////            hoTenNguoiBinhLuans.add(nguoiBinhLuan.getHoTen());
+////            anhNguoiBinhLuans.add(nguoiBinhLuan.getAnh());
+////        }
+//
+//        //C2: Lấy thông tin người bình luận qua maNguoiDung
+//        List<BinhLuan> binhLuans = binhLuanRepository.findByMaTaiLieu(maTaiLieu);
+//        List<String> hoTenNguoiBinhLuans = binhLuans.stream()
+//                .map(binhLuan -> nguoiDungRepository.getUserByMaNguoiDung(binhLuan.getMaNguoiDung()).getHoTen())
+//                .collect(Collectors.toList());
+//        List<String> anhNguoiBinhLuans = binhLuans.stream()
+//                .map(binhLuan -> nguoiDungRepository.getUserByMaNguoiDung(binhLuan.getMaNguoiDung()).getAnh())
+//                .collect(Collectors.toList());
+//
+//        model.addAttribute("nguoiDung", nguoiDung);
+//        model.addAttribute("nguoiTaiLen", nguoiTaiLen);
+//        model.addAttribute("taiLieu", taiLieu);
+//        model.addAttribute("docImage", docImage);
+//        model.addAttribute("urlDoc", urlDoc);
+//        model.addAttribute("binhLuans", binhLuans);
+//        model.addAttribute("hoTenNguoiBinhLuans", hoTenNguoiBinhLuans);
+//        model.addAttribute("anhNguoiBinhLuans", anhNguoiBinhLuans);
+//
+//        return "ChiTietTaiLieu";
 //    }
 
     @GetMapping("/document/{maTaiLieu}")
@@ -107,18 +133,29 @@ public class TaiLieuController {
         String docImage = taiLieuRepository.findAnhByMaNguoiDung(taiLieu.getTaiLenBoi());
         String urlDoc = taiLieu.getDuongDanTep();
 
-        List<BinhLuan> binhLuans = binhLuanRepository.findByMaTaiLieu(maTaiLieu);
-        List<String> hoTenNguoiBinhLuans = new ArrayList<>();
-        List<String> anhNguoiBinhLuans = new ArrayList<>();
+        //C1: Lấy thông tin người bình luận qua maNguoiDung
+//        List<BinhLuan> binhLuans = binhLuanRepository.findByMaTaiLieu(maTaiLieu);
+//        List<String> hoTenNguoiBinhLuans = new ArrayList<>();
+//        List<String> anhNguoiBinhLuans = new ArrayList<>();
+//
+//        for (BinhLuan binhLuan : binhLuans) {
+//            NguoiDung nguoiBinhLuan = nguoiDungRepository.getUserByMaNguoiDung(binhLuan.getMaNguoiDung());
+//            hoTenNguoiBinhLuans.add(nguoiBinhLuan.getHoTen());
+//            anhNguoiBinhLuans.add(nguoiBinhLuan.getAnh());
+//        }
 
-        for (BinhLuan binhLuan : binhLuans) {
-            NguoiDung nguoiBinhLuan = nguoiDungRepository.getUserByMaNguoiDung(binhLuan.getMaNguoiDung());
-            hoTenNguoiBinhLuans.add(nguoiBinhLuan.getHoTen());
-            anhNguoiBinhLuans.add(nguoiBinhLuan.getAnh());
-            System.out.println("Ảnh: " + nguoiBinhLuan.getAnh());
-            System.out.println("Họ tên: " + nguoiBinhLuan.getHoTen());
-            System.out.println("Nội dung bình luận: " + binhLuan.getNoiDung());
-        }
+        //C2: Lấy thông tin người bình luận qua maNguoiDung
+        List<BinhLuan> binhLuans = binhLuanRepository.findByMaTaiLieu(maTaiLieu);
+        List<String> hoTenNguoiBinhLuans = binhLuans.stream()
+                .map(binhLuan -> nguoiDungRepository.getUserByMaNguoiDung(binhLuan.getMaNguoiDung()).getHoTen())
+                .collect(Collectors.toList());
+        List<String> anhNguoiBinhLuans = binhLuans.stream()
+                .map(binhLuan -> nguoiDungRepository.getUserByMaNguoiDung(binhLuan.getMaNguoiDung()).getAnh())
+                .collect(Collectors.toList());
+        List<DanhGia> danhGias = danhGiaRepository.findByMaTaiLieu(maTaiLieu);
+        List<Integer> giaTriDanhGias = danhGias.stream()
+                .map(DanhGia::getGiaTriDanhGia)
+                .collect(Collectors.toList());
 
         model.addAttribute("nguoiDung", nguoiDung);
         model.addAttribute("nguoiTaiLen", nguoiTaiLen);
@@ -128,11 +165,10 @@ public class TaiLieuController {
         model.addAttribute("binhLuans", binhLuans);
         model.addAttribute("hoTenNguoiBinhLuans", hoTenNguoiBinhLuans);
         model.addAttribute("anhNguoiBinhLuans", anhNguoiBinhLuans);
+        model.addAttribute("giaTriDanhGias", giaTriDanhGias);
 
         return "ChiTietTaiLieu";
     }
-
-
 
 
     @PostMapping("/search/{keyword}")
@@ -218,20 +254,20 @@ public class TaiLieuController {
 //        return "ChiTietTaiLieu";
 //    }
 
-    @GetMapping("/binhluan/{maTaiLieu}")
+    @GetMapping("/danhgia/{maTaiLieu}")
     public ResponseEntity<?> getBinhLuan(@PathVariable("maTaiLieu") Integer maTaiLieu) {
-        List<BinhLuan> binhLuans = binhLuanRepository.findByMaTaiLieu(maTaiLieu);
-        List<NguoiDung> listBinhLuan = new ArrayList<>();
+        List<DanhGia> danhGias = danhGiaRepository.findByMaTaiLieu(maTaiLieu);
+        List<NguoiDung> listDanhGia = new ArrayList<>();
 
-        for (BinhLuan binhLuan : binhLuans) {
-            NguoiDung nguoiBinhLuan = nguoiDungRepository.getUserByMaNguoiDung(binhLuan.getMaNguoiDung());
-            listBinhLuan.add(nguoiBinhLuan);
+        for (DanhGia danhGia : danhGias) {
+            NguoiDung nguoiDanhGia = nguoiDungRepository.getUserByMaNguoiDung(danhGia.getMaNguoiDung());
+            listDanhGia.add(nguoiDanhGia);
         }
 
         // Tạo một đối tượng Map chứa các danh sách binhLuans và nguoiBinhLuans
         Map<String, Object> responseData = new HashMap<>();
-        responseData.put("binhLuans", binhLuans);
-        responseData.put("nguoiBinhLuans", listBinhLuan);
+        responseData.put("danhGias", danhGias);
+        responseData.put("listDanhGia", listDanhGia);
 
         // Trả về ResponseEntity chứa đối tượng Map với định dạng JSON và status là OK
         return ResponseEntity.ok(responseData);

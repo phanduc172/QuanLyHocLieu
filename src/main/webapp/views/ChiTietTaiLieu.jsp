@@ -1,6 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -201,7 +205,7 @@
 
     <div class="container-fluid main">
         <div class="row">
-            <div class="col-12 col-md-9">
+            <div class="col-12 col-lg-9 ">
                 <h5 class="text-center">${taiLieu.tieuDe}</h5>
                 <div class="card">
                     <div class="row g-0">
@@ -226,9 +230,9 @@
                     <div class="card-footer">
                         <div class="container " style="max-width: none;">
                             <div class="row justify-content-center" >
-                                <div class="">
+                                <div class="col-12">
                                     <div class="pdf-container ">
-                                        <embed src="${taiLieu.duongDanTep}" type="application/pdf" toolbar="no">
+                                        <embed src="${taiLieu.duongDanTep}" type="application/pdf">
                                     </div>
                                 </div>
 
@@ -264,27 +268,34 @@
                         <c:forEach var="binhLuan" items="${binhLuans}" varStatus="loop">
                             <div class="d-flex my-2">
                                 <img src="${anhNguoiBinhLuans[loop.index]}" alt="Avatar" class="avatar me-3 rounded-pill" style="width: 50px; height: 50px; object-fit: contain;">
-                                <div>
-                                    <h6 class="fw-bold mb-1">${hoTenNguoiBinhLuans[loop.index]}</h6>
+                                <div class="w-100">
+                                    <div class="d-flex justify-content-between align-items-center mb-1">
+                                        <h6 class="fw-bold mb-1">${hoTenNguoiBinhLuans[loop.index]}</h6>
+                                        <%@ include file="ui/format_time.jsp" %>
+                                    </div>
+
                                     <div class="d-flex align-items-center mb-1">
                                         <div class="rating-stars">
-                                            <svg height="30px" width="30px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-5.39 -5.39 64.65 64.65" xml:space="preserve" fill="#FFD700" stroke="#FFD700" transform="matrix(1, 0, 0, 1, 0, 0)rotate(0)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC" stroke-width="0.430936"></g><g id="SVGRepo_iconCarrier"> <polygon style="fill:#FFD700;" points="26.934,1.318 35.256,18.182 53.867,20.887 40.4,34.013 43.579,52.549 26.934,43.798 10.288,52.549 13.467,34.013 0,20.887 18.611,18.182 "></polygon> </g></svg>
-                                            <svg height="30px" width="30px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-5.39 -5.39 64.65 64.65" xml:space="preserve" fill="#FFD700" stroke="#FFD700" transform="matrix(1, 0, 0, 1, 0, 0)rotate(0)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC" stroke-width="0.430936"></g><g id="SVGRepo_iconCarrier"> <polygon style="fill:#FFD700;" points="26.934,1.318 35.256,18.182 53.867,20.887 40.4,34.013 43.579,52.549 26.934,43.798 10.288,52.549 13.467,34.013 0,20.887 18.611,18.182 "></polygon> </g></svg>
-                                            <svg height="30px" width="30px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-5.39 -5.39 64.65 64.65" xml:space="preserve" fill="#FFD700" stroke="#FFD700" transform="matrix(1, 0, 0, 1, 0, 0)rotate(0)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC" stroke-width="0.430936"></g><g id="SVGRepo_iconCarrier"> <polygon style="fill:#FFD700;" points="26.934,1.318 35.256,18.182 53.867,20.887 40.4,34.013 43.579,52.549 26.934,43.798 10.288,52.549 13.467,34.013 0,20.887 18.611,18.182 "></polygon> </g></svg>
-                                            <svg height="30px" width="30px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-5.39 -5.39 64.65 64.65" xml:space="preserve" fill="#FFD700" stroke="#FFD700" transform="matrix(1, 0, 0, 1, 0, 0)rotate(0)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC" stroke-width="0.430936"></g><g id="SVGRepo_iconCarrier"> <polygon style="fill:#FFD700;" points="26.934,1.318 35.256,18.182 53.867,20.887 40.4,34.013 43.579,52.549 26.934,43.798 10.288,52.549 13.467,34.013 0,20.887 18.611,18.182 "></polygon> </g></svg>
-                                            <svg height="30px" width="30px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-5.39 -5.39 64.65 64.65" xml:space="preserve" fill="#FFD700" stroke="#FFD700" transform="matrix(1, 0, 0, 1, 0, 0)rotate(0)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC" stroke-width="0.430936"></g><g id="SVGRepo_iconCarrier"> <polygon style="fill:#FFD700;" points="26.934,1.318 35.256,18.182 53.867,20.887 40.4,34.013 43.579,52.549 26.934,43.798 10.288,52.549 13.467,34.013 0,20.887 18.611,18.182 "></polygon> </g></svg>
+                                            <c:forEach var="i" begin="1" end="5">
+                                                <svg height="30px" width="30px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-5.39 -5.39 64.65 64.65" xml:space="preserve" fill="#FFD700" stroke="#FFD700" transform="matrix(1, 0, 0, 1, 0, 0)">
+                                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC" stroke-width="0.430936"></g>
+                                                    <g id="SVGRepo_iconCarrier">
+                                                        <polygon class="${i > giaTriDanhGias[loop.index] ? 'star-hidden' : ''}" style="fill:#FFD700; stroke:#FFD700;" points="26.934,1.318 35.256,18.182 53.867,20.887 40.4,34.013 43.579,52.549 26.934,43.798 10.288,52.549 13.467,34.013 0,20.887 18.611,18.182 "></polygon>
+                                                    </g>
+                                                </svg>
+                                            </c:forEach>
                                         </div>
                                     </div>
                                     <p>${binhLuan.noiDung}</p>
                                 </div>
                             </div>
-
                         </c:forEach>
                     </div>
                 </div>
 
             </div>
-            <div class="col-3 d-none d-md-block">
+            <div class="col-3 d-none d-lg-block">
                 <h5 class="text-center">Tài liệu Người dùng</h5>
                 <ul class="list-group">
                     <li class="row align-items-center mb-2 p-1">

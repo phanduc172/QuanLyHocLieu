@@ -131,4 +131,9 @@ html,body {
     color: gold;
 }
 
+.star-hidden {
+    display: none;
+}
+
+
 
