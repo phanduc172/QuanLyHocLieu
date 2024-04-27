@@ -101,28 +101,60 @@ public class NguoiDungController {
     }
 
 
+//    @PostMapping("/changepassword")
+//    public String changePassword(@RequestParam("currentPassword") String currentPassword,@RequestParam("newPassword") String newPassword,
+//            @RequestParam("confirmNewPassword") String confirmNewPassword,ModelMap modelMap,HttpSession session) {
+//        NguoiDung loggedInUser = (NguoiDung) session.getAttribute("loggedInUser");
+//        // Kiểm tra xác thực mật khẩu hiện tại
+//        if (loggedInUser != null && loggedInUser.getMatKhau().equals(currentPassword)) {
+//            // Kiểm tra xác nhận mật khẩu mới
+//            if (!newPassword.equals(confirmNewPassword)) {
+//                modelMap.addAttribute("error", "Mật khẩu mới và xác nhận mật khẩu không khớp.");
+//                System.out.println("Mật khẩu mới không trùng nhau");
+//                return "redirect:/userinfo/" + loggedInUser.getMaNguoiDung();
+//            }
+//            loggedInUser.setMatKhau(newPassword);
+//            nguoiDungRepository.save(loggedInUser);
+//            modelMap.addAttribute("success", "Mật khẩu đã được thay đổi thành công.");
+//            System.out.println("Mật khẩu đã được thay đổi thành công");
+//        } else {
+//            modelMap.addAttribute("error", "Mật khẩu hiện tại không đúng.");
+//            System.out.println("Mật khẩu hiện tại không đúng");
+//        }
+//        return "redirect:/userinfo/" + loggedInUser.getMaNguoiDung();
+//    }
+
     @PostMapping("/changepassword")
-    public String changePassword(@RequestParam("currentPassword") String currentPassword,@RequestParam("newPassword") String newPassword,
-            @RequestParam("confirmNewPassword") String confirmNewPassword,ModelMap modelMap,HttpSession session) {
+    public String changePassword(@RequestParam("currentPassword") String currentPassword,
+                                 @RequestParam("newPassword") String newPassword,
+                                 @RequestParam("confirmNewPassword") String confirmNewPassword,
+                                 ModelMap modelMap,
+                                 HttpSession session) {
+
         NguoiDung loggedInUser = (NguoiDung) session.getAttribute("loggedInUser");
+        String currentPasswordHidden = loggedInUser.getMatKhau();
+        System.out.println(currentPasswordHidden);
+        modelMap.addAttribute("currentPasswordHidden", loggedInUser.getMatKhau());
         // Kiểm tra xác thực mật khẩu hiện tại
         if (loggedInUser != null && loggedInUser.getMatKhau().equals(currentPassword)) {
             // Kiểm tra xác nhận mật khẩu mới
             if (!newPassword.equals(confirmNewPassword)) {
-                modelMap.addAttribute("error", "Mật khẩu mới và xác nhận mật khẩu không khớp.");
                 System.out.println("Mật khẩu mới không trùng nhau");
                 return "redirect:/userinfo/" + loggedInUser.getMaNguoiDung();
             }
             loggedInUser.setMatKhau(newPassword);
             nguoiDungRepository.save(loggedInUser);
-            modelMap.addAttribute("success", "Mật khẩu đã được thay đổi thành công.");
             System.out.println("Mật khẩu đã được thay đổi thành công");
         } else {
-            modelMap.addAttribute("error", "Mật khẩu hiện tại không đúng.");
             System.out.println("Mật khẩu hiện tại không đúng");
         }
+
         return "redirect:/userinfo/" + loggedInUser.getMaNguoiDung();
     }
+
+
+
+
 
 
 

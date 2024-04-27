@@ -187,21 +187,103 @@
                     </div>
                     <div class="modal-body">
                       <!-- Form đổi mật khẩu -->
-                      <form method="post" action="/changepassword">
+                      <form method="post" action="/changepassword" id="changePasswordForm">
                         <div class="mb-3">
                           <label for="currentPassword" class="form-label">Mật khẩu hiện tại</label>
-                          <input type="password" class="form-control" id="currentPassword" name="currentPassword" required>
+                          <input type="password" class="form-control" id="currentPassword" name="currentPassword">
+                          <input type="hidden" id="currentPasswordHidden" value="${currentPasswordHidden}" />
+                          <div id="currentPasswordError" class="text-danger"></div>
                         </div>
                         <div class="mb-3">
                           <label for="newPassword" class="form-label">Mật khẩu mới</label>
-                          <input type="password" class="form-control" id="newPassword" name="newPassword" required>
+                          <input type="password" class="form-control" id="newPassword" name="newPassword">
+                          <div id="newPasswordError" class="text-danger"></div>
                         </div>
                         <div class="mb-3">
                           <label for="confirmNewPassword" class="form-label">Xác nhận mật khẩu mới</label>
-                          <input type="password" name="confirmNewPassword" class="form-control" id="confirmNewPassword" required>
+                          <input type="password" name="confirmNewPassword" class="form-control" id="confirmNewPassword">
+                          <div id="confirmNewPasswordError" class="text-danger"></div>
                         </div>
                         <button type="submit" class="btn btn-primary">Đổi mật khẩu</button>
+                        <button type="button" onclick="showCurrentPassword()" class="btn btn-secondary">Hiển thị mật khẩu hiện tại</button>
                       </form>
+
+<%--                      <script>--%>
+<%--                        // function showCurrentPassword() {--%>
+<%--                        //   var currentPasswordHidden = document.getElementById('currentPasswordHidden').value;--%>
+<%--                        //   alert("Mật khẩu hiện tại là: " + currentPasswordHidden);--%>
+<%--                        // }--%>
+<%--                        var currentPasswordHidden = document.getElementById('currentPasswordHidden').value;--%>
+
+<%--                        document.getElementById('changePasswordForm').addEventListener('submit', function(event) {--%>
+<%--                          var currentPassword = document.getElementById('currentPassword').value;--%>
+<%--                          var newPassword = document.getElementById('newPassword').value;--%>
+<%--                          var confirmNewPassword = document.getElementById('confirmNewPassword').value;--%>
+
+<%--                          var currentPasswordError = document.getElementById('currentPasswordError');--%>
+<%--                          var newPasswordError = document.getElementById('newPasswordError');--%>
+<%--                          var confirmNewPasswordError = document.getElementById('confirmNewPasswordError');--%>
+
+<%--                          currentPasswordError.textContent = "";--%>
+<%--                          newPasswordError.textContent = "";--%>
+<%--                          confirmNewPasswordError.textContent = "";--%>
+
+<%--                          var isValid = true;--%>
+
+<%--                          if (currentPassword === "") {--%>
+<%--                            currentPasswordError.textContent = "Vui lòng nhập mật khẩu hiện tại";--%>
+<%--                            isValid = false;--%>
+<%--                          }--%>
+<%--                          // Kiểm tra xác nhận mật khẩu hiện tại--%>
+<%--                          else if (currentPassword !== "${currentPasswordHidden}") {--%>
+<%--                            currentPasswordError.textContent = "Mật khẩu hiện tại không đúng";--%>
+<%--                            isValid = false;--%>
+<%--                          }--%>
+
+<%--                          if (newPassword !== confirmNewPassword) {--%>
+<%--                            confirmNewPasswordError.textContent = "Mật khẩu mới không trùng khớp";--%>
+<%--                            isValid = false;--%>
+<%--                          }--%>
+
+<%--                          if (currentPassword === "") {--%>
+<%--                            currentPasswordError.textContent = "Vui lòng nhập mật khẩu hiện tại";--%>
+<%--                            isValid = false;--%>
+<%--                          }--%>
+
+<%--                          if (newPassword === "") {--%>
+<%--                            newPasswordError.textContent = "Vui lòng nhập mật khẩu mới";--%>
+<%--                            isValid = false;--%>
+<%--                          }--%>
+
+<%--                          if (confirmNewPassword === "") {--%>
+<%--                            confirmNewPasswordError.textContent = "Vui lòng xác nhận mật khẩu mới";--%>
+<%--                            isValid = false;--%>
+<%--                          }--%>
+
+<%--                          if (!isValid) {--%>
+<%--                            event.preventDefault(); // Ngăn chặn gửi form nếu có lỗi--%>
+<%--                            return; // Dừng lại nếu có lỗi--%>
+<%--                          }--%>
+
+<%--                        });--%>
+
+<%--                        document.getElementById('currentPassword').addEventListener('focus', function() {--%>
+<%--                          document.getElementById('currentPasswordError').textContent = "";--%>
+<%--                          document.getElementById('currentPassword').value = "";--%>
+<%--                        });--%>
+
+<%--                        document.getElementById('newPassword').addEventListener('focus', function() {--%>
+<%--                          document.getElementById('newPasswordError').textContent = "";--%>
+<%--                          document.getElementById('newPassword').value = "";--%>
+<%--                        });--%>
+
+<%--                        document.getElementById('confirmNewPassword').addEventListener('focus', function() {--%>
+<%--                          document.getElementById('confirmNewPasswordError').textContent = "";--%>
+<%--                          document.getElementById('confirmNewPassword').value = "";--%>
+<%--                        });--%>
+<%--                      </script>--%>
+
+
 
                     </div>
                   </div>
@@ -967,7 +1049,7 @@
       Copyright © 2024. Designed by Phan Đức
     </div>
   </footer>
-
+  <script src="/js/changepassword.js"></script>
   <script src="/js/main.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>

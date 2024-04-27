@@ -51,6 +51,12 @@ public class TaiLieuController {
         modelMap.addAttribute("danhMucs", danhMucs);
         modelMap.addAttribute("taiLieus", taiLieus);
         modelMap.addAttribute("nguoiDung", nguoiDung);
+        NguoiDung loggedInUser = (NguoiDung) session.getAttribute("loggedInUser");
+        if(loggedInUser!=null) {
+            String currentPasswordHidden = loggedInUser.getMatKhau();
+            System.out.println(currentPasswordHidden);
+            modelMap.addAttribute("currentPasswordHidden", loggedInUser.getMatKhau());
+        }
         return "TrangChu";
     }
 
