@@ -1,8 +1,10 @@
 package com.phanduc.QLHocLieu.controllers;
 
 import com.phanduc.QLHocLieu.models.CheckLogin;
+import com.phanduc.QLHocLieu.models.Khoa;
 import com.phanduc.QLHocLieu.models.NguoiDung;
 import com.phanduc.QLHocLieu.models.TaiLieu;
+import com.phanduc.QLHocLieu.repositories.KhoaRepository;
 import com.phanduc.QLHocLieu.repositories.NguoiDungRepository;
 import com.phanduc.QLHocLieu.repositories.TaiLieuRepository;
 import com.phanduc.QLHocLieu.services.StorageService;
@@ -29,6 +31,8 @@ public class NguoiDungController {
     @Autowired
     TaiLieuRepository taiLieuRepository;
     @Autowired
+    KhoaRepository khoaRepository;
+    @Autowired
     @Qualifier("uploadImageService")
     private StorageService storageService;
 
@@ -42,6 +46,8 @@ public class NguoiDungController {
         }
         NguoiDung nguoiDung = nguoiDungRepository.getUserByMaNguoiDung(maNguoiDung);
         List<TaiLieu> taiLieus = taiLieuRepository.findByTaiLenBoi(maNguoiDung);
+        List<Khoa> listKhoa = khoaRepository.findAll();
+        model.addAttribute("listKhoa", listKhoa);
         model.addAttribute("nguoiDung", nguoiDung);
         model.addAttribute("taiLieus", taiLieus);
         return "UserInfo";
@@ -64,6 +70,19 @@ public class NguoiDungController {
         return "redirect:/userinfo/" + existingUser.getMaNguoiDung();
     }
 
+//    @PostMapping("/userinfo/update-avatar")
+//    public RedirectView updateAvatar(@RequestParam("file") MultipartFile file, HttpSession session) {
+//        Integer maNguoiDung = ((NguoiDung) session.getAttribute("loggedInUser")).getMaNguoiDung();
+//        NguoiDung nguoiDung = nguoiDungRepository.getUserByMaNguoiDung(maNguoiDung);
+//        String filePath = storageService.store(file);
+//        String prefixedFilePath = "/upload/images/" + filePath;
+//        nguoiDung.setAnh(prefixedFilePath);
+//        nguoiDungRepository.save(nguoiDung);
+//        System.out.println("Đường dẫn của tệp đã được lưu: " + prefixedFilePath);
+//        System.out.println("Lưu đường dẫn vào CSDL thành công");
+//        return new RedirectView("/userinfo/" + maNguoiDung.toString());
+//    }
+
     @PostMapping("/userinfo/update-avatar")
     public RedirectView updateAvatar(@RequestParam("file") MultipartFile file, HttpSession session) {
         Integer maNguoiDung = ((NguoiDung) session.getAttribute("loggedInUser")).getMaNguoiDung();
@@ -72,10 +91,15 @@ public class NguoiDungController {
         String prefixedFilePath = "/upload/images/" + filePath;
         nguoiDung.setAnh(prefixedFilePath);
         nguoiDungRepository.save(nguoiDung);
+        // Lấy thông tin người dùng mới từ CSDL sau khi cập nhật
+        nguoiDung = nguoiDungRepository.getUserByMaNguoiDung(maNguoiDung);
+        // Cập nhật lại session với người dùng mới
+        session.setAttribute("loggedInUser", nguoiDung);
         System.out.println("Đường dẫn của tệp đã được lưu: " + prefixedFilePath);
         System.out.println("Lưu đường dẫn vào CSDL thành công");
         return new RedirectView("/userinfo/" + maNguoiDung.toString());
     }
+
 
     @PostMapping("/changepassword")
     public String changePassword(@RequestParam("currentPassword") String currentPassword,@RequestParam("newPassword") String newPassword,

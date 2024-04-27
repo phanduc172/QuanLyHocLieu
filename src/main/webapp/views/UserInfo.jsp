@@ -211,33 +211,64 @@
           <p class="card-text text-start ms-4">Mật khẩu: <c:out value="${nguoiDung.matKhau}" /></p>
           <p class="card-text text-start ms-4">Email: <c:out value="${nguoiDung.email}" /></p>
           <!-- Button trigger modal -->
-          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editProfileModal">
-            Chỉnh sửa thông tin cá nhân
+          <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+            <i class="fas fa-edit"></i> Chỉnh sửa thông tin cá nhân
           </button>
         </div>
       </div>
 
-      <!-- Modal đổi ảnh -->
+
+      <!-- Modal đổi ảnh đại diện -->
       <div class="modal fade" id="changeAvatarModal" tabindex="-1" aria-labelledby="changeAvatarModalLabel" aria-hidden="true">
-        <div class="modal-dialog" style="margin-top: 100px">
+        <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header px-3 py-2">
               <h5 class="modal-title" id="changeAvatarModalLabel">Đổi ảnh đại diện</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form class="m-0" id="changeAvatarForm" action="/userinfo/update-avatar" method="post" enctype="multipart/form-data">
-              <div class="modal-body">
-                <!-- Nơi để người dùng chọn ảnh mới -->
-                <input type="file" name="file" id="avatarFile" accept="image/*">
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
-              </div>
-            </form>
+            <div class="modal-body m-0 p-3">
+              <form class="m-0 p-0" id="changeAvatarForm" action="/userinfo/update-avatar" method="post" enctype="multipart/form-data">
+                <div class="mb-3">
+                  <label for="avatarFile" class="form-label">Chọn ảnh mới:</label>
+                  <input type="file" class="form-control" name="file" id="avatarFile" accept="image/*">
+                </div>
+                <div id="previewImageContainer" class="text-center mb-2" style="display: none;">
+                  <img id="previewImage" src="#" alt="Preview Image" class="img-thumbnail">
+                </div>
+                <div class="modal-footer p-0">
+                  <button type="button" class="btn btn-secondary mt-2" data-bs-dismiss="modal">Đóng</button>
+                  <button type="submit" class="btn btn-primary mt-2">Lưu thay đổi</button>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
       </div>
+
+
+
+      <script>
+        // Lắng nghe sự kiện khi người dùng chọn một tệp hình ảnh mới
+        $('#avatarFile').change(function() {
+          // Kiểm tra xem người dùng đã chọn một tệp hình ảnh chưa
+          if (this.files && this.files[0]) {
+            var reader = new FileReader();
+
+            // Đặt hành động khi đọc xong tệp hình ảnh
+            reader.onload = function(e) {
+              // Hiển thị hình ảnh đã đọc trong thẻ <img> để xem trước ảnh
+              $('#previewImage').attr('src', e.target.result);
+              // Hiển thị phần xem trước ảnh
+              $('#previewImageContainer').show();
+            }
+
+            // Đọc tệp hình ảnh được chọn
+            reader.readAsDataURL(this.files[0]);
+          }
+        });
+      </script>
+
+
 
 
 
@@ -299,14 +330,81 @@
                 </div>
               </a>
               <div>
-                <button class="btn btn-sm btn-outline-primary me-2" title="Sửa" style="width: 30px;height: 30px;"><i class="fas fa-edit"></i></button>
+                <button class="btn btn-sm btn-outline-primary me-2" title="Sửa" style="width: 30px;height: 30px;"
+                        data-bs-toggle="modal" data-bs-target="#editDocumentModal"
+                        data-document-id="${taiLieu.maTaiLieu}" data-document-title="${taiLieu.tieuDe}" data-document-description="${taiLieu.moTa}">
+                  <i class="fas fa-edit"></i>
+                </button>
                 <button class="btn btn-sm btn-outline-danger" title="Xóa" style="width: 30px;height: 30px;"><i class="fas fa-trash-alt"></i></button>
               </div>
             </li>
           </c:forEach>
-        </ul>
 
+        </ul>
       </div>
+
+      <!-- Modal chỉnh sửa tài liệu -->
+      <div class="modal fade" id="editDocumentModal" tabindex="-1" aria-labelledby="editDocumentModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content modelUser">
+            <div class="modal-header">
+              <h5 class="modal-title" id="editDocumentModalLabel">Chỉnh sửa tài liệu</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <!-- Form chỉnh sửa tài liệu -->
+              <form id="editDocumentForm">
+                <div class="mb-3">
+                  <label for="editTitle" class="form-label">Tiêu đề:</label>
+                  <input type="text" class="form-control" id="editTitle" name="editTitle" required>
+                </div>
+                <div class="mb-3">
+                  <label for="editDescription" class="form-label">Mô tả:</label>
+                  <textarea class="form-control" id="editDescription" name="editDescription" rows="3"></textarea>
+                </div>
+                <div class="mb-3">
+                  <label for="faculty" class="form-label">Khoa:</label>
+                  <select class="form-control" id="faculty" name="faculty" required>
+                    <option value="">Chọn Khoa</option>
+                    <c:forEach items="${listKhoa}" var="khoa">
+                      <option value="${khoa.maKhoa}">${khoa.tenKhoa}</option>
+                    </c:forEach>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="major" class="form-label">Chuyên ngành:</label>
+                  <select class="form-control" id="major" name="major" required>
+                    <option value="">Chọn Chuyên ngành</option>
+                  </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        document.querySelectorAll('.btn-outline-primary').forEach(function(button) {
+          button.addEventListener('click', function() {
+            // Lấy thông tin từ thuộc tính data-*
+            var documentId = this.dataset.documentId;
+            var documentTitle = this.dataset.documentTitle;
+            var documentDescription = this.dataset.documentDescription;
+            var facultyId = this.dataset.facultyId;
+            var majorId = this.dataset.majorId;
+
+            // Điền thông tin vào các trường trong form chỉnh sửa tài liệu
+            document.getElementById('editTitle').value = documentTitle;
+            document.getElementById('editDescription').value = documentDescription;
+
+            // Hiển thị khoa và chuyên ngành tương ứng trong form
+            document.getElementById('editFaculty').value = facultyId;
+            document.getElementById('editMajor').value = majorId;
+          });
+        });
+      </script>
+
 
     </div>
   </div>

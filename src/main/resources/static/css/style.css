@@ -29,9 +29,14 @@ html,body {
     margin-top: 85px;
 }
 
-.modalUser .modalEditImage{
+.modalUser .modalEditImage {
     margin-top: 100px;
 }
+
+.modelUser {
+    margin-top: 100px;
+}
+
 
 .modal-info {
     position: relative;
@@ -100,9 +105,6 @@ html,body {
     object-fit: contain;
 }
 
-.modelUser {
-    margin-top: 100px;
-}
 
 .icon-login {
     font-size: 4rem;
@@ -136,4 +138,44 @@ html,body {
 }
 
 
+.btn-google {
+    color: #fff;
+    background-color: #dd4b39;
+    border-color: #dd4b39;
+}
+
+.btn-google:hover {
+    color: #fff;
+    background-color: #d14836;
+    border-color: #d14836;
+}
+
+.divider {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    position: relative;
+}
+.divider::before, .divider::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 45%;
+    height: 1px;
+    background-color: #ccc;
+}
+.divider::before {
+    right: 50%;
+    margin-right: 20px;
+}
+.divider::after {
+    left: 50%;
+    margin-left: 20px;
+}
+
+#previewImage {
+    height: 250px;
+    width: 250px;
+    object-fit: cover;
+}
 

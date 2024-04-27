@@ -88,13 +88,24 @@
                       </ul>
                       <div class="tab-content mt-3">
                         <div id="loginForm" class="tab-pane fade show active">
+                          <div class="mb-3">
+                            <a href="/login/oauth2/authorization/google" class="btn btn-google py-2 w-100">
+                              <i class="bi bi-google me-2"></i> Đăng nhập bằng Google
+                            </a>
+                          </div>
+                          <div class="divider">or</div>
                           <form method="post" action="/login">
                             <fieldset>
                               <div class="form-group mb-3">
                                 <input class="form-control" placeholder="Nhập tên người dùng" name="tenNguoiDung" type="text" required/>
                               </div>
                               <div class="form-group mb-3">
-                                <input class="form-control" placeholder="Nhập mật khẩu" name="matKhau" type="password" value="" required/>
+                                <div class="input-group">
+                                  <input class="form-control" placeholder="Nhập mật khẩu" name="matKhau" id="passwordInput" type="password" value="" required/>
+                                  <button type="button" class="btn btn-sm btn-secondary toggle-password" onclick="togglePasswordVisibility('loginForm')">
+                                    <i class="bi bi-eye"></i>
+                                  </button>
+                                </div>
                               </div>
                               <button class="btn btn-md btn btn-secondary btn-block" type="submit" id="loginButton">Đăng nhập</button>
                             </fieldset>
@@ -110,7 +121,12 @@
                                 <input class="form-control" placeholder="Nhập tên đăng nhập" name="tenNguoiDung" type="text" required/>
                               </div>
                               <div class="form-group mb-3">
-                                <input class="form-control" placeholder="Nhập mật khẩu" type="password" name="matKhau" value="" required/>
+                                <div class="input-group">
+                                  <input class="form-control" placeholder="Nhập mật khẩu" type="password" name="matKhau" value="" required/>
+                                  <button type="button" class="btn btn-sm btn-secondary toggle-password" onclick="togglePasswordVisibility('registerForm')">
+                                    <i class="bi bi-eye"></i>
+                                  </button>
+                                </div>
                               </div>
                               <input class="btn btn-md btn btn-secondary btn-block" type="submit" value="Đăng ký" />
                             </fieldset>
@@ -952,8 +968,7 @@
     </div>
   </footer>
 
-
-
+  <script src="/js/main.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 

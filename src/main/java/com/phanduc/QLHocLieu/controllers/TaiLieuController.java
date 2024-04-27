@@ -5,7 +5,6 @@ import com.phanduc.QLHocLieu.repositories.*;
 import com.phanduc.QLHocLieu.services.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -128,10 +127,12 @@ public class TaiLieuController {
             return "redirect:/trangchu";
         }
 
+
         TaiLieu taiLieu = optionalTaiLieu.get();
         String nguoiTaiLen = taiLieuRepository.findHoTenByMaNguoiDung(taiLieu.getTaiLenBoi());
         String docImage = taiLieuRepository.findAnhByMaNguoiDung(taiLieu.getTaiLenBoi());
         String urlDoc = taiLieu.getDuongDanTep();
+
 
         //C1: Lấy thông tin người bình luận qua maNguoiDung
 //        List<BinhLuan> binhLuans = binhLuanRepository.findByMaTaiLieu(maTaiLieu);
@@ -157,6 +158,12 @@ public class TaiLieuController {
                 .map(DanhGia::getGiaTriDanhGia)
                 .collect(Collectors.toList());
 
+        //Lấy ra danh sách tiêu đề tải lên bởi cùng người đăng tài liệu
+        List<TaiLieu> taiLieusByUploader = taiLieuRepository.findByTaiLenBoi(taiLieu.getTaiLenBoi());
+        List<String> danhSachTieuDe = taiLieusByUploader.stream()
+                .map(TaiLieu::getTieuDe)
+                .collect(Collectors.toList());
+
         model.addAttribute("nguoiDung", nguoiDung);
         model.addAttribute("nguoiTaiLen", nguoiTaiLen);
         model.addAttribute("taiLieu", taiLieu);
@@ -166,6 +173,11 @@ public class TaiLieuController {
         model.addAttribute("hoTenNguoiBinhLuans", hoTenNguoiBinhLuans);
         model.addAttribute("anhNguoiBinhLuans", anhNguoiBinhLuans);
         model.addAttribute("giaTriDanhGias", giaTriDanhGias);
+        model.addAttribute("danhSachTieuDe", danhSachTieuDe);
+
+        for (String tieuDe : danhSachTieuDe) {
+            System.out.println(tieuDe);
+        }
 
         return "ChiTietTaiLieu";
     }
@@ -227,12 +239,12 @@ public class TaiLieuController {
 
 
     //Lấy chuyên ngành để hiển thị khi mà người dùng tải lên tài liệu ở UploadFile
-    @GetMapping("/getChuyenNganh")
-    @ResponseBody
-    public List<ChuyenNganh> getMajorsByFaculty(@RequestParam("faculty") Integer facultyCode) {
-        List<ChuyenNganh> listMajors = chuyenNganhRepository.findKhoaByMaKhoa(facultyCode);
-        return listMajors;
-    }
+        @GetMapping("/getChuyenNganh")
+        @ResponseBody
+        public List<ChuyenNganh> getMajorsByFaculty(@RequestParam("faculty") Integer facultyCode) {
+            List<ChuyenNganh> listMajors = chuyenNganhRepository.findKhoaByMaKhoa(facultyCode);
+            return listMajors;
+        }
 
 //    @GetMapping("/binhluan/{id}")
 //    public String getBinhLuan(@PathVariable("id") Integer maTaiLieu, ModelMap modelMap) {

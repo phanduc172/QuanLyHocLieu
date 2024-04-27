@@ -8,9 +8,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
-import java.util.Map;
-
 @Controller
 public class DangNhapController {
     @Autowired
@@ -39,4 +36,8 @@ public class DangNhapController {
         System.out.println("Đăng xuất thành công");
         return "redirect:/trangchu";
     }
+
+
+
+
 }
