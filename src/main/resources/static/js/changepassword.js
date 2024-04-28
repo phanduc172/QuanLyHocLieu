@@ -53,16 +53,16 @@
     });
 
     document.getElementById('currentPassword').addEventListener('focus', function() {
-    document.getElementById('currentPasswordError').textContent = "";
-    document.getElementById('currentPassword').value = "";
+        document.getElementById('currentPasswordError').textContent = "";
+        document.getElementById('currentPassword').value = "";
     });
 
     document.getElementById('newPassword').addEventListener('focus', function() {
-    document.getElementById('newPasswordError').textContent = "";
-    document.getElementById('newPassword').value = "";
+        document.getElementById('newPasswordError').textContent = "";
+        document.getElementById('newPassword').value = "";
     });
 
     document.getElementById('confirmNewPassword').addEventListener('focus', function() {
-    document.getElementById('confirmNewPasswordError').textContent = "";
-    document.getElementById('confirmNewPassword').value = "";
+        document.getElementById('confirmNewPasswordError').textContent = "";
+        document.getElementById('confirmNewPassword').value = "";
     });

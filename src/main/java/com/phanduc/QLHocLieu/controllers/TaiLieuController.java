@@ -5,7 +5,6 @@ import com.phanduc.QLHocLieu.repositories.*;
 import com.phanduc.QLHocLieu.services.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -14,7 +13,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 import javax.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.*;
+import java.sql.Timestamp;
 import java.util.stream.Collectors;
 
 @Controller
@@ -77,52 +79,6 @@ public class TaiLieuController {
             return "TrangChu";
         }
     }
-
-//    @GetMapping("/document/{maTaiLieu}")
-//    public String getDocumentById(@PathVariable("maTaiLieu") Integer maTaiLieu, Model model, HttpSession session) {
-//        NguoiDung nguoiDung = (NguoiDung) session.getAttribute("loggedInUser");
-//        Optional<TaiLieu> optionalTaiLieu = taiLieuRepository.findByMaTaiLieu(maTaiLieu);
-//
-//        if (!optionalTaiLieu.isPresent()) {
-//            return "redirect:/trangchu";
-//        }
-//
-//        TaiLieu taiLieu = optionalTaiLieu.get();
-//        String nguoiTaiLen = taiLieuRepository.findHoTenByMaNguoiDung(taiLieu.getTaiLenBoi());
-//        String docImage = taiLieuRepository.findAnhByMaNguoiDung(taiLieu.getTaiLenBoi());
-//        String urlDoc = taiLieu.getDuongDanTep();
-//
-//        //C1: Lấy thông tin người bình luận qua maNguoiDung
-////        List<BinhLuan> binhLuans = binhLuanRepository.findByMaTaiLieu(maTaiLieu);
-////        List<String> hoTenNguoiBinhLuans = new ArrayList<>();
-////        List<String> anhNguoiBinhLuans = new ArrayList<>();
-////
-////        for (BinhLuan binhLuan : binhLuans) {
-////            NguoiDung nguoiBinhLuan = nguoiDungRepository.getUserByMaNguoiDung(binhLuan.getMaNguoiDung());
-////            hoTenNguoiBinhLuans.add(nguoiBinhLuan.getHoTen());
-////            anhNguoiBinhLuans.add(nguoiBinhLuan.getAnh());
-////        }
-//
-//        //C2: Lấy thông tin người bình luận qua maNguoiDung
-//        List<BinhLuan> binhLuans = binhLuanRepository.findByMaTaiLieu(maTaiLieu);
-//        List<String> hoTenNguoiBinhLuans = binhLuans.stream()
-//                .map(binhLuan -> nguoiDungRepository.getUserByMaNguoiDung(binhLuan.getMaNguoiDung()).getHoTen())
-//                .collect(Collectors.toList());
-//        List<String> anhNguoiBinhLuans = binhLuans.stream()
-//                .map(binhLuan -> nguoiDungRepository.getUserByMaNguoiDung(binhLuan.getMaNguoiDung()).getAnh())
-//                .collect(Collectors.toList());
-//
-//        model.addAttribute("nguoiDung", nguoiDung);
-//        model.addAttribute("nguoiTaiLen", nguoiTaiLen);
-//        model.addAttribute("taiLieu", taiLieu);
-//        model.addAttribute("docImage", docImage);
-//        model.addAttribute("urlDoc", urlDoc);
-//        model.addAttribute("binhLuans", binhLuans);
-//        model.addAttribute("hoTenNguoiBinhLuans", hoTenNguoiBinhLuans);
-//        model.addAttribute("anhNguoiBinhLuans", anhNguoiBinhLuans);
-//
-//        return "ChiTietTaiLieu";
-//    }
 
     @GetMapping("/document/{maTaiLieu}")
     public String getDocumentById(@PathVariable("maTaiLieu") Integer maTaiLieu, Model model, HttpSession session) {
@@ -187,6 +143,53 @@ public class TaiLieuController {
 
         return "ChiTietTaiLieu";
     }
+
+//    @PostMapping("/document/addcomment")
+//    public String addDocument(@RequestParam("maTaiLieu") Integer maTaiLieu,
+//                              @RequestParam("comment") String comment,
+//                              HttpSession session) {
+//        NguoiDung nguoiDung = (NguoiDung) session.getAttribute("loggedInUser");
+//        if (nguoiDung == null) {
+//            return "redirect:/trangchu";
+//        }
+//        Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
+//        BinhLuan binhLuan = new BinhLuan();
+//        binhLuan.setMaTaiLieu(maTaiLieu);
+//        binhLuan.setMaNguoiDung(nguoiDung.getMaNguoiDung());
+//        binhLuan.setNgayBinhLuan(currentTimestamp);
+//        binhLuan.setNoiDung(comment);
+//        binhLuanRepository.save(binhLuan);
+//        System.out.println("Đánh giá tài liệu thành công");
+//        return "redirect:/document/" + maTaiLieu;
+//    }
+
+    @PostMapping("/document/addcomment")
+    public String addDocument(@RequestParam("maTaiLieu") Integer maTaiLieu,
+                              @RequestParam("comment") String comment,
+                              @RequestParam("rating") Integer rating,
+                              HttpSession session) {
+        NguoiDung nguoiDung = (NguoiDung) session.getAttribute("loggedInUser");
+        if (nguoiDung == null) {
+            return "redirect:/trangchu";
+        }
+        Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
+        BinhLuan binhLuan = new BinhLuan();
+        DanhGia danhGia = new DanhGia();
+        binhLuan.setMaTaiLieu(maTaiLieu);
+        binhLuan.setMaNguoiDung(nguoiDung.getMaNguoiDung());
+        binhLuan.setNgayBinhLuan(currentTimestamp);
+        binhLuan.setNoiDung(comment);
+        danhGia.setMaTaiLieu(maTaiLieu);
+        danhGia.setMaNguoiDung(nguoiDung.getMaNguoiDung());
+        danhGia.setGiaTriDanhGia(rating);
+        danhGiaRepository.save(danhGia); // Lưu đối tượng danhGia vào cơ sở dữ liệu
+        binhLuanRepository.save(binhLuan);
+        System.out.println("Đánh giá tài liệu thành công");
+        return "redirect:/document/" + maTaiLieu;
+    }
+
+
+
 
 
     @PostMapping("/search/{keyword}")
@@ -272,25 +275,16 @@ public class TaiLieuController {
 //        return "ChiTietTaiLieu";
 //    }
 
-    @GetMapping("/danhgia/{maTaiLieu}")
-    public ResponseEntity<?> getBinhLuan(@PathVariable("maTaiLieu") Integer maTaiLieu) {
-        List<DanhGia> danhGias = danhGiaRepository.findByMaTaiLieu(maTaiLieu);
-        List<NguoiDung> listDanhGia = new ArrayList<>();
+    @PostMapping("/document/{maTaiLieu}/rate")
+    public String rateDocument(@PathVariable("maTaiLieu") Integer maTaiLieu, @RequestParam("rating") int rating) {
+        DanhGia danhGia = new DanhGia();
+        danhGia.setMaTaiLieu(maTaiLieu);
+        danhGia.setGiaTriDanhGia(rating);
+        danhGiaRepository.save(danhGia);
 
-        for (DanhGia danhGia : danhGias) {
-            NguoiDung nguoiDanhGia = nguoiDungRepository.getUserByMaNguoiDung(danhGia.getMaNguoiDung());
-            listDanhGia.add(nguoiDanhGia);
-        }
-
-        // Tạo một đối tượng Map chứa các danh sách binhLuans và nguoiBinhLuans
-        Map<String, Object> responseData = new HashMap<>();
-        responseData.put("danhGias", danhGias);
-        responseData.put("listDanhGia", listDanhGia);
-
-        // Trả về ResponseEntity chứa đối tượng Map với định dạng JSON và status là OK
-        return ResponseEntity.ok(responseData);
+        // Redirect hoặc trả về một trang cụ thể, ví dụ: trang chi tiết tài liệu
+        return "redirect:/document/" + maTaiLieu;
     }
-
 
 }
 

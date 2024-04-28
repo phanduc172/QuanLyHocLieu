@@ -204,87 +204,8 @@
                           <input type="password" name="confirmNewPassword" class="form-control" id="confirmNewPassword">
                           <div id="confirmNewPasswordError" class="text-danger"></div>
                         </div>
-                        <button type="submit" class="btn btn-primary">Đổi mật khẩu</button>
-                        <button type="button" onclick="showCurrentPassword()" class="btn btn-secondary">Hiển thị mật khẩu hiện tại</button>
+                        <button type="submit" class="btn btn-success">Đổi mật khẩu</button>
                       </form>
-
-<%--                      <script>--%>
-<%--                        // function showCurrentPassword() {--%>
-<%--                        //   var currentPasswordHidden = document.getElementById('currentPasswordHidden').value;--%>
-<%--                        //   alert("Mật khẩu hiện tại là: " + currentPasswordHidden);--%>
-<%--                        // }--%>
-<%--                        var currentPasswordHidden = document.getElementById('currentPasswordHidden').value;--%>
-
-<%--                        document.getElementById('changePasswordForm').addEventListener('submit', function(event) {--%>
-<%--                          var currentPassword = document.getElementById('currentPassword').value;--%>
-<%--                          var newPassword = document.getElementById('newPassword').value;--%>
-<%--                          var confirmNewPassword = document.getElementById('confirmNewPassword').value;--%>
-
-<%--                          var currentPasswordError = document.getElementById('currentPasswordError');--%>
-<%--                          var newPasswordError = document.getElementById('newPasswordError');--%>
-<%--                          var confirmNewPasswordError = document.getElementById('confirmNewPasswordError');--%>
-
-<%--                          currentPasswordError.textContent = "";--%>
-<%--                          newPasswordError.textContent = "";--%>
-<%--                          confirmNewPasswordError.textContent = "";--%>
-
-<%--                          var isValid = true;--%>
-
-<%--                          if (currentPassword === "") {--%>
-<%--                            currentPasswordError.textContent = "Vui lòng nhập mật khẩu hiện tại";--%>
-<%--                            isValid = false;--%>
-<%--                          }--%>
-<%--                          // Kiểm tra xác nhận mật khẩu hiện tại--%>
-<%--                          else if (currentPassword !== "${currentPasswordHidden}") {--%>
-<%--                            currentPasswordError.textContent = "Mật khẩu hiện tại không đúng";--%>
-<%--                            isValid = false;--%>
-<%--                          }--%>
-
-<%--                          if (newPassword !== confirmNewPassword) {--%>
-<%--                            confirmNewPasswordError.textContent = "Mật khẩu mới không trùng khớp";--%>
-<%--                            isValid = false;--%>
-<%--                          }--%>
-
-<%--                          if (currentPassword === "") {--%>
-<%--                            currentPasswordError.textContent = "Vui lòng nhập mật khẩu hiện tại";--%>
-<%--                            isValid = false;--%>
-<%--                          }--%>
-
-<%--                          if (newPassword === "") {--%>
-<%--                            newPasswordError.textContent = "Vui lòng nhập mật khẩu mới";--%>
-<%--                            isValid = false;--%>
-<%--                          }--%>
-
-<%--                          if (confirmNewPassword === "") {--%>
-<%--                            confirmNewPasswordError.textContent = "Vui lòng xác nhận mật khẩu mới";--%>
-<%--                            isValid = false;--%>
-<%--                          }--%>
-
-<%--                          if (!isValid) {--%>
-<%--                            event.preventDefault(); // Ngăn chặn gửi form nếu có lỗi--%>
-<%--                            return; // Dừng lại nếu có lỗi--%>
-<%--                          }--%>
-
-<%--                        });--%>
-
-<%--                        document.getElementById('currentPassword').addEventListener('focus', function() {--%>
-<%--                          document.getElementById('currentPasswordError').textContent = "";--%>
-<%--                          document.getElementById('currentPassword').value = "";--%>
-<%--                        });--%>
-
-<%--                        document.getElementById('newPassword').addEventListener('focus', function() {--%>
-<%--                          document.getElementById('newPasswordError').textContent = "";--%>
-<%--                          document.getElementById('newPassword').value = "";--%>
-<%--                        });--%>
-
-<%--                        document.getElementById('confirmNewPassword').addEventListener('focus', function() {--%>
-<%--                          document.getElementById('confirmNewPasswordError').textContent = "";--%>
-<%--                          document.getElementById('confirmNewPassword').value = "";--%>
-<%--                        });--%>
-<%--                      </script>--%>
-
-
-
                     </div>
                   </div>
                 </div>

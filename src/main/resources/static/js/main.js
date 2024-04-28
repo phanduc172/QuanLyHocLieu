@@ -77,11 +77,13 @@
                     s.classList.add('bi-star');
                 }
             });
-            console.log('Người dùng đã chọn xếp hạng: ' + rating);
+            document.getElementById('rating-input').value = rating;
             // Hiển thị form bình luận
             commentForm.classList.remove('d-none');
+            console.log('Người dùng đã chọn xếp hạng: ' + rating);
         });
     });
+    //Kiểm tra người dùng chọn vào số sao là bao nhiêu và ẩn hiện form comment
 
     // Xử lý sự kiện click cho nút "Hủy"
     cancelButton.addEventListener('click', function(event) {
@@ -95,6 +97,7 @@
             s.classList.add('bi-star');
         });
     });
+    // Xử lý sự kiện click cho nút "Hủy"
 
     //Ẩn hiện mật khẩu khi nhập vào input
     function togglePasswordVisibility() {
@@ -112,7 +115,16 @@
             eyeIcon.classList.add('bi-eye-slash');
         }
     }
+    //Ẩn hiện mật khẩu khi nhập vào input
 
-
+    // //Set giá trị mặc định cho đánh giá
+    // function setRating() {
+    //     const ratingInput = document.getElementById('rating-input');
+    //     const ratingValue = parseInt(ratingInput.value);
+    //     if (isNaN(ratingValue)) {
+    //         ratingInput.value = 5;
+    //     }
+    // }
+    // //Set giá trị mặc định cho đánh giá
 
   

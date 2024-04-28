@@ -251,17 +251,18 @@
                         <span class="bi bi-star fs-3 mx-1" data-rating="5" title="Rất tốt"></span>
                     </div>
 
-                    <form class="d-none" id="comment-form">
+                    <form class="d-none" id="comment-form" action="/document/addcomment" method="post">
+                        <input type="text" id="rating-input" name="rating">
+                        <input type="text" name="maTaiLieu" value="${taiLieu.getMaTaiLieu()}">
                         <div class="my-2">
-                            <textarea class="form-control border border-secondary rounded" id="comment" rows="3" placeholder="Viết bình luận..."></textarea>
+                            <textarea class="form-control border border-secondary rounded" name="comment" id="comment" rows="3" placeholder="Viết bình luận..."></textarea>
                         </div>
                         <div class="d-flex justify-content-end">
-                            <button class="btn btn-outline-secondary px-3 text-dark rounded-pill me-2">Hủy</button>
-                            <button class="btn btn-success px-5 rounded-pill">Gửi</button>
+                            <button type="button" class="btn btn-outline-secondary px-3 text-dark rounded-pill me-2">Hủy</button>
+                            <button type="submit" class="btn btn-success px-5 rounded-pill" onclick="setRating()">Gửi</button> <!-- Gọi hàm setRating() trước khi form được submit -->
                         </div>
                     </form>
                 </div>
-
                 <div class="mt-4 ps-4">
                     <h5>Bình luận của người khác</h5>
                     <div class="comments mt-3">
