@@ -189,9 +189,6 @@ public class TaiLieuController {
     }
 
 
-
-
-
     @PostMapping("/search/{keyword}")
     public String timKiemTaiLieu(@RequestParam("keyword") String keyword, ModelMap modelMap, HttpSession session) {
         NguoiDung nguoiDung = (NguoiDung) session.getAttribute("loggedInUser");
@@ -216,6 +213,9 @@ public class TaiLieuController {
         NguoiDung nguoiDung = (NguoiDung) session.getAttribute("loggedInUser");
         modelMap.addAttribute("nguoiDung", nguoiDung);
 
+        List<DanhMuc> listDanhMuc = danhMucRepository.findAll();
+        modelMap.addAttribute("listDanhMuc", listDanhMuc);
+
         List<Khoa> listKhoa = khoaRepository.findAll();
         modelMap.addAttribute("listKhoa", listKhoa);
 
@@ -227,12 +227,28 @@ public class TaiLieuController {
                                    @RequestParam("title") String title,
                                    @RequestParam("description") String description,
                                    @RequestParam("faculty") String faculty,
+                                   @RequestParam("category") Integer category,
                                    @RequestParam("major") String major,
                                    HttpSession session) {
         Integer maNguoiDung = ((NguoiDung) session.getAttribute("loggedInUser")).getMaNguoiDung();
         if (!file.isEmpty()) {
             try {
                 String fileName = storageService.store(file);
+                Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
+                String prefixedFilePath = "/upload/documents/" + fileName;
+                String anhTaiLieu = "/images/1.jpg";
+                TaiLieu taiLieu = new TaiLieu();
+                taiLieu.setTieuDe(title);
+                taiLieu.setMoTa(description);
+                taiLieu.setDuongDanTep(prefixedFilePath);
+                taiLieu.setAnhTaiLieu(anhTaiLieu);
+                taiLieu.setTaiLenBoi(maNguoiDung);
+                taiLieu.setNgayTaiLen(currentTimestamp);
+                taiLieu.setSoLuotTaiXuong(0);
+                taiLieu.setMaDanhMuc(category);
+                taiLieu.setMaChuyenNganh(major);
+                taiLieuRepository.save(taiLieu);
+                System.out.println("Đường dẫn lưu trữ tệp: " + prefixedFilePath);
                 System.out.println("Tài liệu tải lên thành công");
                 return "redirect:/userinfo/"+maNguoiDung;
             } catch (Exception e) {
@@ -248,43 +264,13 @@ public class TaiLieuController {
 
 
     //Lấy chuyên ngành để hiển thị khi mà người dùng tải lên tài liệu ở UploadFile
-        @GetMapping("/getChuyenNganh")
-        @ResponseBody
-        public List<ChuyenNganh> getMajorsByFaculty(@RequestParam("faculty") Integer facultyCode) {
-            List<ChuyenNganh> listMajors = chuyenNganhRepository.findKhoaByMaKhoa(facultyCode);
-            return listMajors;
-        }
-
-//    @GetMapping("/binhluan/{id}")
-//    public String getBinhLuan(@PathVariable("id") Integer maTaiLieu, ModelMap modelMap) {
-//        List<BinhLuan> binhLuans = binhLuanRepository.findByMaTaiLieu(maTaiLieu);
-//        List<NguoiDung> listBinhLuan = new ArrayList<>();
-//
-//        for (BinhLuan binhLuan : binhLuans) {
-//            NguoiDung nguoiBinhLuan = nguoiDungRepository.getUserByMaNguoiDung(binhLuan.getMaNguoiDung());
-//            listBinhLuan.add(nguoiBinhLuan);
-//
-//            // In ra console thông tin người bình luận và nội dung bình luận
-//            System.out.println("Tên người bình luận: " + nguoiBinhLuan.getTenNguoiDung());
-//            System.out.println("Nội dung bình luận: " + binhLuan.getNoiDung());
-//        }
-//
-//        modelMap.addAttribute("binhLuans", binhLuans);
-//        modelMap.addAttribute("nguoiBinhLuans", listBinhLuan);
-//
-//        return "ChiTietTaiLieu";
-//    }
-
-    @PostMapping("/document/{maTaiLieu}/rate")
-    public String rateDocument(@PathVariable("maTaiLieu") Integer maTaiLieu, @RequestParam("rating") int rating) {
-        DanhGia danhGia = new DanhGia();
-        danhGia.setMaTaiLieu(maTaiLieu);
-        danhGia.setGiaTriDanhGia(rating);
-        danhGiaRepository.save(danhGia);
-
-        // Redirect hoặc trả về một trang cụ thể, ví dụ: trang chi tiết tài liệu
-        return "redirect:/document/" + maTaiLieu;
+    @GetMapping("/getChuyenNganh")
+    @ResponseBody
+    public List<ChuyenNganh> getMajorsByFaculty(@RequestParam("faculty") Integer facultyCode) {
+        List<ChuyenNganh> listMajors = chuyenNganhRepository.findKhoaByMaKhoa(facultyCode);
+        return listMajors;
     }
+
 
 }
 

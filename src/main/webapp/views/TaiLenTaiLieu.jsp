@@ -210,6 +210,15 @@
                 <textarea class="form-control" id="description" name="description" rows="3"></textarea>
             </div>
             <div class="mb-3">
+                <label for="category" class="form-label">Thể loại:</label>
+                <select class="form-control" id="category" name="category" required>
+                    <option value="">Chọn Thể loại</option>
+                    <c:forEach items="${listDanhMuc}" var="danhmuc">
+                        <option value="${danhmuc.maDanhMuc}">${danhmuc.tenDanhMuc}</option>
+                    </c:forEach>
+                </select>
+            </div>
+            <div class="mb-3">
                 <label for="faculty" class="form-label">Khoa:</label>
                 <select class="form-control" id="faculty" name="faculty" required>
                     <option value="">Chọn Khoa</option>

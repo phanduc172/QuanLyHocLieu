@@ -36,11 +36,11 @@ public class TaiLieu {
         this.maChuyenNganh = maChuyenNganh;
     }
 
-    public int getMaTaiLieu() {
+    public Integer getMaTaiLieu() {
         return maTaiLieu;
     }
 
-    public void setMaTaiLieu(int maTaiLieu) {
+    public void setMaTaiLieu(Integer maTaiLieu) {
         this.maTaiLieu = maTaiLieu;
     }
 
