@@ -50,6 +50,11 @@ public class NguoiDungController {
         List<TaiLieu> taiLieus = taiLieuRepository.findByTaiLenBoi(maNguoiDung);
         List<Khoa> listKhoa = khoaRepository.findAll();
 
+        // Kiểm tra nếu danh sách tài liệu rỗng, gán nội dung cho modal
+        if (taiLieus == null || taiLieus.isEmpty()) {
+            model.addAttribute("noDocuments", "Bạn chưa tải lên tài liệu nào!");
+        }
+
         Integer totalDoc = taiLieus.size();
 
         model.addAttribute("listKhoa", listKhoa);

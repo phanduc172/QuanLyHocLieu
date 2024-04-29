@@ -171,16 +171,39 @@ public class TaiLieuController {
         return "redirect:/document/" + maTaiLieu;
     }
 
+
+//    @GetMapping("/getDetailDocument/{id}")
+//    @ResponseBody
+//    public TaiLieu showDocumentDetails(@PathVariable("id") Integer maTaiLieu) {
+//        // Lấy thông tin chi tiết của tài liệu dựa trên mã tài liệu
+//        Optional<TaiLieu> optionalTaiLieu = taiLieuRepository.findByMaTaiLieu(maTaiLieu);
+//
+//        // Kiểm tra xem tài liệu có tồn tại hay không
+//        if (optionalTaiLieu.isPresent()) {
+//            TaiLieu deTailTaiLieu = optionalTaiLieu.get();
+//            return deTailTaiLieu;
+//        } else {
+//            return null;
+//        }
+//    }
+
     @GetMapping("/getDetailDocument/{id}")
     @ResponseBody
-    public TaiLieu showDocumentDetails(@PathVariable("id") Integer maTaiLieu) {
-        // Lấy thông tin chi tiết của tài liệu dựa trên mã tài liệu
+    public Map<String, Object> showDocumentDetails(@PathVariable("id") Integer maTaiLieu) {
         Optional<TaiLieu> optionalTaiLieu = taiLieuRepository.findByMaTaiLieu(maTaiLieu);
-
-        // Kiểm tra xem tài liệu có tồn tại hay không
+        Map<String, Object> response = new HashMap<>();
         if (optionalTaiLieu.isPresent()) {
             TaiLieu deTailTaiLieu = optionalTaiLieu.get();
-            return deTailTaiLieu;
+            String maChuyenNganh = deTailTaiLieu.getMaChuyenNganh();
+            ChuyenNganh chuyenNganh = chuyenNganhRepository.findChuyenNganhByMaChuyenNganh(maChuyenNganh);
+            Integer maKhoa = chuyenNganh.getMaKhoa();
+            Khoa khoa = khoaRepository.getById(maKhoa);
+            DanhMuc danhMuc = danhMucRepository.getById(deTailTaiLieu.getMaDanhMuc());
+            response.put("deTailTaiLieu", deTailTaiLieu);
+            response.put("tenDanhMuc", danhMuc.getTenDanhMuc());
+            response.put("tenKhoa", khoa.getTenKhoa());
+            response.put("tenChuyenNganh", chuyenNganh.getTenChuyenNganh());
+            return response;
         } else {
             return null;
         }

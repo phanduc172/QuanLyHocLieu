@@ -224,9 +224,11 @@
         <h5 class="text-center fw-bold">Thể loại</h5>
         <c:forEach var="danhmuc" items="${danhMucs}">
           <ul class="list-group">
-            <li class="list-group-item mt-2 ">
-              <a class="text-decoration-none" href="/danhmuc/${danhmuc.maDanhMuc}">${danhmuc.tenDanhMuc}</a>
-            </li>
+              <a class="text-decoration-none" href="/danhmuc/${danhmuc.maDanhMuc}">
+                  <li class="list-group-item mt-2 ">
+                    ${danhmuc.tenDanhMuc}
+                  </li>
+              </a>
           </ul>
         </c:forEach>
       </div>

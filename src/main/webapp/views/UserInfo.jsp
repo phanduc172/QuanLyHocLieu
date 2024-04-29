@@ -234,7 +234,7 @@
                   <img id="previewImage" src="#" alt="Preview Image" class="img-thumbnail">
                 </div>
                 <div class="modal-footer p-0">
-                  <button type="button" class="btn btn-secondary mt-2" data-bs-dismiss="modal">Đóng</button>
+                  <button type="button" class="btn btn-outline-secondary mt-2" data-bs-dismiss="modal">Đóng</button>
                   <button type="submit" class="btn btn-primary mt-2">Lưu thay đổi</button>
                 </div>
               </form>
@@ -301,7 +301,7 @@
     <div class="col-md-12 col-lg-8">
       <h5 class="mb-3">Quản lý tài liệu</h5>
       <div class="card">
-        <ul class="list-unstyled d-flex flex-wrap justify-content-around m-0">
+        <ul class="list-unstyled d-flex flex-wrap justify-content-between m-0">
           <li class="px-5 py-2 docHover"><a href="#" class="text-decoration-none">Đã duyệt <span class="text">(${totalDoc})</span></a></li>
           <li class="px-5 py-2 docHover"><a href="#" class="text-decoration-none">Chờ duyệt(2)</a></li>
           <li class="px-5 py-2 docHover"><a href="#" class="text-decoration-none">Từ chối(0)</a></li>
@@ -314,6 +314,10 @@
           Danh sách tài liệu đã tải lên
         </div>
         <ul class="list-group list-group-flush">
+          <%-- Kiểm tra xem có danh sách tài liệu không --%>
+          <c:if test="${empty taiLieus}">
+            <li class="list-group-item">${noDocuments}</li>
+          </c:if>
           <c:forEach var="taiLieu" items="${taiLieus}" varStatus="loop">
             <input type="hidden" name="maTaiLieu" value="${taiLieu.maTaiLieu}">
             <li class="list-group-item d-flex justify-content-between align-items-center p-3">
@@ -348,26 +352,29 @@
               <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-<%--              <div class="mb-2">--%>
-<%--                <label for="detailMaTaiLieu" class="form-label">Mã tài liệu:</label>--%>
-<%--                <input type="text" class="form-control" id="detailMaTaiLieu" value="${taiLieu.maTaiLieu}" readonly>--%>
-<%--              </div>--%>
+              <div class="mb-2">
+                <label for="detailMaTaiLieu" class="form-label">Mã tài liệu:</label>
+                <input type="text" class="form-control" id="detailMaTaiLieu" value="" readonly>
+              </div>
               <div class="mb-2">
                 <label for="detailTitle" class="form-label">Tiêu đề:</label>
-                <input type="text" class="form-control" id="detailTitle" value="${taiLieu.tieuDe}" readonly>
+                <input type="text" class="form-control" id="detailTitle" value="" readonly>
               </div>
               <div class="mb-2">
                 <label for="detailDescription" class="form-label">Mô tả:</label>
-                <textarea class="form-control" id="detailDescription" readonly>${taiLieu.moTa}</textarea>
+                <textarea class="form-control" id="detailDescription" readonly></textarea>
               </div>
               <div class="mb-2">
-                <label for="detailCategory" class="form-label">Mã danh mục:</label>
+                <label for="detailCategory" class="form-label">Danh mục:</label>
                 <input type="text" class="form-control" id="detailCategory" value="" readonly>
-                ${taiLieu.maDanhMuc}
               </div>
               <div class="mb-2">
-                <label for="detailFaculty" class="form-label">Mã chuyên ngành:</label>
+                <label for="detailFaculty" class="form-label">Khoa:</label>
                 <input type="text" class="form-control" id="detailFaculty" value="" readonly>
+              </div>
+              <div class="mb-2">
+                <label for="detailMajor" class="form-label">Mã chuyên ngành:</label>
+                <input type="text" class="form-control" id="detailMajor" value="" readonly>
                 ${taiLieu.maChuyenNganh}
               </div>
             </div>
@@ -399,7 +406,6 @@
                 <div class="mb-2">
                   <label for="category" class="form-label">Thể loại:</label>
                   <select class="form-control" id="category" name="category" required>
-                    <option value="0">Chọn Thể loại</option>
                     <c:forEach items="${listDanhMuc}" var="danhmuc">
                       <option value="${danhmuc.maDanhMuc}">${danhmuc.tenDanhMuc}</option>
                     </c:forEach>
@@ -494,11 +500,11 @@
               type: 'GET',
               url: '/getDetailDocument/' + maTaiLieu,
               success: function(response) {
-                // Cập nhật giá trị cho các trường input trong modal
-                $('#detailTitle').val(response.tieuDe);
-                $('#detailDescription').val(response.moTa);
-                $('#detailCategory').val(response.maDanhMuc); // Sửa lại tên trường dữ liệu
-                $('#detailFaculty').val(response.maChuyenNganh); // Sửa lại tên trường dữ liệu
+                $('#detailTitle').val(response.deTailTaiLieu.tieuDe);
+                $('#detailDescription').val(response.deTailTaiLieu.moTa);
+                $('#detailCategory').val(response.tenDanhMuc);
+                $('#detailFaculty').val(response.tenKhoa);
+                $('#detailMajor').val(response.tenChuyenNganh);
 
                 // Hiển thị modal
                 $('#detailsDocumentModal').modal('show');
@@ -508,6 +514,7 @@
                 alert('Đã xảy ra lỗi khi tải thông tin chi tiết tài liệu.');
               }
             });
+
 
           });
         });
