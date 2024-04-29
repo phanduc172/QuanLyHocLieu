@@ -197,7 +197,7 @@
   </nav>
 </header>
 
-<div class="container main">
+<div class="container main min-vh-100">
   <div class="row">
     <div class="col-lg-4 d-lg-block">
       <div class="card">
@@ -215,7 +215,6 @@
           </button>
         </div>
       </div>
-
 
       <!-- Modal đổi ảnh đại diện -->
       <div class="modal fade" id="changeAvatarModal" tabindex="-1" aria-labelledby="changeAvatarModalLabel" aria-hidden="true">
@@ -244,8 +243,6 @@
         </div>
       </div>
 
-
-
       <script>
         // Lắng nghe sự kiện khi người dùng chọn một tệp hình ảnh mới
         $('#avatarFile').change(function() {
@@ -266,10 +263,6 @@
           }
         });
       </script>
-
-
-
-
 
       <!-- Modal chỉnh sửa thông tin cá nhân -->
       <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true" style="margin-top: 80px;">
@@ -309,7 +302,7 @@
       <h5 class="mb-3">Quản lý tài liệu</h5>
       <div class="card">
         <ul class="list-unstyled d-flex flex-wrap justify-content-around m-0">
-          <li class="px-5 py-2 docHover"><a href="#" class="text-decoration-none">Đã duyệt(1)</a></li>
+          <li class="px-5 py-2 docHover"><a href="#" class="text-decoration-none">Đã duyệt <span class="text">(${totalDoc})</span></a></li>
           <li class="px-5 py-2 docHover"><a href="#" class="text-decoration-none">Chờ duyệt(2)</a></li>
           <li class="px-5 py-2 docHover"><a href="#" class="text-decoration-none">Từ chối(0)</a></li>
 <%--          <li class="px-5 py-2 docHover"><a href="#" class="text-decoration-none">Bị trùng(0)</a></li>--%>
@@ -321,85 +314,201 @@
           Danh sách tài liệu đã tải lên
         </div>
         <ul class="list-group list-group-flush">
-          <c:forEach var="taiLieu" items="${taiLieus}">
+          <c:forEach var="taiLieu" items="${taiLieus}" varStatus="loop">
+            <input type="hidden" name="maTaiLieu" value="${taiLieu.maTaiLieu}">
             <li class="list-group-item d-flex justify-content-between align-items-center p-3">
               <a href="/document/${taiLieu.maTaiLieu}" class="text-decoration-none">
                 <div class="d-flex align-items-center">
-                  <span class="fs-6">${taiLieu.tieuDe}</span>
+                  <span class="fs-6">${loop.index + 1}. ${taiLieu.tieuDe}</span>
                 </div>
               </a>
               <div>
+                <button class="btn btn-sm btn-outline-danger me-2 buttonDetail" title="Details" style="width: 30px;height: 30px;"
+                        data-bs-toggle="modal" data-bs-target="#detailsDocumentModal" data-document-id="${taiLieu.maTaiLieu}">
+                  <i class="fas fa-info"></i>
+                </button>
                 <button class="btn btn-sm btn-outline-primary me-2" title="Sửa" style="width: 30px;height: 30px;"
                         data-bs-toggle="modal" data-bs-target="#editDocumentModal"
                         data-document-id="${taiLieu.maTaiLieu}" data-document-title="${taiLieu.tieuDe}" data-document-description="${taiLieu.moTa}">
                   <i class="fas fa-edit"></i>
                 </button>
-                <button class="btn btn-sm btn-outline-danger" title="Xóa" style="width: 30px;height: 30px;"><i class="fas fa-trash-alt"></i></button>
               </div>
             </li>
           </c:forEach>
-
         </ul>
+      </div>
+
+      <!-- Modal xem chi tiết tài liệu theo mã tài liệu -->
+      <div class="modal fade" id="detailsDocumentModal" tabindex="-1" aria-labelledby="detailsDocumentModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header text-white px-3 py-2 bg-custom-blue ">
+              <span class="fas fa-info"></span>
+              <h5 class="modal-title ms-2" id="detailsDocumentModalLabel">Chi tiết tài liệu</h5>
+              <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+<%--              <div class="mb-2">--%>
+<%--                <label for="detailMaTaiLieu" class="form-label">Mã tài liệu:</label>--%>
+<%--                <input type="text" class="form-control" id="detailMaTaiLieu" value="${taiLieu.maTaiLieu}" readonly>--%>
+<%--              </div>--%>
+              <div class="mb-2">
+                <label for="detailTitle" class="form-label">Tiêu đề:</label>
+                <input type="text" class="form-control" id="detailTitle" value="${taiLieu.tieuDe}" readonly>
+              </div>
+              <div class="mb-2">
+                <label for="detailDescription" class="form-label">Mô tả:</label>
+                <textarea class="form-control" id="detailDescription" readonly>${taiLieu.moTa}</textarea>
+              </div>
+              <div class="mb-2">
+                <label for="detailCategory" class="form-label">Mã danh mục:</label>
+                <input type="text" class="form-control" id="detailCategory" value="" readonly>
+                ${taiLieu.maDanhMuc}
+              </div>
+              <div class="mb-2">
+                <label for="detailFaculty" class="form-label">Mã chuyên ngành:</label>
+                <input type="text" class="form-control" id="detailFaculty" value="" readonly>
+                ${taiLieu.maChuyenNganh}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- Modal chỉnh sửa tài liệu -->
       <div class="modal fade" id="editDocumentModal" tabindex="-1" aria-labelledby="editDocumentModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
           <div class="modal-content modelUser">
-            <div class="modal-header">
-              <h5 class="modal-title" id="editDocumentModalLabel">Chỉnh sửa tài liệu</h5>
+            <div class="modal-header px-3 py-2 text-white bg-custom-blue">
+              <i class="bi bi-pencil-fill"></i>
+              <h5 class="modal-title ms-2" id="editDocumentModalLabel">Chỉnh sửa tài liệu</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
               <!-- Form chỉnh sửa tài liệu -->
-              <form id="editDocumentForm">
-                <div class="mb-3">
+              <form id="editDocumentForm" action="/document/updatedocument" method="post">
+                <input type="hidden" name="maTaiLieu" id="maTaiLieu" value="${taiLieu.maTaiLieu}">
+                <div class="mb-2">
                   <label for="editTitle" class="form-label">Tiêu đề:</label>
                   <input type="text" class="form-control" id="editTitle" name="editTitle" required>
                 </div>
-                <div class="mb-3">
+                <div class="mb-2">
                   <label for="editDescription" class="form-label">Mô tả:</label>
                   <textarea class="form-control" id="editDescription" name="editDescription" rows="3"></textarea>
                 </div>
-                <div class="mb-3">
+                <div class="mb-2">
+                  <label for="category" class="form-label">Thể loại:</label>
+                  <select class="form-control" id="category" name="category" required>
+                    <option value="0">Chọn Thể loại</option>
+                    <c:forEach items="${listDanhMuc}" var="danhmuc">
+                      <option value="${danhmuc.maDanhMuc}">${danhmuc.tenDanhMuc}</option>
+                    </c:forEach>
+                  </select>
+                </div>
+                <div class="mb-2">
                   <label for="faculty" class="form-label">Khoa:</label>
                   <select class="form-control" id="faculty" name="faculty" required>
-                    <option value="">Chọn Khoa</option>
                     <c:forEach items="${listKhoa}" var="khoa">
                       <option value="${khoa.maKhoa}">${khoa.tenKhoa}</option>
                     </c:forEach>
                   </select>
                 </div>
-                <div class="mb-3">
+                <div class="mb-2">
                   <label for="major" class="form-label">Chuyên ngành:</label>
                   <select class="form-control" id="major" name="major" required>
-                    <option value="">Chọn Chuyên ngành</option>
+                    <option value="0">-None-</option>
                   </select>
                 </div>
-                <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+                <button type="submit" class="btn btn-primary mt-2">Lưu thay đổi</button>
               </form>
             </div>
           </div>
         </div>
       </div>
 
+      <!-- Modal Delete Document -->
+      <div class="modal fade" id="deleteDocumentModal" tabindex="-1" aria-labelledby="deleteDocumentModalLabel" aria-hidden="true">
+        <div class="modal-dialog ">
+          <div class="modal-content modelUser">
+            <div class="modal-header">
+              <h5 class="modal-title" id="deleteDocumentModalLabel">Xác nhận xóa tài liệu</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              Bạn có chắc chắn muốn xóa tài liệu này không?
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+              <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Xóa</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script src="">
+        $('#editDocumentModal').on('show.bs.modal', function (event) {
+          var button = $(event.relatedTarget);
+          var maTaiLieu = button.data('matailieu');
+          var modal = $(this);
+          modal.find('.modal-body #maTaiLieu').val(maTaiLieu);
+        });
+      </script>
+
+      <%--Form chỉnh sửa--%>
       <script>
         document.querySelectorAll('.btn-outline-primary').forEach(function(button) {
           button.addEventListener('click', function() {
-            // Lấy thông tin từ thuộc tính data-*
-            var documentId = this.dataset.documentId;
+            var maTaiLieu = this.dataset.documentId;
             var documentTitle = this.dataset.documentTitle;
             var documentDescription = this.dataset.documentDescription;
             var facultyId = this.dataset.facultyId;
             var majorId = this.dataset.majorId;
 
             // Điền thông tin vào các trường trong form chỉnh sửa tài liệu
+            document.getElementById('maTaiLieu').value = maTaiLieu;
             document.getElementById('editTitle').value = documentTitle;
             document.getElementById('editDescription').value = documentDescription;
 
             // Hiển thị khoa và chuyên ngành tương ứng trong form
-            document.getElementById('editFaculty').value = facultyId;
-            document.getElementById('editMajor').value = majorId;
+            document.getElementById('faculty').value = facultyId;
+            document.getElementById('major').value = majorId;
+          });
+        });
+      </script>
+
+        <%--Form chi tiết--%>
+      <script !src="">
+        $(document).ready(function() {
+          // Đặt sự kiện click cho tất cả các nút "Details" có class là btn-outline-danger
+          $('.buttonDetail').click(function() {
+
+            var maTaiLieu = $(this).data('document-id');
+
+            // Gán giá trị mã tài liệu cho trường input trong modal
+            $('#detailMaTaiLieu').val(maTaiLieu);
+
+            // Hiển thị modal
+            $('#detailsDocumentModal').modal('show');
+            // Gửi yêu cầu AJAX
+            $.ajax({
+              type: 'GET',
+              url: '/getDetailDocument/' + maTaiLieu,
+              success: function(response) {
+                // Cập nhật giá trị cho các trường input trong modal
+                $('#detailTitle').val(response.tieuDe);
+                $('#detailDescription').val(response.moTa);
+                $('#detailCategory').val(response.maDanhMuc); // Sửa lại tên trường dữ liệu
+                $('#detailFaculty').val(response.maChuyenNganh); // Sửa lại tên trường dữ liệu
+
+                // Hiển thị modal
+                $('#detailsDocumentModal').modal('show');
+              },
+              error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+                alert('Đã xảy ra lỗi khi tải thông tin chi tiết tài liệu.');
+              }
+            });
+
           });
         });
       </script>

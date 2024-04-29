@@ -247,55 +247,6 @@
         </div>
     </footer>
 
-<%--    <script !src="">--%>
-<%--        $(document).ready(function() {--%>
-<%--            $('#faculty').change(function() {--%>
-<%--                var selectedFaculty = $(this).val();--%>
-<%--                $.ajax({--%>
-<%--                    type: 'GET',--%>
-<%--                    url: '/getChuyenNganh', // Địa chỉ URL endpoint để lấy danh sách chuyên ngành--%>
-<%--                    data: {faculty: selectedFaculty},--%>
-<%--                    success: function(data) {--%>
-<%--                        $('#major').empty(); // Xóa tất cả các tùy chọn trước đó--%>
-<%--                        $.each(data, function(index, major) {--%>
-<%--                            $('#major').append('<option value="' + major.maChuyenNganh + '">' + major.tenChuyenNganh + '</option>');--%>
-<%--                        });--%>
-<%--                    }--%>
-<%--                });--%>
-<%--            });--%>
-<%--        });--%>
-<%--    </script>--%>
-
-
-<%--    <script !src="">--%>
-<%--        // Đối tượng chứa dữ liệu giả cho các chuyên ngành theo từng khoa--%>
-<%--        var fakeMajors = {--%>
-<%--            "khoa1": ["Chuyên ngành 1", "Chuyên ngành 2", "Chuyên ngành 3"],--%>
-<%--            "khoa2": ["Chuyên ngành A", "Chuyên ngành B", "Chuyên ngành C"],--%>
-<%--            // Thêm các chuyên ngành khác tương ứng với các khoa khác--%>
-<%--        };--%>
-
-<%--        // Hàm cập nhật danh sách chuyên ngành khi người dùng chọn khoa--%>
-<%--        function updateMajorOptions() {--%>
-<%--            var selectedFaculty = document.getElementById("faculty").value;--%>
-<%--            var majorSelect = document.getElementById("major");--%>
-<%--            majorSelect.innerHTML = ""; // Xóa tất cả các lựa chọn trước đó--%>
-
-<%--            var majors = fakeMajors[selectedFaculty] || [];--%>
-<%--            majors.forEach(function(major) {--%>
-<%--                var option = document.createElement("option");--%>
-<%--                option.value = major;--%>
-<%--                option.text = major;--%>
-<%--                majorSelect.appendChild(option);--%>
-<%--            });--%>
-<%--        }--%>
-
-<%--        // Gán sự kiện onchange cho select khoa để cập nhật danh sách chuyên ngành--%>
-<%--        document.getElementById("faculty").onchange = updateMajorOptions;--%>
-
-<%--        // Kích hoạt hàm updateMajorOptions lần đầu khi trang được tải--%>
-<%--        updateMajorOptions();--%>
-<%--    </script>--%>
     <script src="/js/main.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>

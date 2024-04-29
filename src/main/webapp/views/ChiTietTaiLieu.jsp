@@ -252,14 +252,14 @@
                     </div>
 
                     <form class="d-none" id="comment-form" action="/document/addcomment" method="post">
-                        <input type="text" id="rating-input" name="rating">
-                        <input type="text" name="maTaiLieu" value="${taiLieu.getMaTaiLieu()}">
+                        <input type="hidden" id="rating-input" name="rating">
+                        <input type="hidden" name="maTaiLieu" value="${taiLieu.getMaTaiLieu()}">
                         <div class="my-2">
                             <textarea class="form-control border border-secondary rounded" name="comment" id="comment" rows="3" placeholder="Viết bình luận..."></textarea>
                         </div>
                         <div class="d-flex justify-content-end">
                             <button type="button" class="btn btn-outline-secondary px-3 text-dark rounded-pill me-2">Hủy</button>
-                            <button type="submit" class="btn btn-success px-5 rounded-pill" onclick="setRating()">Gửi</button> <!-- Gọi hàm setRating() trước khi form được submit -->
+                            <button type="submit" class="btn btn-success px-5 rounded-pill" onclick="setRating()">Gửi</button>
                         </div>
                     </form>
                 </div>

@@ -1,9 +1,7 @@
 package com.phanduc.QLHocLieu.controllers;
 
-import com.phanduc.QLHocLieu.models.CheckLogin;
-import com.phanduc.QLHocLieu.models.Khoa;
-import com.phanduc.QLHocLieu.models.NguoiDung;
-import com.phanduc.QLHocLieu.models.TaiLieu;
+import com.phanduc.QLHocLieu.models.*;
+import com.phanduc.QLHocLieu.repositories.DanhMucRepository;
 import com.phanduc.QLHocLieu.repositories.KhoaRepository;
 import com.phanduc.QLHocLieu.repositories.NguoiDungRepository;
 import com.phanduc.QLHocLieu.repositories.TaiLieuRepository;
@@ -33,6 +31,8 @@ public class NguoiDungController {
     @Autowired
     KhoaRepository khoaRepository;
     @Autowired
+    DanhMucRepository danhMucRepository;
+    @Autowired
     @Qualifier("uploadImageService")
     private StorageService storageService;
 
@@ -41,17 +41,24 @@ public class NguoiDungController {
     public String getUserInfoById(@PathVariable("id") Integer maNguoiDung, Model model, HttpSession session) {
 
         NguoiDung loggedInUser = (NguoiDung) session.getAttribute("loggedInUser");
+        List<DanhMuc> listDanhMuc = danhMucRepository.findAll();
+        model.addAttribute("listDanhMuc", listDanhMuc);
         if (loggedInUser == null) {
             return "redirect:/trangchu";
         }
         NguoiDung nguoiDung = nguoiDungRepository.getUserByMaNguoiDung(maNguoiDung);
         List<TaiLieu> taiLieus = taiLieuRepository.findByTaiLenBoi(maNguoiDung);
         List<Khoa> listKhoa = khoaRepository.findAll();
+
+        Integer totalDoc = taiLieus.size();
+
         model.addAttribute("listKhoa", listKhoa);
         model.addAttribute("nguoiDung", nguoiDung);
         model.addAttribute("taiLieus", taiLieus);
+        model.addAttribute("totalDoc", totalDoc);
         return "UserInfo";
     }
+
 
     @PostMapping("/userinfo/update")
     public String updateInfoById(@ModelAttribute("nguoiDung") NguoiDung nguoiDung, HttpSession session) {

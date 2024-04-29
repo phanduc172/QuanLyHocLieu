@@ -5,6 +5,8 @@ import com.phanduc.QLHocLieu.repositories.*;
 import com.phanduc.QLHocLieu.services.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -144,25 +146,6 @@ public class TaiLieuController {
         return "ChiTietTaiLieu";
     }
 
-//    @PostMapping("/document/addcomment")
-//    public String addDocument(@RequestParam("maTaiLieu") Integer maTaiLieu,
-//                              @RequestParam("comment") String comment,
-//                              HttpSession session) {
-//        NguoiDung nguoiDung = (NguoiDung) session.getAttribute("loggedInUser");
-//        if (nguoiDung == null) {
-//            return "redirect:/trangchu";
-//        }
-//        Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
-//        BinhLuan binhLuan = new BinhLuan();
-//        binhLuan.setMaTaiLieu(maTaiLieu);
-//        binhLuan.setMaNguoiDung(nguoiDung.getMaNguoiDung());
-//        binhLuan.setNgayBinhLuan(currentTimestamp);
-//        binhLuan.setNoiDung(comment);
-//        binhLuanRepository.save(binhLuan);
-//        System.out.println("Đánh giá tài liệu thành công");
-//        return "redirect:/document/" + maTaiLieu;
-//    }
-
     @PostMapping("/document/addcomment")
     public String addDocument(@RequestParam("maTaiLieu") Integer maTaiLieu,
                               @RequestParam("comment") String comment,
@@ -182,12 +165,26 @@ public class TaiLieuController {
         danhGia.setMaTaiLieu(maTaiLieu);
         danhGia.setMaNguoiDung(nguoiDung.getMaNguoiDung());
         danhGia.setGiaTriDanhGia(rating);
-        danhGiaRepository.save(danhGia); // Lưu đối tượng danhGia vào cơ sở dữ liệu
+        danhGiaRepository.save(danhGia);
         binhLuanRepository.save(binhLuan);
-        System.out.println("Đánh giá tài liệu thành công");
+        System.out.println("Đánh giá và bình luận tài liệu thành công");
         return "redirect:/document/" + maTaiLieu;
     }
 
+    @GetMapping("/getDetailDocument/{id}")
+    @ResponseBody
+    public TaiLieu showDocumentDetails(@PathVariable("id") Integer maTaiLieu) {
+        // Lấy thông tin chi tiết của tài liệu dựa trên mã tài liệu
+        Optional<TaiLieu> optionalTaiLieu = taiLieuRepository.findByMaTaiLieu(maTaiLieu);
+
+        // Kiểm tra xem tài liệu có tồn tại hay không
+        if (optionalTaiLieu.isPresent()) {
+            TaiLieu deTailTaiLieu = optionalTaiLieu.get();
+            return deTailTaiLieu;
+        } else {
+            return null;
+        }
+    }
 
     @PostMapping("/search/{keyword}")
     public String timKiemTaiLieu(@RequestParam("keyword") String keyword, ModelMap modelMap, HttpSession session) {
@@ -207,7 +204,7 @@ public class TaiLieuController {
 
     }
 
-
+    //Thực hiện tải lên tài liệu
     @GetMapping("/uploadfile")
     public String uploadDocument(ModelMap modelMap, HttpSession session) {
         NguoiDung nguoiDung = (NguoiDung) session.getAttribute("loggedInUser");
@@ -261,6 +258,36 @@ public class TaiLieuController {
             return "redirect:/uploadfile";
         }
     }
+
+
+    @PostMapping("/document/updatedocument")
+    public String updateDocument(@RequestParam("editTitle") String title,
+                                 @RequestParam("editDescription") String description,
+                                 @RequestParam("category") Integer category,
+                                 @RequestParam("major") String major,
+                                 @RequestParam("maTaiLieu") Integer maTaiLieu,
+                                 ModelMap modelMap) {
+        List<DanhMuc> listDanhMuc = danhMucRepository.findAll();
+        modelMap.addAttribute("listDanhMuc", listDanhMuc);
+        try {
+            Optional<TaiLieu> optionalTaiLieu = taiLieuRepository.findByMaTaiLieu(maTaiLieu);
+            if (optionalTaiLieu.isPresent()) {
+                TaiLieu taiLieu = optionalTaiLieu.get();
+                taiLieu.setTieuDe(title);
+                taiLieu.setMoTa(description);
+                taiLieu.setMaDanhMuc(category);
+                taiLieu.setMaChuyenNganh(major);
+                taiLieuRepository.save(taiLieu);
+                return "redirect:/userinfo/"+maTaiLieu;
+            } else {
+                return "redirect:/error";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/error";
+        }
+    }
+
 
 
     //Lấy chuyên ngành để hiển thị khi mà người dùng tải lên tài liệu ở UploadFile

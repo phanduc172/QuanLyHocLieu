@@ -13,6 +13,11 @@ html,body {
     background-color: #ed5650; /* Màu đỏ (#ed5650) */
 }
 
+.bg-custom-blue {
+    background-color: #009efb; /* Màu blue tùy chỉnh */
+}
+
+
 .truncate-text {
     display: block;
     width: 80%;
