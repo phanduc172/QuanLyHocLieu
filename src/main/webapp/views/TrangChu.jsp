@@ -224,9 +224,11 @@
         <h5 class="text-center fw-bold">Thể loại</h5>
         <c:forEach var="danhmuc" items="${danhMucs}">
           <ul class="list-group">
-            <li class="list-group-item mt-2 ">
-              <a class="text-decoration-none" href="/danhmuc/${danhmuc.maDanhMuc}">${danhmuc.tenDanhMuc}</a>
-            </li>
+              <a class="text-decoration-none" href="/danhmuc/${danhmuc.maDanhMuc}">
+                  <li class="list-group-item mt-2 ">
+                    ${danhmuc.tenDanhMuc}
+                  </li>
+              </a>
           </ul>
         </c:forEach>
       </div>
@@ -970,7 +972,7 @@
       Copyright © 2024. Designed by Phan Đức
     </div>
   </footer>
-  <script src="/js/changepassword.js"></script>
+  <script src="/js/password.js"></script>
   <script src="/js/main.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>

@@ -1,3 +1,21 @@
+    //Ẩn hiện mật khẩu khi nhập vào input
+    function togglePasswordVisibility() {
+        const passwordInput = document.getElementById('passwordInput');
+        const eyeIcon = document.querySelector('.toggle-password i');
+
+        if (passwordInput.type !== 'password') {
+            passwordInput.type = 'password';
+            eyeIcon.classList.remove('bi-eye-slash');
+            eyeIcon.classList.add('bi-eye');
+        } else {
+
+            passwordInput.type = 'text';
+            eyeIcon.classList.remove('bi-eye');
+            eyeIcon.classList.add('bi-eye-slash');
+        }
+    }
+    //Ẩn hiện mật khẩu khi nhập vào input
+
     // Kiểm tra mật khẩu hiện tại và mật khẩu mới có giống nhau không
     var currentPasswordHidden = document.getElementById('currentPasswordHidden').value;
 

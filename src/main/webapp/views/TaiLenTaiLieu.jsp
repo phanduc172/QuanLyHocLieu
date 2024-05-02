@@ -202,6 +202,10 @@
         <h5 class="fw-bold text-center p-3">Nơi chia sẻ tài liệu học tập của sinh viên trường Đại học Khoa học - Đại học Huế</h5>
         <form action="/uploadfile" method="post" enctype="multipart/form-data" id="uploadForm">
             <div class="mb-3">
+                <label for="file" class="form-label">Chọn tệp:</label>
+                <input type="file" class="form-control" id="file" name="file" required>
+            </div>
+            <div class="mb-3">
                 <label for="title" class="form-label">Tiêu đề:</label>
                 <input type="text" class="form-control" id="title" name="title" required>
             </div>
@@ -232,10 +236,6 @@
                 <select class="form-control" id="major" name="major" required>
                     <option value="">Chọn Chuyên ngành</option>
                 </select>
-            </div>
-            <div class="mb-3">
-                <label for="file" class="form-label">Chọn tệp:</label>
-                <input type="file" class="form-control" id="file" name="file" required>
             </div>
             <button type="submit" class="btn btn-primary">Đăng tài liệu</button>
         </form>

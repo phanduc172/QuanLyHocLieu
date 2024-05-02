@@ -26,7 +26,6 @@
       });
 
     // Điền thông tin cá nhân vào input của modal chỉnh sửa
-    // Trong JavaScript
     $(document).ready(function () {
         $('#editProfileModal').on('show.bs.modal', function (event) {
             var fullName = $('#fullName').data('fullname');
@@ -38,6 +37,7 @@
             $('#email').val(email);
         });
     });
+    // Điền thông tin cá nhân vào input của modal chỉnh sửa
 
 
     // Hàm cập nhật danh sách chuyên ngành khi người dùng chọn khoa
@@ -57,74 +57,88 @@
             });
         });
     });
+    // Hàm cập nhật danh sách chuyên ngành khi người dùng chọn khoa
 
-    //Kiểm tra người dùng chọn vào số sao là bao nhiêu và ẩn hiện form comment
-    const stars = document.querySelectorAll('.rating-stars span');
-    const commentForm = document.getElementById('comment-form');
-    const cancelButton = document.querySelector('#comment-form button.btn-outline-secondary');
+    //Hàm xem trước ảnh tải lên
+    $(document).ready(function() {
+        // Lắng nghe sự kiện khi người dùng chọn một tệp hình ảnh mới
+        $('#avatarFile').change(function() {
+            // Kiểm tra xem người dùng đã chọn một tệp hình ảnh chưa
+            if (this.files && this.files[0]) {
+                var reader = new FileReader();
 
-    // Xử lý sự kiện click cho các sao xếp hạng
-    stars.forEach(star => {
-        star.addEventListener('click', function() {
-            const rating = parseInt(this.getAttribute('data-rating'));
-            // Thay đổi màu sắc của các sao dựa trên xếp hạng được chọn
-            stars.forEach(s => {
-                if (parseInt(s.getAttribute('data-rating')) <= rating) {
-                    s.classList.remove('bi-star');
-                    s.classList.add('bi-star-fill');
-                } else {
-                    s.classList.remove('bi-star-fill');
-                    s.classList.add('bi-star');
+                // Đặt hành động khi đọc xong tệp hình ảnh
+                reader.onload = function(e) {
+                    // Hiển thị hình ảnh đã đọc trong thẻ <img> để xem trước ảnh
+                    $('#previewImage').attr('src', e.target.result);
+                    // Hiển thị phần xem trước ảnh
+                    $('#previewImageContainer').show();
+                }
+
+                // Đọc tệp hình ảnh được chọn
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+    });
+    //Hàm xem trước ảnh tải lên
+
+
+    //Hiển thị thông tin chi tiết lên form chi tiết tài liệu theo mã tài liệu
+    document.querySelectorAll('.btn-outline-primary').forEach(function(button) {
+        button.addEventListener('click', function() {
+            var maTaiLieu = this.dataset.documentId;
+            var documentTitle = this.dataset.documentTitle;
+            var documentDescription = this.dataset.documentDescription;
+            var facultyId = this.dataset.facultyId;
+            var majorId = this.dataset.majorId;
+
+            // Điền thông tin vào các trường trong form chỉnh sửa tài liệu
+            document.getElementById('maTaiLieu').value = maTaiLieu;
+            document.getElementById('editTitle').value = documentTitle;
+            document.getElementById('editDescription').value = documentDescription;
+
+            // Hiển thị khoa và chuyên ngành tương ứng trong form
+            document.getElementById('faculty').value = facultyId;
+            document.getElementById('major').value = majorId;
+        });
+    });
+    //Hiển thị thông tin chi tiết lên form chi tiết tài liệu theo mã tài liệu
+
+    //Hiển thị thông tin chi tiết lên form chỉnh sửa tài liệu theo mã tài liệu
+    $(document).ready(function() {
+        // Đặt sự kiện click cho tất cả các nút "Details" có class là btn-outline-danger
+        $('.buttonDetail').click(function() {
+
+            var maTaiLieu = $(this).data('document-id');
+
+            // Gán giá trị mã tài liệu cho trường input trong modal
+            $('#detailMaTaiLieu').val(maTaiLieu);
+
+            // Hiển thị modal
+            $('#detailsDocumentModal').modal('show');
+            // Gửi yêu cầu AJAX
+            $.ajax({
+                type: 'GET',
+                url: '/getDetailDocument/' + maTaiLieu,
+                success: function(response) {
+                    $('#detailTitle').val(response.deTailTaiLieu.tieuDe);
+                    $('#detailDescription').val(response.deTailTaiLieu.moTa);
+                    $('#detailCategory').val(response.tenDanhMuc);
+                    $('#detailFaculty').val(response.tenKhoa);
+                    $('#detailMajor').val(response.tenChuyenNganh);
+
+                    // Hiển thị modal
+                    $('#detailsDocumentModal').modal('show');
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                    alert('Đã xảy ra lỗi khi tải thông tin chi tiết tài liệu.');
                 }
             });
-            document.getElementById('rating-input').value = rating;
-            // Hiển thị form bình luận
-            commentForm.classList.remove('d-none');
-            console.log('Người dùng đã chọn xếp hạng: ' + rating);
+
+
         });
     });
-    //Kiểm tra người dùng chọn vào số sao là bao nhiêu và ẩn hiện form comment
-
-    // Xử lý sự kiện click cho nút "Hủy"
-    cancelButton.addEventListener('click', function(event) {
-        // Ngăn chặn hành vi mặc định của nút "Hủy" (ví dụ: gửi form)
-        event.preventDefault();
-        // Ẩn form bình luận
-        commentForm.classList.add('d-none');
-        // Đặt lại màu sắc của các sao xếp hạng
-        stars.forEach(s => {
-            s.classList.remove('bi-star-fill');
-            s.classList.add('bi-star');
-        });
-    });
-    // Xử lý sự kiện click cho nút "Hủy"
-
-    //Ẩn hiện mật khẩu khi nhập vào input
-    function togglePasswordVisibility() {
-        const passwordInput = document.getElementById('passwordInput');
-        const eyeIcon = document.querySelector('.toggle-password i');
-
-        if (passwordInput.type !== 'password') {
-            passwordInput.type = 'password';
-            eyeIcon.classList.remove('bi-eye-slash');
-            eyeIcon.classList.add('bi-eye');
-        } else {
-
-            passwordInput.type = 'text';
-            eyeIcon.classList.remove('bi-eye');
-            eyeIcon.classList.add('bi-eye-slash');
-        }
-    }
-    //Ẩn hiện mật khẩu khi nhập vào input
-
-    // //Set giá trị mặc định cho đánh giá
-    // function setRating() {
-    //     const ratingInput = document.getElementById('rating-input');
-    //     const ratingValue = parseInt(ratingInput.value);
-    //     if (isNaN(ratingValue)) {
-    //         ratingInput.value = 5;
-    //     }
-    // }
-    // //Set giá trị mặc định cho đánh giá
+    //Hiển thị thông tin chi tiết lên form  chỉnh sửa tài liệu theo mã tài liệu
 
   
