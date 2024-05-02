@@ -171,22 +171,6 @@ public class TaiLieuController {
         return "redirect:/document/" + maTaiLieu;
     }
 
-
-//    @GetMapping("/getDetailDocument/{id}")
-//    @ResponseBody
-//    public TaiLieu showDocumentDetails(@PathVariable("id") Integer maTaiLieu) {
-//        // Lấy thông tin chi tiết của tài liệu dựa trên mã tài liệu
-//        Optional<TaiLieu> optionalTaiLieu = taiLieuRepository.findByMaTaiLieu(maTaiLieu);
-//
-//        // Kiểm tra xem tài liệu có tồn tại hay không
-//        if (optionalTaiLieu.isPresent()) {
-//            TaiLieu deTailTaiLieu = optionalTaiLieu.get();
-//            return deTailTaiLieu;
-//        } else {
-//            return null;
-//        }
-//    }
-
     @GetMapping("/getDetailDocument/{id}")
     @ResponseBody
     public Map<String, Object> showDocumentDetails(@PathVariable("id") Integer maTaiLieu) {
@@ -289,7 +273,8 @@ public class TaiLieuController {
                                  @RequestParam("category") Integer category,
                                  @RequestParam("major") String major,
                                  @RequestParam("maTaiLieu") Integer maTaiLieu,
-                                 ModelMap modelMap) {
+                                 ModelMap modelMap, HttpSession session) {
+        Integer maNguoiDung = ((NguoiDung) session.getAttribute("loggedInUser")).getMaNguoiDung();
         List<DanhMuc> listDanhMuc = danhMucRepository.findAll();
         modelMap.addAttribute("listDanhMuc", listDanhMuc);
         try {
@@ -301,7 +286,7 @@ public class TaiLieuController {
                 taiLieu.setMaDanhMuc(category);
                 taiLieu.setMaChuyenNganh(major);
                 taiLieuRepository.save(taiLieu);
-                return "redirect:/userinfo/"+maTaiLieu;
+                return "redirect:/userinfo/"+maNguoiDung;
             } else {
                 return "redirect:/error";
             }
@@ -310,8 +295,6 @@ public class TaiLieuController {
             return "redirect:/error";
         }
     }
-
-
 
     //Lấy chuyên ngành để hiển thị khi mà người dùng tải lên tài liệu ở UploadFile
     @GetMapping("/getChuyenNganh")

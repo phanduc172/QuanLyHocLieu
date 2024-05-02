@@ -243,27 +243,6 @@
         </div>
       </div>
 
-      <script>
-        // Lắng nghe sự kiện khi người dùng chọn một tệp hình ảnh mới
-        $('#avatarFile').change(function() {
-          // Kiểm tra xem người dùng đã chọn một tệp hình ảnh chưa
-          if (this.files && this.files[0]) {
-            var reader = new FileReader();
-
-            // Đặt hành động khi đọc xong tệp hình ảnh
-            reader.onload = function(e) {
-              // Hiển thị hình ảnh đã đọc trong thẻ <img> để xem trước ảnh
-              $('#previewImage').attr('src', e.target.result);
-              // Hiển thị phần xem trước ảnh
-              $('#previewImageContainer').show();
-            }
-
-            // Đọc tệp hình ảnh được chọn
-            reader.readAsDataURL(this.files[0]);
-          }
-        });
-      </script>
-
       <!-- Modal chỉnh sửa thông tin cá nhân -->
       <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true" style="margin-top: 80px;">
         <div class="modal-dialog">
@@ -450,77 +429,6 @@
           </div>
         </div>
       </div>
-
-      <script src="">
-        $('#editDocumentModal').on('show.bs.modal', function (event) {
-          var button = $(event.relatedTarget);
-          var maTaiLieu = button.data('matailieu');
-          var modal = $(this);
-          modal.find('.modal-body #maTaiLieu').val(maTaiLieu);
-        });
-      </script>
-
-      <%--Form chỉnh sửa--%>
-      <script>
-        document.querySelectorAll('.btn-outline-primary').forEach(function(button) {
-          button.addEventListener('click', function() {
-            var maTaiLieu = this.dataset.documentId;
-            var documentTitle = this.dataset.documentTitle;
-            var documentDescription = this.dataset.documentDescription;
-            var facultyId = this.dataset.facultyId;
-            var majorId = this.dataset.majorId;
-
-            // Điền thông tin vào các trường trong form chỉnh sửa tài liệu
-            document.getElementById('maTaiLieu').value = maTaiLieu;
-            document.getElementById('editTitle').value = documentTitle;
-            document.getElementById('editDescription').value = documentDescription;
-
-            // Hiển thị khoa và chuyên ngành tương ứng trong form
-            document.getElementById('faculty').value = facultyId;
-            document.getElementById('major').value = majorId;
-          });
-        });
-      </script>
-
-        <%--Form chi tiết--%>
-      <script !src="">
-        $(document).ready(function() {
-          // Đặt sự kiện click cho tất cả các nút "Details" có class là btn-outline-danger
-          $('.buttonDetail').click(function() {
-
-            var maTaiLieu = $(this).data('document-id');
-
-            // Gán giá trị mã tài liệu cho trường input trong modal
-            $('#detailMaTaiLieu').val(maTaiLieu);
-
-            // Hiển thị modal
-            $('#detailsDocumentModal').modal('show');
-            // Gửi yêu cầu AJAX
-            $.ajax({
-              type: 'GET',
-              url: '/getDetailDocument/' + maTaiLieu,
-              success: function(response) {
-                $('#detailTitle').val(response.deTailTaiLieu.tieuDe);
-                $('#detailDescription').val(response.deTailTaiLieu.moTa);
-                $('#detailCategory').val(response.tenDanhMuc);
-                $('#detailFaculty').val(response.tenKhoa);
-                $('#detailMajor').val(response.tenChuyenNganh);
-
-                // Hiển thị modal
-                $('#detailsDocumentModal').modal('show');
-              },
-              error: function(xhr, status, error) {
-                console.error(xhr.responseText);
-                alert('Đã xảy ra lỗi khi tải thông tin chi tiết tài liệu.');
-              }
-            });
-
-
-          });
-        });
-      </script>
-
-
     </div>
   </div>
 </div>
@@ -530,6 +438,15 @@
     Copyright © 2024. Designed by Phan Đức
   </div>
 </footer>
+
+<script src="">
+  $('#editDocumentModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    var maTaiLieu = button.data('matailieu');
+    var modal = $(this);
+    modal.find('.modal-body #maTaiLieu').val(maTaiLieu);
+  });
+</script>
 
 <script !src="">
   window.onload = function() {
