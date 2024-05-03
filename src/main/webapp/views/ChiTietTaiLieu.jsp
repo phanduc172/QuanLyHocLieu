@@ -215,10 +215,15 @@
                             </div>
                             <div>
                                 <p class="card-text m-0">Tải lên: ${nguoiTaiLen}</p>
-                                <p class="card-text m-0">Báo cáo tài liệu</p>
+                                <a href="#" class="btn btn-outline-danger btn-sm mt-1 cursor-pointer">Báo cáo tài liệu</a>
                             </div>
                         </div>
+
                         <div class="col-7 d-flex align-items-center">
+                            <div class="document-stats">
+                                <span class="eye-icon"><i class="bi bi-eye fs-5 me-2"></i>${taiLieu.getSoLuotTruyCap()}</span>
+                                <span class="ms-5 download-count"><i class="bi bi-download fs-5 me-2"></i>${ taiLieu.getSoLuotTaiXuong()}</span>
+                            </div>
                             <div class="card-body d-flex justify-content-end align-items-center">
                                 <h6 class="card-title mb-0 me-3 p-2 border border-2 rounded text-secondary">
                                     Yêu thích

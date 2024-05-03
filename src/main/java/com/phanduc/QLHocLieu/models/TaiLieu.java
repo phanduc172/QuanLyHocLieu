@@ -19,6 +19,8 @@ public class TaiLieu {
     private int soLuotTaiXuong;
     private Integer maDanhMuc;
     private String maChuyenNganh;
+    @Column(name = "soLuotTruyCap", columnDefinition = "int default 0")
+    private Integer soLuotTruyCap;
 
     public TaiLieu() {
     }
@@ -114,6 +116,14 @@ public class TaiLieu {
 
     public void setMaChuyenNganh(String maChuyenNganh) {
         this.maChuyenNganh = maChuyenNganh;
+    }
+
+    public Integer getSoLuotTruyCap() {
+        return soLuotTruyCap;
+    }
+
+    public void setSoLuotTruyCap(Integer soLuotTruyCap) {
+        this.soLuotTruyCap = soLuotTruyCap;
     }
 }
 

@@ -91,12 +91,13 @@ public class TaiLieuController {
             return "redirect:/trangchu";
         }
 
-
         TaiLieu taiLieu = optionalTaiLieu.get();
         String nguoiTaiLen = taiLieuRepository.findHoTenByMaNguoiDung(taiLieu.getTaiLenBoi());
         String docImage = taiLieuRepository.findAnhByMaNguoiDung(taiLieu.getTaiLenBoi());
         String urlDoc = taiLieu.getDuongDanTep();
 
+        taiLieu.setSoLuotTruyCap(taiLieu.getSoLuotTruyCap() + 1);
+        taiLieuRepository.save(taiLieu);
 
         //C1: Lấy thông tin người bình luận qua maNguoiDung
 //        List<BinhLuan> binhLuans = binhLuanRepository.findByMaTaiLieu(maTaiLieu);
@@ -251,6 +252,7 @@ public class TaiLieuController {
                 taiLieu.setSoLuotTaiXuong(0);
                 taiLieu.setMaDanhMuc(category);
                 taiLieu.setMaChuyenNganh(major);
+                taiLieu.setSoLuotTruyCap(0);
                 taiLieuRepository.save(taiLieu);
                 System.out.println("Đường dẫn lưu trữ tệp: " + prefixedFilePath);
                 System.out.println("Tài liệu tải lên thành công");
