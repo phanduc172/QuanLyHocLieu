@@ -299,95 +299,110 @@
       <div class="col-2 d-none d-xl-block">
         <h5 class="text-center fw-bold">Hoạt động gần đây</h5>
         <ul class="list-group">
-          <li class="list-group-item">
-            <div class="d-flex align-items-center justify-content-center text-center">
-              <img
-                src="https://images.unsplash.com/photo-1599898534595-953006e0ba6b?q=80&w=1929&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                class="rounded-circle me-2" width="50" height="50" alt="Avatar">
-              <div>
-                <strong>Người Dùng</strong>
-                <p>Hoạt động 1</p>
+          <c:forEach var="hoatDong" items="${hoatDongGanDays}">
+            <li class="list-group-item">
+              <div class="d-flex align-items-center justify-content-center text-center">
+                <img src="${anhNguoiDung[hoatDong.maHoatDong]}"
+                     class="rounded-circle me-2" width="50" height="50" alt="Avatar">
+                <div class="text-start">
+                  <strong>${hoTenNguoiDung[hoatDong.maHoatDong]}</strong>
+                  <p style="font-size: 14px">${moTaHoatDong[hoatDong.maHoatDong]}</p>
+                </div>
               </div>
-            </div>
-          </li>
-          <li class="list-group-item">
-            <div class="d-flex align-items-center justify-content-center text-center">
-              <img
-                      src="https://images.unsplash.com/photo-1599898534595-953006e0ba6b?q=80&w=1929&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                      class="rounded-circle me-2" width="50" height="50" alt="Avatar">
-              <div>
-                <strong>Người Dùng</strong>
-                <p>Hoạt động 1</p>
-              </div>
-            </div>
-          </li>
-          <li class="list-group-item">
-            <div class="d-flex align-items-center justify-content-center text-center">
-              <img
-                src="https://images.unsplash.com/photo-1599898534595-953006e0ba6b?q=80&w=1929&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                class="rounded-circle me-2" width="50" height="50" alt="Avatar">
-              <div>
-                <strong>Người Dùng</strong>
-                <p>Hoạt động 1</p>
-              </div>
-            </div>
-          </li>
-          <li class="list-group-item">
-            <div class="d-flex align-items-center justify-content-center text-center">
-              <img
-                src="https://images.unsplash.com/photo-1599898534595-953006e0ba6b?q=80&w=1929&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                class="rounded-circle me-2" width="50" height="50" alt="Avatar">
-              <div>
-                <strong>Người Dùng</strong>
-                <p>Hoạt động 1</p>
-              </div>
-            </div>
-          </li>
-          <li class="list-group-item">
-            <div class="d-flex align-items-center justify-content-center text-center">
-              <img
-                src="https://images.unsplash.com/photo-1599898534595-953006e0ba6b?q=80&w=1929&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                class="rounded-circle me-2" width="50" height="50" alt="Avatar">
-              <div>
-                <strong>Người Dùng</strong>
-                <p>Hoạt động 1</p>
-              </div>
-            </div>
-          </li>
-          <li class="list-group-item">
-            <div class="d-flex align-items-center justify-content-center text-center">
-              <img
-                src="https://images.unsplash.com/photo-1599898534595-953006e0ba6b?q=80&w=1929&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                class="rounded-circle me-2" width="50" height="50" alt="Avatar">
-              <div>
-                <strong>Người Dùng</strong>
-                <p>Hoạt động 1</p>
-              </div>
-            </div>
-          </li>
-          <li class="list-group-item">
-            <div class="d-flex align-items-center justify-content-center text-center">
-              <img
-                src="https://images.unsplash.com/photo-1599898534595-953006e0ba6b?q=80&w=1929&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                class="rounded-circle me-2" width="50" height="50" alt="Avatar">
-              <div>
-                <strong>Người Dùng</strong>
-                <p>Hoạt động 1</p>
-              </div>
-            </div>
-          </li>
-          <li class="list-group-item">
-            <div class="d-flex align-items-center justify-content-center text-center">
-              <img
-                src="https://images.unsplash.com/photo-1599898534595-953006e0ba6b?q=80&w=1929&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                class="rounded-circle me-2" width="50" height="50" alt="Avatar">
-              <div>
-                <strong>Người Dùng</strong>
-                <p>Hoạt động 1</p>
-              </div>
-            </div>
-          </li>
+            </li>
+          </c:forEach>
         </ul>
+
+      <%--        <ul class="list-group">--%>
+<%--          <li class="list-group-item">--%>
+<%--            <div class="d-flex align-items-center justify-content-center text-center">--%>
+<%--              <img--%>
+<%--                src="https://images.unsplash.com/photo-1599898534595-953006e0ba6b?q=80&w=1929&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"--%>
+<%--                class="rounded-circle me-2" width="50" height="50" alt="Avatar">--%>
+<%--              <div>--%>
+<%--                <strong>Người Dùng</strong>--%>
+<%--                <p>Hoạt động 1</p>--%>
+<%--              </div>--%>
+<%--            </div>--%>
+<%--          </li>--%>
+<%--          <li class="list-group-item">--%>
+<%--            <div class="d-flex align-items-center justify-content-center text-center">--%>
+<%--              <img--%>
+<%--                      src="https://images.unsplash.com/photo-1599898534595-953006e0ba6b?q=80&w=1929&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"--%>
+<%--                      class="rounded-circle me-2" width="50" height="50" alt="Avatar">--%>
+<%--              <div>--%>
+<%--                <strong>Người Dùng</strong>--%>
+<%--                <p>Hoạt động 1</p>--%>
+<%--              </div>--%>
+<%--            </div>--%>
+<%--          </li>--%>
+<%--          <li class="list-group-item">--%>
+<%--            <div class="d-flex align-items-center justify-content-center text-center">--%>
+<%--              <img--%>
+<%--                src="https://images.unsplash.com/photo-1599898534595-953006e0ba6b?q=80&w=1929&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"--%>
+<%--                class="rounded-circle me-2" width="50" height="50" alt="Avatar">--%>
+<%--              <div>--%>
+<%--                <strong>Người Dùng</strong>--%>
+<%--                <p>Hoạt động 1</p>--%>
+<%--              </div>--%>
+<%--            </div>--%>
+<%--          </li>--%>
+<%--          <li class="list-group-item">--%>
+<%--            <div class="d-flex align-items-center justify-content-center text-center">--%>
+<%--              <img--%>
+<%--                src="https://images.unsplash.com/photo-1599898534595-953006e0ba6b?q=80&w=1929&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"--%>
+<%--                class="rounded-circle me-2" width="50" height="50" alt="Avatar">--%>
+<%--              <div>--%>
+<%--                <strong>Người Dùng</strong>--%>
+<%--                <p>Hoạt động 1</p>--%>
+<%--              </div>--%>
+<%--            </div>--%>
+<%--          </li>--%>
+<%--          <li class="list-group-item">--%>
+<%--            <div class="d-flex align-items-center justify-content-center text-center">--%>
+<%--              <img--%>
+<%--                src="https://images.unsplash.com/photo-1599898534595-953006e0ba6b?q=80&w=1929&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"--%>
+<%--                class="rounded-circle me-2" width="50" height="50" alt="Avatar">--%>
+<%--              <div>--%>
+<%--                <strong>Người Dùng</strong>--%>
+<%--                <p>Hoạt động 1</p>--%>
+<%--              </div>--%>
+<%--            </div>--%>
+<%--          </li>--%>
+<%--          <li class="list-group-item">--%>
+<%--            <div class="d-flex align-items-center justify-content-center text-center">--%>
+<%--              <img--%>
+<%--                src="https://images.unsplash.com/photo-1599898534595-953006e0ba6b?q=80&w=1929&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"--%>
+<%--                class="rounded-circle me-2" width="50" height="50" alt="Avatar">--%>
+<%--              <div>--%>
+<%--                <strong>Người Dùng</strong>--%>
+<%--                <p>Hoạt động 1</p>--%>
+<%--              </div>--%>
+<%--            </div>--%>
+<%--          </li>--%>
+<%--          <li class="list-group-item">--%>
+<%--            <div class="d-flex align-items-center justify-content-center text-center">--%>
+<%--              <img--%>
+<%--                src="https://images.unsplash.com/photo-1599898534595-953006e0ba6b?q=80&w=1929&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"--%>
+<%--                class="rounded-circle me-2" width="50" height="50" alt="Avatar">--%>
+<%--              <div>--%>
+<%--                <strong>Người Dùng</strong>--%>
+<%--                <p>Hoạt động 1</p>--%>
+<%--              </div>--%>
+<%--            </div>--%>
+<%--          </li>--%>
+<%--          <li class="list-group-item">--%>
+<%--            <div class="d-flex align-items-center justify-content-center text-center">--%>
+<%--              <img--%>
+<%--                src="https://images.unsplash.com/photo-1599898534595-953006e0ba6b?q=80&w=1929&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"--%>
+<%--                class="rounded-circle me-2" width="50" height="50" alt="Avatar">--%>
+<%--              <div>--%>
+<%--                <strong>Người Dùng</strong>--%>
+<%--                <p>Hoạt động 1</p>--%>
+<%--              </div>--%>
+<%--            </div>--%>
+<%--          </li>--%>
+<%--        </ul>--%>
       </div>
     </div>
     <h4 class="text-center my-4 fw-bold">Tài liệu mới đăng</h4>
