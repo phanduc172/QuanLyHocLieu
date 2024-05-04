@@ -281,10 +281,16 @@
       <h5 class="mb-3">Quản lý tài liệu</h5>
       <div class="card">
         <ul class="list-unstyled d-flex flex-wrap justify-content-between m-0">
-          <li class="px-5 py-2 docHover"><a href="#" class="text-decoration-none">Đã duyệt <span class="text">(${totalDoc})</span></a></li>
-          <li class="px-5 py-2 docHover"><a href="#" class="text-decoration-none">Chờ duyệt(2)</a></li>
-          <li class="px-5 py-2 docHover"><a href="#" class="text-decoration-none">Từ chối(0)</a></li>
-<%--          <li class="px-5 py-2 docHover"><a href="#" class="text-decoration-none">Bị trùng(0)</a></li>--%>
+          <a href="/userinfo/${loggedInUser.maNguoiDung}" class="text-decoration-none">
+            <li class="px-5 py-2 docHover">Đã duyệt <span class="text">(${totalApprove})</span></li>
+          </a>
+          <a href="/userinfo/${loggedInUser.maNguoiDung}/wait" class="text-decoration-none">
+            <li class="px-5 py-2 docHover">Chờ duyệt<span class="text">(${totalWait})</span></li>
+          </a>
+          <a href="/userinfo/${loggedInUser.maNguoiDung}/reject" class="text-decoration-none">
+            <li class="px-5 py-2 docHover">Từ chối<span class="text">(${totalReject})</span></li>
+          </a>
+          <%--<li class="px-5 py-2 docHover"><a href="#" class="text-decoration-none">Bị trùng(0)</a></li>--%>
         </ul>
       </div>
 
@@ -385,6 +391,7 @@
                 <div class="mb-2">
                   <label for="category" class="form-label">Thể loại:</label>
                   <select class="form-control" id="category" name="category" required>
+                    <option value="" selected disabled>-- Chọn Thể loại --</option>
                     <c:forEach items="${listDanhMuc}" var="danhmuc">
                       <option value="${danhmuc.maDanhMuc}">${danhmuc.tenDanhMuc}</option>
                     </c:forEach>
@@ -393,6 +400,7 @@
                 <div class="mb-2">
                   <label for="faculty" class="form-label">Khoa:</label>
                   <select class="form-control" id="faculty" name="faculty" required>
+                    <option value="" selected disabled>-- Chọn Khoa --</option>
                     <c:forEach items="${listKhoa}" var="khoa">
                       <option value="${khoa.maKhoa}">${khoa.tenKhoa}</option>
                     </c:forEach>

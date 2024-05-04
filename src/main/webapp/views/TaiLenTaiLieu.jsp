@@ -216,7 +216,7 @@
             <div class="mb-3">
                 <label for="category" class="form-label">Thể loại:</label>
                 <select class="form-control" id="category" name="category" required>
-                    <option value="">Chọn Thể loại</option>
+                    <option value="" selected disabled>-- Chọn Thể loại --</option>
                     <c:forEach items="${listDanhMuc}" var="danhmuc">
                         <option value="${danhmuc.maDanhMuc}">${danhmuc.tenDanhMuc}</option>
                     </c:forEach>
@@ -225,7 +225,7 @@
             <div class="mb-3">
                 <label for="faculty" class="form-label">Khoa:</label>
                 <select class="form-control" id="faculty" name="faculty" required>
-                    <option value="">Chọn Khoa</option>
+                    <option value="" selected disabled>-- Chọn Khoa --</option>
                     <c:forEach items="${listKhoa}" var="khoa">
                         <option value="${khoa.maKhoa}">${khoa.tenKhoa}</option>
                     </c:forEach>
@@ -234,7 +234,6 @@
             <div class="mb-3">
                 <label for="major" class="form-label">Chuyên ngành:</label>
                 <select class="form-control" id="major" name="major" required>
-                    <option value="">Chọn Chuyên ngành</option>
                 </select>
             </div>
             <button type="submit" class="btn btn-primary">Đăng tài liệu</button>

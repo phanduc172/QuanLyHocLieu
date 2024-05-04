@@ -1,6 +1,8 @@
 package com.phanduc.QLHocLieu.controllers;
 
+import com.phanduc.QLHocLieu.models.HoatDongGanDay;
 import com.phanduc.QLHocLieu.models.NguoiDung;
+import com.phanduc.QLHocLieu.repositories.HoatDongGanDayRepository;
 import com.phanduc.QLHocLieu.repositories.NguoiDungRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,6 +14,8 @@ import javax.servlet.http.HttpSession;
 public class DangNhapController {
     @Autowired
     private NguoiDungRepository nguoiDungRepository;
+    @Autowired
+    private HoatDongGanDayRepository hoatDongGanDayRepository;
 
     @RequestMapping(value = "/login", method = {RequestMethod.GET, RequestMethod.POST})
     public String login(@RequestParam String tenNguoiDung, @RequestParam String matKhau, HttpSession session, Model model) {
@@ -19,6 +23,13 @@ public class DangNhapController {
         if (nguoiDung != null && nguoiDung.getMaVaiTro()==2) {
             // Lưu thông tin đăng nhập vào session
             session.setAttribute("loggedInUser", nguoiDung);
+
+            HoatDongGanDay hoatDong = new HoatDongGanDay();
+            hoatDong.setMaNguoiDung(nguoiDung.getMaNguoiDung());
+            hoatDong.setLoaiHoatDong("Đăng nhập");
+            hoatDong.setMoTaHoatDong("Người dùng @" + tenNguoiDung + " đã đăng nhập vào hệ thống");
+//            hoatDongGanDayRepository.save(hoatDong);
+
             System.out.println("Đăng nhập thành công");
             return "redirect:/trangchu?statusLogin=true";
         } else {
