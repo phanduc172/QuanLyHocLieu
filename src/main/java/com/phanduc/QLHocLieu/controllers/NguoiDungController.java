@@ -39,15 +39,20 @@ public class NguoiDungController {
 
     @GetMapping("/userinfo/{id}")
     public String getUserInfoById(@PathVariable("id") Integer maNguoiDung, Model model, HttpSession session) {
-
         NguoiDung loggedInUser = (NguoiDung) session.getAttribute("loggedInUser");
+        Integer trangThaiDaDuyet = 1;
+        Integer trangThaiChoDuyet = 2;
+        Integer trangThaiTuChoi = 3;
         List<DanhMuc> listDanhMuc = danhMucRepository.findAll();
         model.addAttribute("listDanhMuc", listDanhMuc);
         if (loggedInUser == null) {
             return "redirect:/trangchu";
         }
         NguoiDung nguoiDung = nguoiDungRepository.getUserByMaNguoiDung(maNguoiDung);
-        List<TaiLieu> taiLieus = taiLieuRepository.findByTaiLenBoi(maNguoiDung);
+//        List<TaiLieu> taiLieus = taiLieuRepository.findByTaiLenBoi(maNguoiDung);
+        List<TaiLieu> taiLieus = taiLieuRepository.findByMaTrangThaiAndTaiLenBoi(trangThaiDaDuyet, maNguoiDung);
+        List<TaiLieu> taiLieuWait = taiLieuRepository.findByMaTrangThaiAndTaiLenBoi(trangThaiChoDuyet, maNguoiDung);
+        List<TaiLieu> taiLieuReject = taiLieuRepository.findByMaTrangThaiAndTaiLenBoi(trangThaiTuChoi, maNguoiDung);
         List<Khoa> listKhoa = khoaRepository.findAll();
 
         // Kiểm tra nếu danh sách tài liệu rỗng, gán nội dung cho modal
@@ -55,14 +60,54 @@ public class NguoiDungController {
             model.addAttribute("noDocuments", "Bạn chưa tải lên tài liệu nào!");
         }
 
-        Integer totalDoc = taiLieus.size();
+        Integer totalApprove = taiLieus.size();
+        Integer totalWait = taiLieuWait.size();
+        Integer totalReject = taiLieuReject.size();
+        model.addAttribute("totalApprove", totalApprove);
+        model.addAttribute("totalWait", totalWait);
+        model.addAttribute("totalReject", totalReject);
 
         model.addAttribute("listKhoa", listKhoa);
         model.addAttribute("nguoiDung", nguoiDung);
         model.addAttribute("taiLieus", taiLieus);
-        model.addAttribute("totalDoc", totalDoc);
         return "UserInfo";
     }
+
+    @GetMapping("/userinfo/{id}/wait")
+    public String getDocumentWaitById(@PathVariable("id") Integer maNguoiDung, Model model, HttpSession session) {
+        NguoiDung loggedInUser = (NguoiDung) session.getAttribute("loggedInUser");
+        Integer trangThaiDaDuyet = 1;
+        Integer trangThaiChoDuyet = 2;
+        Integer trangThaiTuChoi = 3;
+        if (loggedInUser == null) {
+            return "redirect:/trangchu";
+        }
+        NguoiDung nguoiDung = nguoiDungRepository.getUserByMaNguoiDung(maNguoiDung);
+        List<Khoa> listKhoa = khoaRepository.findAll();
+        List<TaiLieu> taiLieus = taiLieuRepository.findByMaTrangThaiAndTaiLenBoi(trangThaiDaDuyet, maNguoiDung);
+        List<TaiLieu> taiLieuWait = taiLieuRepository.findByMaTrangThaiAndTaiLenBoi(trangThaiChoDuyet, maNguoiDung);
+        List<TaiLieu> taiLieuReject = taiLieuRepository.findByMaTrangThaiAndTaiLenBoi(trangThaiTuChoi, maNguoiDung);
+
+        // Kiểm tra nếu danh sách tài liệu rỗng, gán nội dung cho modal
+        if (taiLieuWait == null || taiLieuWait.isEmpty()) {
+            model.addAttribute("noDocuments", "Không có tài liệu nào đang chờ!");
+        }
+
+        Integer totalApprove = taiLieus.size();
+        Integer totalWait = taiLieuWait.size();
+        Integer totalReject = taiLieuReject.size();
+        model.addAttribute("totalApprove", totalApprove);
+        model.addAttribute("totalWait", totalWait);
+        model.addAttribute("totalReject", totalReject);
+
+        model.addAttribute("listKhoa", listKhoa);
+        model.addAttribute("nguoiDung", nguoiDung);
+        model.addAttribute("taiLieus", taiLieuWait);
+        model.addAttribute("loggedInUser",loggedInUser);
+        return "UserInfo";
+    }
+
+
 
 
     @PostMapping("/userinfo/update")

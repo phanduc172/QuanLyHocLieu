@@ -281,9 +281,9 @@
       <h5 class="mb-3">Quản lý tài liệu</h5>
       <div class="card">
         <ul class="list-unstyled d-flex flex-wrap justify-content-between m-0">
-          <li class="px-5 py-2 docHover"><a href="#" class="text-decoration-none">Đã duyệt <span class="text">(${totalDoc})</span></a></li>
-          <li class="px-5 py-2 docHover"><a href="#" class="text-decoration-none">Chờ duyệt(2)</a></li>
-          <li class="px-5 py-2 docHover"><a href="#" class="text-decoration-none">Từ chối(0)</a></li>
+          <li class="px-5 py-2 docHover"><a href="/userinfo/${loggedInUser.maNguoiDung}" class="text-decoration-none">Đã duyệt <span class="text">(${totalApprove})</span></a></li>
+          <li class="px-5 py-2 docHover"><a href="/userinfo/${loggedInUser.maNguoiDung}/wait" class="text-decoration-none">Chờ duyệt<span class="text">(${totalWait})</span></a></li>
+          <li class="px-5 py-2 docHover"><a href="#" class="text-decoration-none">Từ chối<span class="text">(${totalReject})</a></li>
 <%--          <li class="px-5 py-2 docHover"><a href="#" class="text-decoration-none">Bị trùng(0)</a></li>--%>
         </ul>
       </div>

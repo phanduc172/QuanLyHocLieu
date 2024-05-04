@@ -13,6 +13,7 @@ public interface TaiLieuRepository extends JpaRepository<TaiLieu,String> {
     List<TaiLieu> findByTaiLenBoi(Integer taiLenBoi);
     Optional<TaiLieu> findByMaTaiLieu(Integer maTaiLieu);
     List<TaiLieu> findByTieuDeContaining(String keyword);
+    List<TaiLieu> findByMaTrangThaiAndTaiLenBoi(Integer maTrangThai, Integer maNguoiDung);
     @Query("SELECT nd.anh FROM NguoiDung nd WHERE nd.maNguoiDung = :maNguoiDung")
     String findAnhByMaNguoiDung(@Param("maNguoiDung") Integer maNguoiDung);
     @Query("SELECT nd.hoTen FROM NguoiDung nd WHERE nd.maNguoiDung = :maNguoiDung")

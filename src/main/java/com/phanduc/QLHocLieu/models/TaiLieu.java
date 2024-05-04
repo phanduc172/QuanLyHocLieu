@@ -19,13 +19,16 @@ public class TaiLieu {
     private int soLuotTaiXuong;
     private Integer maDanhMuc;
     private String maChuyenNganh;
-    @Column(name = "soLuotTruyCap", columnDefinition = "int default 0")
+    @Column(name = "SoLuotTruyCap", columnDefinition = "int default 0")
     private Integer soLuotTruyCap;
+    @Column(name = "maTrangThai", columnDefinition = "int default 2")
+    private Integer maTrangThai;
+
 
     public TaiLieu() {
     }
 
-    public TaiLieu(Integer maTaiLieu, String tieuDe, String moTa, String duongDanTep, String anhTaiLieu, Integer taiLenBoi, Date ngayTaiLen, int soLuotTaiXuong, Integer maDanhMuc, String maChuyenNganh) {
+    public TaiLieu(Integer maTaiLieu, String tieuDe, String moTa, String duongDanTep, String anhTaiLieu, Integer taiLenBoi, Date ngayTaiLen, int soLuotTaiXuong, Integer maDanhMuc, String maChuyenNganh, Integer soLuotTruyCap, Integer maTrangThai) {
         this.maTaiLieu = maTaiLieu;
         this.tieuDe = tieuDe;
         this.moTa = moTa;
@@ -36,6 +39,8 @@ public class TaiLieu {
         this.soLuotTaiXuong = soLuotTaiXuong;
         this.maDanhMuc = maDanhMuc;
         this.maChuyenNganh = maChuyenNganh;
+        this.soLuotTruyCap = soLuotTruyCap;
+        this.maTrangThai = maTrangThai;
     }
 
     public Integer getMaTaiLieu() {
@@ -124,6 +129,14 @@ public class TaiLieu {
 
     public void setSoLuotTruyCap(Integer soLuotTruyCap) {
         this.soLuotTruyCap = soLuotTruyCap;
+    }
+
+    public Integer getMaTrangThai() {
+        return maTrangThai;
+    }
+
+    public void setMaTrangThai(Integer maTrangThai) {
+        this.maTrangThai = maTrangThai;
     }
 }
 

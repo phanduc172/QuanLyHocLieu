@@ -253,6 +253,7 @@ public class TaiLieuController {
                 taiLieu.setMaDanhMuc(category);
                 taiLieu.setMaChuyenNganh(major);
                 taiLieu.setSoLuotTruyCap(0);
+                taiLieu.setMaTrangThai(2);
                 taiLieuRepository.save(taiLieu);
                 System.out.println("Đường dẫn lưu trữ tệp: " + prefixedFilePath);
                 System.out.println("Tài liệu tải lên thành công");
