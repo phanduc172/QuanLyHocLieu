@@ -17,7 +17,6 @@ html,body {
     background-color: #009efb; /* Màu blue tùy chỉnh */
 }
 
-
 .truncate-text {
     display: block;
     width: 80%;
@@ -30,6 +29,23 @@ html,body {
 .navbar {
     box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
 }
+
+.dropdown:hover > .dropdown-menu, .dropend:hover > .dropdown-menu {
+    display: none;
+}
+.dropdown:hover > .dropdown-menu, .dropend:hover > .dropdown-menu {
+    display: block;
+    position: absolute;
+    top: 100%;
+    left: 0;
+}
+
+.dropend:hover > .dropdown-menu {
+    position: absolute;
+    top: 0;
+    left: 100%;
+}
+
 .main {
     margin-top: 85px;
 }

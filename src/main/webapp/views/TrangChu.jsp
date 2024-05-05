@@ -34,13 +34,31 @@
             <a class="nav-link active" aria-current="page" href="/trangchu">Trang chủ</a>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="" aria-expanded="false">
               Danh mục
             </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="#">Khoa</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="#">Ngành học</a></li>
+            <ul class="dropdown-menu p-0">
+              <li class="nav-item dropend p-0">
+                <a class="nav-link dropdown-toggle px-3 py-2" href="#" role="button" data-bs-toggle="" aria-expanded="false">
+                  Khoa
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="#">Khoa CNTT</a></li>
+                  <hr class="dropdown-divider m-0">
+                  <li><a class="dropdown-item" href="#">Khoa Hóa học</a></li>
+                </ul>
+              </li>
+              <hr class="dropdown-divider m-0">
+              <li class="nav-item dropend">
+                <a class="nav-link dropdown-toggle px-3 py-2" href="#" role="button" data-bs-toggle="" aria-expanded="false">
+                  Ngành học
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="#">Ngành Báo chí</a></li>
+                  <hr class="dropdown-divider m-0">
+                  <li><a class="dropdown-item" href="#">Ngành Công nghệ thông tin</a></li>
+                </ul>
+              </li>
             </ul>
           </li>
           <li class="nav-item">
@@ -232,7 +250,7 @@
           </ul>
         </c:forEach>
       </div>
-      <div class="col-sm-12 col-md-12 col-lg-10 col-xl-8">
+      <div class="col-sm-12 col-md-12 col-lg-10 col-xl-8" style="min-height: 85vh">
         <div id="carouselMain" class="carousel slide mb-3" data-bs-ride="carousel">
           <div class="carousel-indicators">
             <button type="button" data-bs-target="#carouselMain" data-bs-slide-to="0" class="active"
@@ -273,7 +291,7 @@
             <c:when test="${empty taiLieus}">
               <div class="">
                 <br><br><br>
-                <h4 class="text-center text-danger mt-3" style="font-weight: bold;">Không có tài liệu thuộc danh mục này</h4>
+                <h4 class="text-center text-danger mt-3" style="font-weight: bold;">${message}</h4>
               </div>
             </c:when>
             <c:otherwise>
@@ -295,7 +313,50 @@
             </c:otherwise>
           </c:choose>
         </div>
+        <c:if test="${not empty taiLieus}">
+          <div class="d-flex justify-content-center mt-4">
+            <nav aria-label="Page navigation">
+              <ul class="pagination">
+                <!-- Liên kết "Trang trước" -->
+                <li class="page-item <c:if test="${currentPage == 0}">disabled</c:if>">
+                  <c:choose>
+                    <c:when test="${currentPage > 0}">
+                      <a class="page-link" href="?page=${currentPage - 1}" tabindex="-1" aria-disabled="true">Trang trước</a>
+                    </c:when>
+                    <c:otherwise>
+                      <span class="page-link">Trang trước</span>
+                    </c:otherwise>
+                  </c:choose>
+                </li>
+
+                <!-- Liên kết của các trang -->
+                <c:if test="${totalPages > 0}">
+                  <c:forEach begin="0" end="${totalPages - 1}" var="pageNumber">
+                    <li class="page-item <c:if test="${pageNumber == currentPage}">active</c:if>">
+                      <a class="page-link" href="?page=${pageNumber}">${pageNumber + 1}</a>
+                    </li>
+                  </c:forEach>
+                </c:if>
+
+                <!-- Liên kết "Trang sau" -->
+                <li class="page-item <c:if test="${currentPage == totalPages - 1}">disabled</c:if>">
+                  <c:choose>
+                    <c:when test="${currentPage < totalPages - 1}">
+                      <a class="page-link" href="?page=${currentPage + 1}" tabindex="-1" aria-disabled="true">Trang sau</a>
+                    </c:when>
+                    <c:otherwise>
+                      <span class="page-link">Trang sau</span>
+                    </c:otherwise>
+                  </c:choose>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </c:if>
+
+
       </div>
+
       <div class="col-2 d-none d-xl-block">
         <h5 class="text-center fw-bold">Hoạt động gần đây</h5>
         <ul class="list-group">
@@ -536,7 +597,6 @@
                   </path>
                   <path stroke-linecap="round" stroke-linejoin="round" d="M20 16a4 4 0 1 1-8 0 4 4 0 0 1 8 0z"></path>
                 </svg>
-                0
               </li>
               <li class="p-1" style="font-size: 0.75rem;">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 32 32" stroke-width="2"

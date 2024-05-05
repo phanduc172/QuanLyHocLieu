@@ -93,6 +93,7 @@ public class NguoiDungController {
         model.addAttribute("nguoiDung", nguoiDung);
         model.addAttribute("taiLieus", taiLieuWait);
         model.addAttribute("loggedInUser",loggedInUser);
+        model.addAttribute("trangThai", trangThaiChoDuyet);
         return "UserInfo";
     }
 
@@ -122,6 +123,7 @@ public class NguoiDungController {
         model.addAttribute("nguoiDung", nguoiDung);
         model.addAttribute("taiLieus", taiLieuReject);
         model.addAttribute("loggedInUser", loggedInUser);
+        model.addAttribute("trangThai", trangThaiTuChoi);
         return "UserInfo";
     }
 

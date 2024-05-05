@@ -311,7 +311,7 @@
                   <span class="fs-6">${loop.index + 1}. ${taiLieu.tieuDe}</span>
                 </div>
               </a>
-              <div>
+              <div class="btn-group me-2" style="display: ${trangThai != 2 && trangThai != 3 ? 'block' : 'none'}">
                 <button class="btn btn-sm btn-outline-danger me-2 buttonDetail" title="Details" style="width: 30px;height: 30px;"
                         data-bs-toggle="modal" data-bs-target="#detailsDocumentModal" data-document-id="${taiLieu.maTaiLieu}">
                   <i class="fas fa-info"></i>
