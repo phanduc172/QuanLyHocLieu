@@ -67,7 +67,7 @@ public class TaiLieuController {
         Page<TaiLieu> taiLieusPage = taiLieuRepository.findAll(pageable);
 //        List<HoatDongGanDay> hoatDongGanDays = hoatDongGanDayRepository.findAll(Sort.by(Sort.Direction.DESC, "maHoatDong"));
         List<HoatDongGanDay> hoatDongGanDays = hoatDongGanDayRepository.findAll(
-                PageRequest.of(0, 9, Sort.by(Sort.Direction.DESC, "maHoatDong"))
+                PageRequest.of(0, 13, Sort.by(Sort.Direction.DESC, "maHoatDong"))
         ).getContent();
         Map<Integer, String> moTaHoatDong = new HashMap<>();
         Map<Integer, String> hoTenNguoiDung = new HashMap<>();
@@ -300,8 +300,12 @@ public class TaiLieuController {
                                    @RequestParam("faculty") String faculty,
                                    @RequestParam("category") Integer category,
                                    @RequestParam("major") String major,
-                                   HttpSession session) {
-        Integer maNguoiDung = ((NguoiDung) session.getAttribute("loggedInUser")).getMaNguoiDung();
+                                   HttpSession session, ModelMap modelMap) {
+        NguoiDung nguoiDung = (NguoiDung) session.getAttribute("loggedInUser");
+        if (!CheckLogin.isLoggedIn(session)) {
+            modelMap.addAttribute("messageLogin", "Bạn cần đăng nhập để truy cập tính năng này.");
+            return "redirect:/trangchu";
+        }
         if (!file.isEmpty()) {
             try {
                 String fileName = storageService.store(file);
@@ -313,7 +317,7 @@ public class TaiLieuController {
                 taiLieu.setMoTa(description);
                 taiLieu.setDuongDanTep(prefixedFilePath);
                 taiLieu.setAnhTaiLieu(anhTaiLieu);
-                taiLieu.setTaiLenBoi(maNguoiDung);
+                taiLieu.setTaiLenBoi(nguoiDung.getMaNguoiDung());
                 taiLieu.setNgayTaiLen(currentTimestamp);
                 taiLieu.setSoLuotTaiXuong(0);
                 taiLieu.setMaDanhMuc(category);
@@ -322,8 +326,14 @@ public class TaiLieuController {
                 taiLieu.setMaTrangThai(2);
                 taiLieuRepository.save(taiLieu);
                 System.out.println("Đường dẫn lưu trữ tệp: " + prefixedFilePath);
+
+                HoatDongGanDay hoatDong = new HoatDongGanDay();
+                hoatDong.setMaNguoiDung(nguoiDung.getMaNguoiDung());
+                hoatDong.setLoaiHoatDong("Tải lên");
+                hoatDong.setMoTaHoatDong("Vừa tải lên tài liệu: " + taiLieu.getTieuDe());
+                hoatDongGanDayRepository.save(hoatDong);
                 System.out.println("Tài liệu tải lên thành công");
-                return "redirect:/userinfo/"+maNguoiDung;
+                return "redirect:/userinfo/"+nguoiDung.getMaNguoiDung();
             } catch (Exception e) {
                 e.printStackTrace();
                 System.out.println("Tài liệu tải lên không thành công");
@@ -335,7 +345,6 @@ public class TaiLieuController {
         }
     }
 
-
     @PostMapping("/document/updatedocument")
     public String updateDocument(@RequestParam("editTitle") String title,
                                  @RequestParam("editDescription") String description,
@@ -343,7 +352,7 @@ public class TaiLieuController {
                                  @RequestParam("major") String major,
                                  @RequestParam("maTaiLieu") Integer maTaiLieu,
                                  ModelMap modelMap, HttpSession session) {
-        Integer maNguoiDung = ((NguoiDung) session.getAttribute("loggedInUser")).getMaNguoiDung();
+        NguoiDung nguoiDung = (NguoiDung) session.getAttribute("loggedInUser");
         List<DanhMuc> listDanhMuc = danhMucRepository.findAll();
         modelMap.addAttribute("listDanhMuc", listDanhMuc);
         try {
@@ -355,7 +364,13 @@ public class TaiLieuController {
                 taiLieu.setMaDanhMuc(category);
                 taiLieu.setMaChuyenNganh(major);
                 taiLieuRepository.save(taiLieu);
-                return "redirect:/userinfo/"+maNguoiDung;
+
+                HoatDongGanDay hoatDong = new HoatDongGanDay();
+                hoatDong.setMaNguoiDung(nguoiDung.getMaNguoiDung());
+                hoatDong.setLoaiHoatDong("Cập nhật");
+                hoatDong.setMoTaHoatDong("Vừa cập nhật tài liệu: " + taiLieu.getTieuDe());
+                hoatDongGanDayRepository.save(hoatDong);
+                return "redirect:/userinfo/"+nguoiDung.getMaNguoiDung();
             } else {
                 return "redirect:/error";
             }

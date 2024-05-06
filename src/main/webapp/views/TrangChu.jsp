@@ -313,23 +313,21 @@
             </c:otherwise>
           </c:choose>
         </div>
+        <%--Đoạn mã thực hiện phân trang--%>
         <c:if test="${not empty taiLieus}">
           <div class="d-flex justify-content-center mt-4">
             <nav aria-label="Page navigation">
               <ul class="pagination">
-                <!-- Liên kết "Trang trước" -->
                 <li class="page-item <c:if test="${currentPage == 0}">disabled</c:if>">
                   <c:choose>
                     <c:when test="${currentPage > 0}">
-                      <a class="page-link" href="?page=${currentPage - 1}" tabindex="-1" aria-disabled="true">Trang trước</a>
+                      <a class="page-link" href="?page=${currentPage - 1}" tabindex="-1" aria-disabled="true"><i class="bi bi-chevron-double-left"></i></a>
                     </c:when>
                     <c:otherwise>
-                      <span class="page-link">Trang trước</span>
+                      <span class="page-link"><i class="bi bi-chevron-double-left"></i></span>
                     </c:otherwise>
                   </c:choose>
                 </li>
-
-                <!-- Liên kết của các trang -->
                 <c:if test="${totalPages > 0}">
                   <c:forEach begin="0" end="${totalPages - 1}" var="pageNumber">
                     <li class="page-item <c:if test="${pageNumber == currentPage}">active</c:if>">
@@ -337,15 +335,13 @@
                     </li>
                   </c:forEach>
                 </c:if>
-
-                <!-- Liên kết "Trang sau" -->
                 <li class="page-item <c:if test="${currentPage == totalPages - 1}">disabled</c:if>">
                   <c:choose>
                     <c:when test="${currentPage < totalPages - 1}">
-                      <a class="page-link" href="?page=${currentPage + 1}" tabindex="-1" aria-disabled="true">Trang sau</a>
+                      <a class="page-link" href="?page=${currentPage + 1}" tabindex="-1" aria-disabled="true"><i class="bi bi-chevron-double-right"></i></a>
                     </c:when>
                     <c:otherwise>
-                      <span class="page-link">Trang sau</span>
+                      <span class="page-link"><i class="bi bi-chevron-double-right"></i></span>
                     </c:otherwise>
                   </c:choose>
                 </li>
@@ -364,10 +360,10 @@
             <li class="list-group-item">
               <div class="d-flex align-items-center justify-content-center text-center">
                 <img src="${anhNguoiDung[hoatDong.maHoatDong]}"
-                     class="rounded-circle me-2" width="50" height="50" alt="Avatar">
+                     class="rounded-circle me-2" width="40" height="40" alt="Avatar">
                 <div class="text-start">
-                  <strong>${hoTenNguoiDung[hoatDong.maHoatDong]}</strong>
-                  <p style="font-size: 14px">${moTaHoatDong[hoatDong.maHoatDong]}</p>
+                  <strong class="fs-6">${hoTenNguoiDung[hoatDong.maHoatDong]}</strong>
+                  <p class="m-0" style="font-size: 14px; max-width: 200px; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; white-space: normal;">${moTaHoatDong[hoatDong.maHoatDong]}</p>
                 </div>
               </div>
             </li>
