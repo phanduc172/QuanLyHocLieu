@@ -1,10 +1,7 @@
 package com.phanduc.QLHocLieu.controllers;
 
 import com.phanduc.QLHocLieu.models.*;
-import com.phanduc.QLHocLieu.repositories.DanhMucRepository;
-import com.phanduc.QLHocLieu.repositories.KhoaRepository;
-import com.phanduc.QLHocLieu.repositories.NguoiDungRepository;
-import com.phanduc.QLHocLieu.repositories.TaiLieuRepository;
+import com.phanduc.QLHocLieu.repositories.*;
 import com.phanduc.QLHocLieu.services.StorageService;
 import org.hibernate.annotations.Check;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,18 +30,22 @@ public class NguoiDungController {
     @Autowired
     DanhMucRepository danhMucRepository;
     @Autowired
+    ChuyenNganhRepository chuyenNganhRepository;
+    @Autowired
     @Qualifier("uploadImageService")
     private StorageService storageService;
 
 
     @GetMapping("/userinfo/{id}")
-    public String getUserInfoById(@PathVariable("id") Integer maNguoiDung, Model model, HttpSession session) {
+    public String getUserInfoById(@PathVariable("id") Integer maNguoiDung, ModelMap modelMap, HttpSession session) {
         NguoiDung loggedInUser = (NguoiDung) session.getAttribute("loggedInUser");
         Integer trangThaiDaDuyet = 1;
         Integer trangThaiChoDuyet = 2;
         Integer trangThaiTuChoi = 3;
-        List<DanhMuc> listDanhMuc = danhMucRepository.findAll();
-        model.addAttribute("listDanhMuc", listDanhMuc);
+        List<DanhMuc> danhMucs = danhMucRepository.findAll();
+        List<Khoa> khoas = khoaRepository.findAll();
+        List<ChuyenNganh> chuyenNganhs = chuyenNganhRepository.findAll();
+        modelMap.addAttribute("danhMucs", danhMucs);
         if (loggedInUser == null) {
             return "redirect:/trangchu";
         }
@@ -54,21 +55,20 @@ public class NguoiDungController {
         List<TaiLieu> taiLieuWait = taiLieuRepository.findByMaTrangThaiAndTaiLenBoi(trangThaiChoDuyet, maNguoiDung);
         List<TaiLieu> taiLieuReject = taiLieuRepository.findByMaTrangThaiAndTaiLenBoi(trangThaiTuChoi, maNguoiDung);
         List<Khoa> listKhoa = khoaRepository.findAll();
-
         if (taiLieus == null || taiLieus.isEmpty()) {
-            model.addAttribute("noDocuments", "Bạn chưa tải lên tài liệu nào!");
+            modelMap.addAttribute("noDocuments", "Bạn chưa tải lên tài liệu nào!");
         }
-
-        calculateDocumentTotals(model, taiLieus, taiLieuWait, taiLieuReject);
-
-        model.addAttribute("listKhoa", listKhoa);
-        model.addAttribute("nguoiDung", nguoiDung);
-        model.addAttribute("taiLieus", taiLieus);
+        calculateDocumentTotals(modelMap, taiLieus, taiLieuWait, taiLieuReject);
+        modelMap.addAttribute("listKhoa", listKhoa);
+        modelMap.addAttribute("nguoiDung", nguoiDung);
+        modelMap.addAttribute("taiLieus", taiLieus);
+        modelMap.addAttribute("khoas", khoas);
+        modelMap.addAttribute("chuyenNganhs", chuyenNganhs);
         return "UserInfo";
     }
 
     @GetMapping("/userinfo/{id}/wait")
-    public String getDocumentWaitById(@PathVariable("id") Integer maNguoiDung, Model model, HttpSession session) {
+    public String getDocumentWaitById(@PathVariable("id") Integer maNguoiDung, ModelMap modelMap, HttpSession session) {
         NguoiDung loggedInUser = (NguoiDung) session.getAttribute("loggedInUser");
         Integer trangThaiDaDuyet = 1;
         Integer trangThaiChoDuyet = 2;
@@ -84,21 +84,21 @@ public class NguoiDungController {
 
         // Kiểm tra nếu danh sách tài liệu rỗng, gán nội dung cho modal
         if (taiLieuWait == null || taiLieuWait.isEmpty()) {
-            model.addAttribute("noDocuments", "Không có tài liệu nào đang chờ!");
+            modelMap.addAttribute("noDocuments", "Không có tài liệu nào đang chờ!");
         }
 
-        calculateDocumentTotals(model, taiLieus, taiLieuWait, taiLieuReject);
+        calculateDocumentTotals(modelMap, taiLieus, taiLieuWait, taiLieuReject);
 
-        model.addAttribute("listKhoa", listKhoa);
-        model.addAttribute("nguoiDung", nguoiDung);
-        model.addAttribute("taiLieus", taiLieuWait);
-        model.addAttribute("loggedInUser",loggedInUser);
-        model.addAttribute("trangThai", trangThaiChoDuyet);
+        modelMap.addAttribute("listKhoa", listKhoa);
+        modelMap.addAttribute("nguoiDung", nguoiDung);
+        modelMap.addAttribute("taiLieus", taiLieuWait);
+        modelMap.addAttribute("loggedInUser",loggedInUser);
+        modelMap.addAttribute("trangThai", trangThaiChoDuyet);
         return "UserInfo";
     }
 
     @GetMapping("/userinfo/{id}/reject")
-    public String getDocumentRejectById(@PathVariable("id") Integer maNguoiDung, Model model, HttpSession session) {
+    public String getDocumentRejectById(@PathVariable("id") Integer maNguoiDung, ModelMap modelMap, HttpSession session) {
         NguoiDung loggedInUser = (NguoiDung) session.getAttribute("loggedInUser");
         Integer trangThaiDaDuyet = 1;
         Integer trangThaiChoDuyet = 2;
@@ -114,26 +114,26 @@ public class NguoiDungController {
 
         // Kiểm tra nếu danh sách tài liệu bị từ chối rỗng, gán nội dung cho modal
         if (taiLieuReject == null || taiLieuReject.isEmpty()) {
-            model.addAttribute("noDocuments", "Không có tài liệu nào bị từ chối!");
+            modelMap.addAttribute("noDocuments", "Không có tài liệu nào bị từ chối!");
         }
 
-        calculateDocumentTotals(model, taiLieus, taiLieuWait, taiLieuReject);
+        calculateDocumentTotals(modelMap, taiLieus, taiLieuWait, taiLieuReject);
 
-        model.addAttribute("listKhoa", listKhoa);
-        model.addAttribute("nguoiDung", nguoiDung);
-        model.addAttribute("taiLieus", taiLieuReject);
-        model.addAttribute("loggedInUser", loggedInUser);
-        model.addAttribute("trangThai", trangThaiTuChoi);
+        modelMap.addAttribute("listKhoa", listKhoa);
+        modelMap.addAttribute("nguoiDung", nguoiDung);
+        modelMap.addAttribute("taiLieus", taiLieuReject);
+        modelMap.addAttribute("loggedInUser", loggedInUser);
+        modelMap.addAttribute("trangThai", trangThaiTuChoi);
         return "UserInfo";
     }
 
-    private void calculateDocumentTotals(Model model, List<TaiLieu> taiLieus, List<TaiLieu> taiLieuWait, List<TaiLieu> taiLieuReject) {
+    private void calculateDocumentTotals(ModelMap modelMap, List<TaiLieu> taiLieus, List<TaiLieu> taiLieuWait, List<TaiLieu> taiLieuReject) {
         Integer totalApprove = taiLieus.size();
         Integer totalWait = taiLieuWait.size();
         Integer totalReject = taiLieuReject.size();
-        model.addAttribute("totalApprove", totalApprove);
-        model.addAttribute("totalWait", totalWait);
-        model.addAttribute("totalReject", totalReject);
+        modelMap.addAttribute("totalApprove", totalApprove);
+        modelMap.addAttribute("totalWait", totalWait);
+        modelMap.addAttribute("totalReject", totalReject);
     }
 
 

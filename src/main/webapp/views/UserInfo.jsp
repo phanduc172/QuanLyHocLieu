@@ -33,13 +33,43 @@
             <a class="nav-link active" aria-current="page" href="/trangchu">Trang chủ</a>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <a class="nav-link dropdown-toggle" href="" role="button" data-bs-toggle="" aria-expanded="false">
               Danh mục
             </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="#">Khoa</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="#">Ngành học</a></li>
+            <ul class="dropdown-menu p-0">
+              <li class="nav-item dropend p-0">
+                <a class="nav-link dropdown-toggle px-3 py-2" href="" role="button" data-bs-toggle="" aria-expanded="false">
+                  Khoa
+                </a>
+                <ul class="dropdown-menu p-0" style="max-height: 200px; overflow-y: auto;">
+                  <c:forEach var="khoa" items="${khoas}" varStatus="loop">
+                    <li class="py-1">
+                      <a class="dropdown-item" href="/documents/khoa/${khoa.maKhoa}" value="${khoa.maKhoa}">${khoa.tenKhoa}</a>
+                    </li>
+                    <hr class="dropdown-divider m-0">
+                    <c:if test="${loop.index == 7}">
+                      <hr class="dropdown-divider m-0">
+                    </c:if>
+                  </c:forEach>
+                </ul>
+              </li>
+              <hr class="dropdown-divider m-0">
+              <li class="nav-item dropend">
+                <a class="nav-link dropdown-toggle px-3 py-2" href="" role="button" data-bs-toggle="" aria-expanded="false">
+                  Ngành học
+                </a>
+                <ul class="dropdown-menu p-0" style="max-height: 200px; overflow-y: auto;">
+                  <c:forEach var="chuyennganh" items="${chuyenNganhs}" varStatus="loop">
+                    <li class="py-1">
+                      <a class="dropdown-item" href="/documents/chuyennganh/${chuyennganh.maChuyenNganh}" value="${chuyennganh.maChuyenNganh}">${chuyennganh.tenChuyenNganh}</a>
+                    </li>
+                    <hr class="dropdown-divider m-0">
+                    <c:if test="${loop.index == 7}">
+                      <hr class="dropdown-divider m-0">
+                    </c:if>
+                  </c:forEach>
+                </ul>
+              </li>
             </ul>
           </li>
           <li class="nav-item">
@@ -87,13 +117,24 @@
                       </ul>
                       <div class="tab-content mt-3">
                         <div id="loginForm" class="tab-pane fade show active">
+                          <div class="mb-3">
+                            <a href="/login/oauth2/authorization/google" class="btn btn-google py-2 w-100">
+                              <i class="bi bi-google me-2"></i> Đăng nhập bằng Google
+                            </a>
+                          </div>
+                          <div class="divider">or</div>
                           <form method="post" action="/login">
                             <fieldset>
                               <div class="form-group mb-3">
                                 <input class="form-control" placeholder="Nhập tên người dùng" name="tenNguoiDung" type="text" required/>
                               </div>
                               <div class="form-group mb-3">
-                                <input class="form-control" placeholder="Nhập mật khẩu" name="matKhau" type="password" value="" required/>
+                                <div class="input-group">
+                                  <input class="form-control" placeholder="Nhập mật khẩu" name="matKhau" id="passwordInput" type="password" value="" required/>
+                                  <button type="button" class="btn btn-sm btn-secondary toggle-password" onclick="togglePasswordVisibility('loginForm')">
+                                    <i class="bi bi-eye"></i>
+                                  </button>
+                                </div>
                               </div>
                               <button class="btn btn-md btn btn-secondary btn-block" type="submit" id="loginButton">Đăng nhập</button>
                             </fieldset>
@@ -109,7 +150,12 @@
                                 <input class="form-control" placeholder="Nhập tên đăng nhập" name="tenNguoiDung" type="text" required/>
                               </div>
                               <div class="form-group mb-3">
-                                <input class="form-control" placeholder="Nhập mật khẩu" type="password" name="matKhau" value="" required/>
+                                <div class="input-group">
+                                  <input class="form-control" placeholder="Nhập mật khẩu" type="password" name="matKhau" value="" required/>
+                                  <button type="button" class="btn btn-sm btn-secondary toggle-password" onclick="togglePasswordVisibility('registerForm')">
+                                    <i class="bi bi-eye"></i>
+                                  </button>
+                                </div>
                               </div>
                               <input class="btn btn-md btn btn-secondary btn-block" type="submit" value="Đăng ký" />
                             </fieldset>
@@ -125,9 +171,9 @@
           <c:otherwise>
             <%--Tải lên tài liệu--%>
             <div class="ms-auto">
-              <a href="/uploadfile" class="btn btn-light border p-2 rounded-pill">
-                <span class="fw-bold">Tải lên</span>
-                <i class="bi bi-cloud-upload ms-2"></i>
+              <a href="/uploadfile" class="border px-3 py-2 rounded-pill maudo docHover text-decoration-none">
+                <span class="fw-bold text-white">Tải lên</span>
+                <i class="bi bi-cloud-upload text-white ms-2" style="width: 20px; height: 20px"></i>
               </a>
             </div>
             <%--Modals Thông tin cá nhân--%>
@@ -170,20 +216,24 @@
                     </div>
                     <div class="modal-body">
                       <!-- Form đổi mật khẩu -->
-                      <form method="post" action="/changepassword">
+                      <form method="post" action="/changepassword" id="changePasswordForm">
                         <div class="mb-3">
                           <label for="currentPassword" class="form-label">Mật khẩu hiện tại</label>
-                          <input type="password" class="form-control" id="currentPassword" name="currentPassword" required>
+                          <input type="password" class="form-control" id="currentPassword" name="currentPassword">
+                          <input type="hidden" id="currentPasswordHidden" value="${currentPasswordHidden}" />
+                          <div id="currentPasswordError" class="text-danger"></div>
                         </div>
                         <div class="mb-3">
                           <label for="newPassword" class="form-label">Mật khẩu mới</label>
-                          <input type="password" class="form-control" id="newPassword" name="newPassword" required>
+                          <input type="password" class="form-control" id="newPassword" name="newPassword">
+                          <div id="newPasswordError" class="text-danger"></div>
                         </div>
                         <div class="mb-3">
                           <label for="confirmNewPassword" class="form-label">Xác nhận mật khẩu mới</label>
-                          <input type="password" name="confirmNewPassword" class="form-control" id="confirmNewPassword" required>
+                          <input type="password" name="confirmNewPassword" class="form-control" id="confirmNewPassword">
+                          <div id="confirmNewPasswordError" class="text-danger"></div>
                         </div>
-                        <button type="submit" class="btn btn-primary">Đổi mật khẩu</button>
+                        <button type="submit" class="btn btn-success">Đổi mật khẩu</button>
                       </form>
                     </div>
                   </div>
@@ -392,7 +442,7 @@
                   <label for="category" class="form-label">Thể loại:</label>
                   <select class="form-control" id="category" name="category" required>
                     <option value="" selected disabled>-- Chọn Thể loại --</option>
-                    <c:forEach items="${listDanhMuc}" var="danhmuc">
+                    <c:forEach items="${danhMucs}" var="danhmuc">
                       <option value="${danhmuc.maDanhMuc}">${danhmuc.tenDanhMuc}</option>
                     </c:forEach>
                   </select>

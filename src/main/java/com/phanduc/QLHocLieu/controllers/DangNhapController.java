@@ -29,7 +29,7 @@ public class DangNhapController {
             hoatDong.setMaNguoiDung(nguoiDung.getMaNguoiDung());
             hoatDong.setLoaiHoatDong("Đăng nhập");
             hoatDong.setMoTaHoatDong("Vừa đăng nhập vào hệ thống");
-            hoatDongGanDayRepository.save(hoatDong);
+//            hoatDongGanDayRepository.save(hoatDong);
 
             System.out.println("Đăng nhập thành công");
             return "redirect:/trangchu?statusLogin=true";

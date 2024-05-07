@@ -14,7 +14,6 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 
-
 <body>
   <%@ include file="ui/modal_login.jsp" %>
   <header>
@@ -34,29 +33,41 @@
             <a class="nav-link active" aria-current="page" href="/trangchu">Trang chủ</a>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="" aria-expanded="false">
+            <a class="nav-link dropdown-toggle" href="" role="button" data-bs-toggle="" aria-expanded="false">
               Danh mục
             </a>
             <ul class="dropdown-menu p-0">
               <li class="nav-item dropend p-0">
-                <a class="nav-link dropdown-toggle px-3 py-2" href="#" role="button" data-bs-toggle="" aria-expanded="false">
+                <a class="nav-link dropdown-toggle px-3 py-2" href="" role="button" data-bs-toggle="" aria-expanded="false">
                   Khoa
                 </a>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="#">Khoa CNTT</a></li>
-                  <hr class="dropdown-divider m-0">
-                  <li><a class="dropdown-item" href="#">Khoa Hóa học</a></li>
+                <ul class="dropdown-menu p-0" style="max-height: 200px; overflow-y: auto;">
+                  <c:forEach var="khoa" items="${khoas}" varStatus="loop">
+                    <li class="py-1">
+                      <a class="dropdown-item" href="/documents/khoa/${khoa.maKhoa}" value="${khoa.maKhoa}">${khoa.tenKhoa}</a>
+                    </li>
+                    <hr class="dropdown-divider m-0">
+                    <c:if test="${loop.index == 7}">
+                      <hr class="dropdown-divider m-0">
+                    </c:if>
+                  </c:forEach>
                 </ul>
               </li>
               <hr class="dropdown-divider m-0">
               <li class="nav-item dropend">
-                <a class="nav-link dropdown-toggle px-3 py-2" href="#" role="button" data-bs-toggle="" aria-expanded="false">
+                <a class="nav-link dropdown-toggle px-3 py-2" href="" role="button" data-bs-toggle="" aria-expanded="false">
                   Ngành học
                 </a>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="#">Ngành Báo chí</a></li>
-                  <hr class="dropdown-divider m-0">
-                  <li><a class="dropdown-item" href="#">Ngành Công nghệ thông tin</a></li>
+                <ul class="dropdown-menu p-0" style="max-height: 200px; overflow-y: auto;">
+                  <c:forEach var="chuyennganh" items="${chuyenNganhs}" varStatus="loop">
+                    <li class="py-1">
+                      <a class="dropdown-item" href="/documents/chuyennganh/${chuyennganh.maChuyenNganh}" value="${chuyennganh.maChuyenNganh}">${chuyennganh.tenChuyenNganh}</a>
+                    </li>
+                    <hr class="dropdown-divider m-0">
+                    <c:if test="${loop.index == 7}">
+                      <hr class="dropdown-divider m-0">
+                    </c:if>
+                  </c:forEach>
                 </ul>
               </li>
             </ul>
@@ -285,7 +296,7 @@
             <span class="visually-hidden">Next</span>
           </button>
         </div>
-        <h4 class="text-center my-4 fw-bold">Tài liệu nổi bật</h4>
+        <h4 class="text-center my-4 fw-bold">${titleHome}</h4>
         <div class="row mt-2">
           <c:choose>
             <c:when test="${empty taiLieus}">
@@ -349,8 +360,6 @@
             </nav>
           </div>
         </c:if>
-
-
       </div>
 
       <div class="col-2 d-none d-xl-block">
@@ -1037,7 +1046,11 @@
       </div>
     </div>
   </div>
-
+  <div class="me-4 mb-4" style="position:fixed;right: 0;bottom: 0;">
+    <a href="#" class="btn btn-success">
+      <i class="bi bi-arrow-up fs-5"></i>
+    </a>
+  </div>
   <footer>
     <div class="p-3 text-center bg-light text-danger fw-bold   fs-6">
       Copyright © 2024. Designed by Phan Đức

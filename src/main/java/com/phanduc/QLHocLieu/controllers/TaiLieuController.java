@@ -57,10 +57,17 @@ public class TaiLieuController {
         return "redirect:/trangchu";
     }
 
+    @GetMapping("/introduction")
+    public String introduction() {
+        return "GioiThieu";
+    }
+
     @GetMapping("/trangchu")
     public String getAllTaiLieuAndDanhMuc(@RequestParam(defaultValue = "0") int page, ModelMap modelMap, HttpSession session) {
         NguoiDung nguoiDung = (NguoiDung) session.getAttribute("loggedInUser");
         List<DanhMuc> danhMucs = danhMucRepository.findAll();
+        List<Khoa> khoas = khoaRepository.findAll();
+        List<ChuyenNganh> chuyenNganhs = chuyenNganhRepository.findAll();
         // Tạo đối tượng Pageable để yêu cầu trang hiện tại và kích thước trang
         Pageable pageable = PageRequest.of(page, 8);
         // Lấy trang tài liệu từ repository
@@ -79,7 +86,10 @@ public class TaiLieuController {
             hoTenNguoiDung.put(hoatDongGanDay.getMaHoatDong(), hoatDongND.getHoTen());
             anhNguoiDung.put(hoatDongGanDay.getMaHoatDong(), hoatDongND.getAnh());
         }
+        modelMap.addAttribute("titleHome","Danh sách tài liệu");
         modelMap.addAttribute("danhMucs", danhMucs);
+        modelMap.addAttribute("khoas", khoas);
+        modelMap.addAttribute("chuyenNganhs", chuyenNganhs);
         modelMap.addAttribute("taiLieus", taiLieusPage.getContent());
         modelMap.addAttribute("nguoiDung", nguoiDung);
         modelMap.addAttribute("hoatDongGanDays", hoatDongGanDays);
@@ -88,7 +98,6 @@ public class TaiLieuController {
         modelMap.addAttribute("anhNguoiDung", anhNguoiDung);
         modelMap.addAttribute("currentPage", page);
         modelMap.addAttribute("totalPages", taiLieusPage.getTotalPages());
-
         // Thêm mật khẩu hiện tại nếu người dùng đăng nhập
         if(nguoiDung != null) {
             modelMap.addAttribute("currentPasswordHidden", nguoiDung.getMatKhau());
@@ -104,10 +113,10 @@ public class TaiLieuController {
         int pageSize = 8;
         int startIndex = page * pageSize;
         int endIndex = Math.min(startIndex + pageSize, allTaiLieus.size());
-
         List<TaiLieu> taiLieus = allTaiLieus.subList(startIndex, endIndex);
-
-        List<HoatDongGanDay> hoatDongGanDays = hoatDongGanDayRepository.findAll(Sort.by(Sort.Direction.DESC, "maHoatDong"));
+        List<HoatDongGanDay> hoatDongGanDays = hoatDongGanDayRepository.findAll(
+                PageRequest.of(0, 13, Sort.by(Sort.Direction.DESC, "maHoatDong"))
+        ).getContent();
         Map<Integer, String> moTaHoatDong = new HashMap<>();
         Map<Integer, String> hoTenNguoiDung = new HashMap<>();
         Map<Integer, String> anhNguoiDung = new HashMap<>();
@@ -131,6 +140,7 @@ public class TaiLieuController {
             modelMap.addAttribute("anhNguoiDung", anhNguoiDung);
             return "TrangChu";
         }
+        modelMap.addAttribute("titleHome","Tài liệu Thể loại");
         modelMap.addAttribute("nguoiDung", nguoiDung);
         modelMap.addAttribute("danhMucs", danhMucs);
         modelMap.addAttribute("taiLieus", taiLieus);
@@ -140,6 +150,7 @@ public class TaiLieuController {
         modelMap.addAttribute("anhNguoiDung", anhNguoiDung);
         modelMap.addAttribute("currentPage", page);
         modelMap.addAttribute("totalPages", (int) Math.ceil((double) allTaiLieus.size() / pageSize));
+        addCommonAttributes(modelMap);
 
         // Thêm mật khẩu hiện tại nếu người dùng đăng nhập
         if (nguoiDung != null) {
@@ -149,7 +160,7 @@ public class TaiLieuController {
     }
 
     @GetMapping("/document/{maTaiLieu}")
-    public String getDocumentById(@PathVariable("maTaiLieu") Integer maTaiLieu, Model model, HttpSession session) {
+    public String getDocumentById(@PathVariable("maTaiLieu") Integer maTaiLieu, ModelMap modelMap, HttpSession session) {
         NguoiDung nguoiDung = (NguoiDung) session.getAttribute("loggedInUser");
         Optional<TaiLieu> optionalTaiLieu = taiLieuRepository.findByMaTaiLieu(maTaiLieu);
         if (!optionalTaiLieu.isPresent()) {
@@ -179,16 +190,17 @@ public class TaiLieuController {
         List<String> danhSachTieuDe = taiLieusByUploader.stream()
                 .map(TaiLieu::getTieuDe)
                 .collect(Collectors.toList());
-        model.addAttribute("nguoiDung", nguoiDung);
-        model.addAttribute("nguoiTaiLen", nguoiTaiLen);
-        model.addAttribute("taiLieu", taiLieu);
-        model.addAttribute("docImage", docImage);
-        model.addAttribute("urlDoc", urlDoc);
-        model.addAttribute("binhLuans", binhLuans);
-        model.addAttribute("hoTenNguoiBinhLuans", hoTenNguoiBinhLuans);
-        model.addAttribute("anhNguoiBinhLuans", anhNguoiBinhLuans);
-        model.addAttribute("giaTriDanhGias", giaTriDanhGias);
-        model.addAttribute("danhSachTieuDe", danhSachTieuDe);
+        addCommonAttributes(modelMap);
+        modelMap.addAttribute("nguoiDung", nguoiDung);
+        modelMap.addAttribute("nguoiTaiLen", nguoiTaiLen);
+        modelMap.addAttribute("taiLieu", taiLieu);
+        modelMap.addAttribute("docImage", docImage);
+        modelMap.addAttribute("urlDoc", urlDoc);
+        modelMap.addAttribute("binhLuans", binhLuans);
+        modelMap.addAttribute("hoTenNguoiBinhLuans", hoTenNguoiBinhLuans);
+        modelMap.addAttribute("anhNguoiBinhLuans", anhNguoiBinhLuans);
+        modelMap.addAttribute("giaTriDanhGias", giaTriDanhGias);
+        modelMap.addAttribute("danhSachTieuDe", danhSachTieuDe);
         for (String tieuDe : danhSachTieuDe) {
             System.out.println(tieuDe);
         }
@@ -219,6 +231,7 @@ public class TaiLieuController {
         if (taiLieusOnPage.isEmpty()) {
             modelMap.addAttribute("message", "Không tìm thấy tài liệu với từ khóa: " + keyword);
         }
+        modelMap.addAttribute("titleHome","Kết quả với từ khóa: " + keyword);
         modelMap.addAttribute("nguoiDung", nguoiDung);
         modelMap.addAttribute("danhMucs", danhMucs);
         modelMap.addAttribute("hoatDongGanDays", hoatDongGanDays);
@@ -289,6 +302,7 @@ public class TaiLieuController {
 
         List<Khoa> listKhoa = khoaRepository.findAll();
         modelMap.addAttribute("listKhoa", listKhoa);
+        addCommonAttributes(modelMap);
 
         return "TaiLenTaiLieu";
     }
@@ -379,6 +393,130 @@ public class TaiLieuController {
             return "redirect:/error";
         }
     }
+
+    @GetMapping("/documents/khoa/{maKhoa}")
+    public String getDocumentsByKhoa(@PathVariable("maKhoa") Integer maKhoa, @RequestParam(defaultValue = "0") int page, ModelMap modelMap, HttpSession session) {
+        NguoiDung nguoiDung = (NguoiDung) session.getAttribute("loggedInUser");
+
+        Pageable pageable = PageRequest.of(page, 8);
+        Page<TaiLieu> taiLieusPage = taiLieuRepository.findByMaKhoa(maKhoa, pageable);
+
+        modelMap.addAttribute("titleHome", "Danh sách tài liệu");
+        modelMap.addAttribute("nguoiDung", nguoiDung);
+        modelMap.addAttribute("taiLieus", taiLieusPage.getContent());
+        modelMap.addAttribute("currentPage", page);
+        modelMap.addAttribute("totalPages", taiLieusPage.getTotalPages());
+        addCommonAttributes(modelMap);
+
+        return "TrangChu";
+    }
+
+
+    @GetMapping("/documents/chuyennganh/{maChuyenNganh}")
+    public String getDocumentsByChuyenNganh(@PathVariable("maChuyenNganh") String maChuyenNganh, @RequestParam(defaultValue = "0") int page, ModelMap modelMap) {
+        Pageable pageable = PageRequest.of(page, 8);
+        Page<TaiLieu> taiLieus = taiLieuRepository.findByMaChuyenNganh(maChuyenNganh, pageable);
+
+        if(taiLieus.isEmpty() || taiLieus.getContent().isEmpty()) {
+            modelMap.addAttribute("message", "Không tìm thấy tài liệu");
+        }
+
+        addCommonAttributes(modelMap);
+        modelMap.addAttribute("taiLieus", taiLieus.getContent());
+        modelMap.addAttribute("currentPage", page);
+        modelMap.addAttribute("totalPages", taiLieus.getTotalPages());
+
+        return "TrangChu";
+    }
+
+
+    private void addCommonAttributes(ModelMap modelMap) {
+        List<DanhMuc> danhMucs = danhMucRepository.findAll();
+        List<Khoa> khoas = khoaRepository.findAll();
+        List<ChuyenNganh> chuyenNganhs = chuyenNganhRepository.findAll();
+        List<HoatDongGanDay> hoatDongGanDays = hoatDongGanDayRepository.findAll(
+                PageRequest.of(0, 13, Sort.by(Sort.Direction.DESC, "maHoatDong"))
+        ).getContent();
+        Map<Integer, String> moTaHoatDong = new HashMap<>();
+        Map<Integer, String> hoTenNguoiDung = new HashMap<>();
+        Map<Integer, String> anhNguoiDung = new HashMap<>();
+        for (HoatDongGanDay hoatDongGanDay : hoatDongGanDays) {
+            Integer maNguoiDung = hoatDongGanDay.getMaNguoiDung();
+            NguoiDung hoatDongND = nguoiDungRepository.getUserByMaNguoiDung(maNguoiDung);
+            moTaHoatDong.put(hoatDongGanDay.getMaHoatDong(), hoatDongGanDay.getMoTaHoatDong());
+            hoTenNguoiDung.put(hoatDongGanDay.getMaHoatDong(), hoatDongND.getHoTen());
+            anhNguoiDung.put(hoatDongGanDay.getMaHoatDong(), hoatDongND.getAnh());
+        }
+
+        modelMap.addAttribute("khoas", khoas);
+        modelMap.addAttribute("chuyenNganhs", chuyenNganhs);
+        modelMap.addAttribute("hoatDongGanDays", hoatDongGanDays);
+        modelMap.addAttribute("moTaHoatDong", moTaHoatDong);
+        modelMap.addAttribute("hoTenNguoiDung", hoTenNguoiDung);
+        modelMap.addAttribute("anhNguoiDung", anhNguoiDung);
+        modelMap.addAttribute("danhMucs", danhMucs);
+    }
+
+
+    //Lấy tài liệu theo mã khoa
+//    @GetMapping("/documents/khoa/{maKhoa}")
+//    public String getDocumentsByKhoa(@PathVariable("maKhoa") Integer maKhoa, Model model) {
+//        List<TaiLieu> taiLieus = taiLieuRepository.findByMaKhoa(maKhoa);
+//        List<DanhMuc> danhMucs = danhMucRepository.findAll();
+//        List<Khoa> khoas = khoaRepository.findAll();
+//        List<ChuyenNganh> chuyenNganhs = chuyenNganhRepository.findAll();
+//        List<HoatDongGanDay> hoatDongGanDays = hoatDongGanDayRepository.findAll(Sort.by(Sort.Direction.DESC, "maHoatDong"));
+//        Map<Integer, String> moTaHoatDong = new HashMap<>();
+//        Map<Integer, String> hoTenNguoiDung = new HashMap<>();
+//        Map<Integer, String> anhNguoiDung = new HashMap<>();
+//        for (HoatDongGanDay hoatDongGanDay : hoatDongGanDays) {
+//            Integer maNguoiDung = hoatDongGanDay.getMaNguoiDung();
+//            NguoiDung hoatDongND = nguoiDungRepository.getUserByMaNguoiDung(maNguoiDung);
+//            moTaHoatDong.put(hoatDongGanDay.getMaHoatDong(), hoatDongGanDay.getMoTaHoatDong());
+//            hoTenNguoiDung.put(hoatDongGanDay.getMaHoatDong(), hoatDongND.getHoTen());
+//            anhNguoiDung.put(hoatDongGanDay.getMaHoatDong(), hoatDongND.getAnh());
+//        }
+//
+//        model.addAttribute("khoas", khoas);
+//        model.addAttribute("chuyenNganhs", chuyenNganhs);
+//        model.addAttribute("hoatDongGanDays", hoatDongGanDays);
+//        model.addAttribute("moTaHoatDong", moTaHoatDong);
+//        model.addAttribute("hoTenNguoiDung", hoTenNguoiDung);
+//        model.addAttribute("anhNguoiDung", anhNguoiDung);
+//        model.addAttribute("danhMucs", danhMucs);
+//        model.addAttribute("taiLieus", taiLieus);
+//        return "TrangChu";
+//    }
+//
+//    //Lấy tài liệu theo mã chuyên ngành
+//    @GetMapping("/documents/chuyennganh/{maChuyenNganh}")
+//    public String getDocumentsByChuyenNganh(@PathVariable("maChuyenNganh") String maChuyenNganh, Model model) {
+//        List<TaiLieu> taiLieus = taiLieuRepository.findByMaChuyenNganh(maChuyenNganh);
+//        List<DanhMuc> danhMucs = danhMucRepository.findAll();
+//        List<Khoa> khoas = khoaRepository.findAll();
+//        List<ChuyenNganh> chuyenNganhs = chuyenNganhRepository.findAll();
+//        List<HoatDongGanDay> hoatDongGanDays = hoatDongGanDayRepository.findAll(Sort.by(Sort.Direction.DESC, "maHoatDong"));
+//        Map<Integer, String> moTaHoatDong = new HashMap<>();
+//        Map<Integer, String> hoTenNguoiDung = new HashMap<>();
+//        Map<Integer, String> anhNguoiDung = new HashMap<>();
+//        for (HoatDongGanDay hoatDongGanDay : hoatDongGanDays) {
+//            Integer maNguoiDung = hoatDongGanDay.getMaNguoiDung();
+//            NguoiDung hoatDongND = nguoiDungRepository.getUserByMaNguoiDung(maNguoiDung);
+//            moTaHoatDong.put(hoatDongGanDay.getMaHoatDong(), hoatDongGanDay.getMoTaHoatDong());
+//            hoTenNguoiDung.put(hoatDongGanDay.getMaHoatDong(), hoatDongND.getHoTen());
+//            anhNguoiDung.put(hoatDongGanDay.getMaHoatDong(), hoatDongND.getAnh());
+//        }
+//        model.addAttribute("khoas", khoas);
+//        model.addAttribute("chuyenNganhs", chuyenNganhs);
+//        model.addAttribute("hoatDongGanDays", hoatDongGanDays);
+//        model.addAttribute("moTaHoatDong", moTaHoatDong);
+//        model.addAttribute("hoTenNguoiDung", hoTenNguoiDung);
+//        model.addAttribute("anhNguoiDung", anhNguoiDung);
+//        model.addAttribute("danhMucs", danhMucs);
+//        model.addAttribute("taiLieus", taiLieus);
+//        return "TrangChu";
+//    }
+
 
     //Lấy chuyên ngành để hiển thị khi mà người dùng tải lên tài liệu ở UploadFile
     @GetMapping("/getChuyenNganh")
