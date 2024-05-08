@@ -1,6 +1,8 @@
 package com.phanduc.QLHocLieu.repositories;
 
 import com.phanduc.QLHocLieu.models.TaiLieu;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -18,4 +20,11 @@ public interface TaiLieuRepository extends JpaRepository<TaiLieu,String> {
     String findAnhByMaNguoiDung(@Param("maNguoiDung") Integer maNguoiDung);
     @Query("SELECT nd.hoTen FROM NguoiDung nd WHERE nd.maNguoiDung = :maNguoiDung")
     String findHoTenByMaNguoiDung(@Param("maNguoiDung") Integer maNguoiDung);
+    Page<TaiLieu> findByMaChuyenNganh(String maChuyenNganh, Pageable pageable);
+    @Query(value = "SELECT * FROM tailieu " +
+            "INNER JOIN chuyennganh ON tailieu.MaChuyenNganh = chuyennganh.MaChuyenNganh " +
+            "INNER JOIN khoa ON chuyennganh.MaKhoa = khoa.MaKhoa " +
+            "WHERE chuyennganh.MaKhoa = ?1", nativeQuery = true)
+    Page<TaiLieu> findByMaKhoa(Integer maKhoa, Pageable pageable);
+//    List<TaiLieu> findByMaKhoa(Integer maKhoa);
 }

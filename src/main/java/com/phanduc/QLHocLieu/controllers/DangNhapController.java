@@ -19,15 +19,16 @@ public class DangNhapController {
 
     @RequestMapping(value = "/login", method = {RequestMethod.GET, RequestMethod.POST})
     public String login(@RequestParam String tenNguoiDung, @RequestParam String matKhau, HttpSession session, Model model) {
+        Integer maVaiTroNguoiDung = 2;
         NguoiDung nguoiDung = nguoiDungRepository.findByTenNguoiDungAndMatKhau(tenNguoiDung, matKhau);
-        if (nguoiDung != null && nguoiDung.getMaVaiTro()==2) {
+        if (nguoiDung != null && nguoiDung.getMaVaiTro()==maVaiTroNguoiDung) {
             // Lưu thông tin đăng nhập vào session
             session.setAttribute("loggedInUser", nguoiDung);
 
             HoatDongGanDay hoatDong = new HoatDongGanDay();
             hoatDong.setMaNguoiDung(nguoiDung.getMaNguoiDung());
             hoatDong.setLoaiHoatDong("Đăng nhập");
-            hoatDong.setMoTaHoatDong("Người dùng @" + tenNguoiDung + " đã đăng nhập vào hệ thống");
+            hoatDong.setMoTaHoatDong("Vừa đăng nhập vào hệ thống");
 //            hoatDongGanDayRepository.save(hoatDong);
 
             System.out.println("Đăng nhập thành công");

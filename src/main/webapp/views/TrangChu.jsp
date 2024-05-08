@@ -14,7 +14,6 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 
-
 <body>
   <%@ include file="ui/modal_login.jsp" %>
   <header>
@@ -34,13 +33,43 @@
             <a class="nav-link active" aria-current="page" href="/trangchu">Trang chủ</a>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <a class="nav-link dropdown-toggle" href="" role="button" data-bs-toggle="" aria-expanded="false">
               Danh mục
             </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="#">Khoa</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="#">Ngành học</a></li>
+            <ul class="dropdown-menu p-0">
+              <li class="nav-item dropend p-0">
+                <a class="nav-link dropdown-toggle px-3 py-2" href="" role="button" data-bs-toggle="" aria-expanded="false">
+                  Khoa
+                </a>
+                <ul class="dropdown-menu p-0" style="max-height: 200px; overflow-y: auto;">
+                  <c:forEach var="khoa" items="${khoas}" varStatus="loop">
+                    <li class="py-1">
+                      <a class="dropdown-item" href="/documents/khoa/${khoa.maKhoa}" value="${khoa.maKhoa}">${khoa.tenKhoa}</a>
+                    </li>
+                    <hr class="dropdown-divider m-0">
+                    <c:if test="${loop.index == 7}">
+                      <hr class="dropdown-divider m-0">
+                    </c:if>
+                  </c:forEach>
+                </ul>
+              </li>
+              <hr class="dropdown-divider m-0">
+              <li class="nav-item dropend">
+                <a class="nav-link dropdown-toggle px-3 py-2" href="" role="button" data-bs-toggle="" aria-expanded="false">
+                  Ngành học
+                </a>
+                <ul class="dropdown-menu p-0" style="max-height: 200px; overflow-y: auto;">
+                  <c:forEach var="chuyennganh" items="${chuyenNganhs}" varStatus="loop">
+                    <li class="py-1">
+                      <a class="dropdown-item" href="/documents/chuyennganh/${chuyennganh.maChuyenNganh}" value="${chuyennganh.maChuyenNganh}">${chuyennganh.tenChuyenNganh}</a>
+                    </li>
+                    <hr class="dropdown-divider m-0">
+                    <c:if test="${loop.index == 7}">
+                      <hr class="dropdown-divider m-0">
+                    </c:if>
+                  </c:forEach>
+                </ul>
+              </li>
             </ul>
           </li>
           <li class="nav-item">
@@ -232,7 +261,7 @@
           </ul>
         </c:forEach>
       </div>
-      <div class="col-sm-12 col-md-12 col-lg-10 col-xl-8">
+      <div class="col-sm-12 col-md-12 col-lg-10 col-xl-8" style="min-height: 85vh">
         <div id="carouselMain" class="carousel slide mb-3" data-bs-ride="carousel">
           <div class="carousel-indicators">
             <button type="button" data-bs-target="#carouselMain" data-bs-slide-to="0" class="active"
@@ -267,13 +296,13 @@
             <span class="visually-hidden">Next</span>
           </button>
         </div>
-        <h4 class="text-center my-4 fw-bold">Tài liệu nổi bật</h4>
+        <h4 class="text-center my-4 fw-bold">${titleHome}</h4>
         <div class="row mt-2">
           <c:choose>
             <c:when test="${empty taiLieus}">
               <div class="">
                 <br><br><br>
-                <h4 class="text-center text-danger mt-3" style="font-weight: bold;">Không có tài liệu thuộc danh mục này</h4>
+                <h4 class="text-center text-danger mt-3" style="font-weight: bold;">${message}</h4>
               </div>
             </c:when>
             <c:otherwise>
@@ -295,7 +324,44 @@
             </c:otherwise>
           </c:choose>
         </div>
+        <%--Đoạn mã thực hiện phân trang--%>
+        <c:if test="${not empty taiLieus}">
+          <div class="d-flex justify-content-center mt-4">
+            <nav aria-label="Page navigation">
+              <ul class="pagination">
+                <li class="page-item <c:if test="${currentPage == 0}">disabled</c:if>">
+                  <c:choose>
+                    <c:when test="${currentPage > 0}">
+                      <a class="page-link" href="?page=${currentPage - 1}" tabindex="-1" aria-disabled="true"><i class="bi bi-chevron-double-left"></i></a>
+                    </c:when>
+                    <c:otherwise>
+                      <span class="page-link"><i class="bi bi-chevron-double-left"></i></span>
+                    </c:otherwise>
+                  </c:choose>
+                </li>
+                <c:if test="${totalPages > 0}">
+                  <c:forEach begin="0" end="${totalPages - 1}" var="pageNumber">
+                    <li class="page-item <c:if test="${pageNumber == currentPage}">active</c:if>">
+                      <a class="page-link" href="?page=${pageNumber}">${pageNumber + 1}</a>
+                    </li>
+                  </c:forEach>
+                </c:if>
+                <li class="page-item <c:if test="${currentPage == totalPages - 1}">disabled</c:if>">
+                  <c:choose>
+                    <c:when test="${currentPage < totalPages - 1}">
+                      <a class="page-link" href="?page=${currentPage + 1}" tabindex="-1" aria-disabled="true"><i class="bi bi-chevron-double-right"></i></a>
+                    </c:when>
+                    <c:otherwise>
+                      <span class="page-link"><i class="bi bi-chevron-double-right"></i></span>
+                    </c:otherwise>
+                  </c:choose>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </c:if>
       </div>
+
       <div class="col-2 d-none d-xl-block">
         <h5 class="text-center fw-bold">Hoạt động gần đây</h5>
         <ul class="list-group">
@@ -303,10 +369,10 @@
             <li class="list-group-item">
               <div class="d-flex align-items-center justify-content-center text-center">
                 <img src="${anhNguoiDung[hoatDong.maHoatDong]}"
-                     class="rounded-circle me-2" width="50" height="50" alt="Avatar">
+                     class="rounded-circle me-2" width="40" height="40" alt="Avatar">
                 <div class="text-start">
-                  <strong>${hoTenNguoiDung[hoatDong.maHoatDong]}</strong>
-                  <p style="font-size: 14px">${moTaHoatDong[hoatDong.maHoatDong]}</p>
+                  <strong class="fs-6">${hoTenNguoiDung[hoatDong.maHoatDong]}</strong>
+                  <p class="m-0" style="font-size: 14px; max-width: 200px; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; white-space: normal;">${moTaHoatDong[hoatDong.maHoatDong]}</p>
                 </div>
               </div>
             </li>
@@ -536,7 +602,6 @@
                   </path>
                   <path stroke-linecap="round" stroke-linejoin="round" d="M20 16a4 4 0 1 1-8 0 4 4 0 0 1 8 0z"></path>
                 </svg>
-                0
               </li>
               <li class="p-1" style="font-size: 0.75rem;">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 32 32" stroke-width="2"
@@ -981,7 +1046,11 @@
       </div>
     </div>
   </div>
-
+  <div class="me-4 mb-4" style="position:fixed;right: 0;bottom: 0;">
+    <a href="#" class="btn btn-success">
+      <i class="bi bi-arrow-up fs-5"></i>
+    </a>
+  </div>
   <footer>
     <div class="p-3 text-center bg-light text-danger fw-bold   fs-6">
       Copyright © 2024. Designed by Phan Đức
