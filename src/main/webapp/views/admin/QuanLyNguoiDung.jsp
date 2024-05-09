@@ -28,7 +28,7 @@
     <header class="topbar" data-navbarbg="skin6">
         <nav class="navbar top-navbar navbar-expand-md navbar-dark">
             <div class="navbar-header" data-logobg="skin6">
-                <a class="navbar-brand" href="index.html">
+                <a class="navbar-brand" href="/dashboard/">
                     <span class="logo-text ms-3">
                             <img src="/assets/images/PD.png" alt="homepage" class="dark-logo" style="width: 100px;"/>
                         </span>
@@ -59,7 +59,7 @@
             <nav class="sidebar-nav">
                 <ul>
                     <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="index.html" aria-expanded="false">
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/dashboard" aria-expanded="false">
                             <i class="me-3 fas fa-tachometer-alt" aria-hidden="true"></i>
                             <span class="hide-menu">Tổng quan</span>
                         </a>
@@ -68,6 +68,12 @@
                         <a class="sidebar-link waves-effect waves-dark sidebar-link" href="pages-profile.html" aria-expanded="false">
                             <i class="me-3 fas fa-user" aria-hidden="true"></i>
                             <span class="hide-menu">Hồ sơ người dùng</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/document/approve" aria-expanded="false">
+                            <i class="me-3 fas fa-check-circle" aria-hidden="true"></i>
+                            <span class="hide-menu">Phê duyệt Tài liệu</span>
                         </a>
                     </li>
                     <ul id="sidebarnav">
@@ -82,7 +88,7 @@
                             <div class="collapse" id="manageItems">
                                 <ul class="list-unstyled">
                                     <li class="sidebar-item ms-3">
-                                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="table-basic.html">
+                                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/manager/tailieu ">
                                             <i class="fas fa-file-alt me-3" aria-hidden="true"></i> <!-- Thêm icon File -->
                                             <span class="hide-menu">Tài liệu</span>
                                         </a>
@@ -157,7 +163,7 @@
                     <div class="d-flex align-items-center">
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
+                                <li class="breadcrumb-item"><a href="/dashboard">Trang chủ</a></li>
                                 <li class="breadcrumb-item active" aria-current="page">Danh sách người dùng</li>
                             </ol>
                         </nav>
@@ -181,7 +187,7 @@
                                             <th class="border-top-0">Họ tên</th>
                                             <th class="border-top-0">Email</th>
                                             <th class="border-top-0 text-center">Mật khẩu</th>
-                                            <th class="border-top-0">ID vai trò</th>
+                                            <th class="border-top-0 text-center">ID vai trò</th>
                                             <th class="border-top-0 text-center">Hành động</th>
                                         </tr>
                                     </thead>
@@ -198,12 +204,12 @@
                                                     <i class="fas fa-eye"></i>
                                                 </button>
                                             </td>
-                                            <td>${ndung.maVaiTro}</td>
+                                            <td class="text-center">${ndung.maVaiTro}</td>
                                             <td class="text-center">
                                                 <button class="btn btn-sm btn-outline-info me-2" style="width: 30px;height: 30px">
                                                     <i class="fas fa-info"></i>
                                                 </button>
-                                                <button type="button" data-bs-toggle="modal" data-bs-target="#modalUpdateUser" class="btn btn-sm btn-outline-warning me-2"
+                                                <button type="button" data-bs-toggle="modal" data-bs-target="#modalUpdateUser" class="btnEditUser btn btn-sm btn-outline-warning me-2"
                                                         data-userid="${ndung.maNguoiDung}"
                                                         data-username="${ndung.tenNguoiDung}"
                                                         data-fullname="${ndung.hoTen}"
@@ -226,17 +232,17 @@
                                 <nav aria-label="Page navigation">
                                     <ul class="pagination justify-content-center">
                                         <li class="page-item ${currentPage == 0 ? 'disabled' : ''}">
-                                            <a class="page-link" href="/dashboard/user/list?page=${currentPage - 1}&size=${size}" aria-label="Previous">
+                                            <a class="page-link" href="/manager/user/list?page=${currentPage - 1}&size=${size}" aria-label="Previous">
                                                 <span aria-hidden="true">&laquo;</span>
                                             </a>
                                         </li>
                                         <c:forEach begin="0" end="${totalPages - 1}" var="pageNum">
                                             <li class="page-item ${pageNum == currentPage ? 'active' : ''}">
-                                                <a class="page-link" href="/dashboard/user/list?page=${pageNum}&size=${size}">${pageNum + 1}</a>
+                                                <a class="page-link" href="/manager/user/list?page=${pageNum}&size=${size}">${pageNum + 1}</a>
                                             </li>
                                         </c:forEach>
                                         <li class="page-item ${currentPage == totalPages - 1 ? 'disabled' : ''}">
-                                            <a class="page-link" href="/dashboard/user/list?page=${currentPage + 1}&size=${size}" aria-label="Next">
+                                            <a class="page-link" href="/manager/user/list?page=${currentPage + 1}&size=${size}" aria-label="Next">
                                                 <span aria-hidden="true">&raquo;</span>
                                             </a>
                                         </li>
@@ -253,8 +259,8 @@
                                         </div>
                                         <div class="modal-body">
                                             <!-- Form cập nhật thông tin người dùng -->
-                                            <form id="updateUserForm" action="/dashboard/update" method="post">
-                                                <input type="text" id="updateUserId" name="maNguoiDung" value="${nd.maNguoiDung}">
+                                            <form id="updateUserForm" action="/manager/update" method="post">
+                                                <input type="hidden" id="updateUserId" name="maNguoiDung">
                                                 <div class="mb-3">
                                                     <label for="updateUsername" class="form-label">Tên tài khoản</label>
                                                     <input type="text" class="form-control" id="updateUsername" name="updateUsername" placeholder="Nhập tên tài khoản">
@@ -301,7 +307,7 @@
                                         </div>
                                         <!-- Modal Footer -->
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Đóng</button>
+                                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Hủy</button>
                                             <button type="button" id="confirmDeleteButton" class="btn btn-danger text-white">Xác nhận</button>
                                         </div>
                                     </div>

@@ -12,6 +12,7 @@ import java.util.Optional;
 
 public interface TaiLieuRepository extends JpaRepository<TaiLieu,String> {
     List<TaiLieu> findByMaDanhMuc(Integer maDanhMuc);
+    List<TaiLieu> findByMaTrangThai(Integer maTrangThai);
     List<TaiLieu> findByTaiLenBoi(Integer taiLenBoi);
     Optional<TaiLieu> findByMaTaiLieu(Integer maTaiLieu);
     List<TaiLieu> findByTieuDeContaining(String keyword);
@@ -26,5 +27,5 @@ public interface TaiLieuRepository extends JpaRepository<TaiLieu,String> {
             "INNER JOIN khoa ON chuyennganh.MaKhoa = khoa.MaKhoa " +
             "WHERE chuyennganh.MaKhoa = ?1", nativeQuery = true)
     Page<TaiLieu> findByMaKhoa(Integer maKhoa, Pageable pageable);
-//    List<TaiLieu> findByMaKhoa(Integer maKhoa);
+
 }

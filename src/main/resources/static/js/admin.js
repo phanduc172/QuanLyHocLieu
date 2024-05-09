@@ -1,5 +1,5 @@
 //Hiển thị thông tin chi tiết người dùng lên form  chỉnh sửa người dùng ở admin
-document.querySelectorAll('.btn-outline-warning').forEach(function(button) {
+document.querySelectorAll('.btnEditUser').forEach(function(button) {
     button.addEventListener('click', function() {
 
         var userId = this.dataset.userid;
@@ -25,3 +25,18 @@ document.querySelectorAll('.btn-outline-warning').forEach(function(button) {
     });
 });
 //Hiển thị thông tin chi tiết người dùng lên form  chỉnh sửa người dùng ở admin
+
+//Hiển thị thông tin danh mục lên form  chỉnh sửa người dùng ở admin
+document.querySelectorAll('.btn-edit').forEach(function(button) {
+    button.addEventListener('click', function() {
+        // Lấy thông tin từ thuộc tính data của nút chỉnh sửa
+        var maDanhMuc = this.dataset.id;
+        var tenDanhMuc = this.dataset.namecategory;
+
+        // Điền thông tin vào các trường trong biểu mẫu chỉnh sửa
+        document.getElementById('maDanhMuc').value = maDanhMuc;
+        document.getElementById('updatetenDanhMuc').value = tenDanhMuc;
+    });
+});
+
+//Hiển thị thông tin danh mục lên form  chỉnh sửa người dùng ở admin

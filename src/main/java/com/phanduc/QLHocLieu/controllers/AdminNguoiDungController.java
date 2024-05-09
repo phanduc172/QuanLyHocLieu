@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping(path = "/dashboard")
+@RequestMapping(path = "/manager")
 public class AdminNguoiDungController {
 
     @Autowired
@@ -30,6 +30,7 @@ public class AdminNguoiDungController {
     }
 
     @GetMapping("/user/list")
+    //http://localhost:8080/manager/user/list
     public String getAllNguoiDung(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
@@ -54,8 +55,7 @@ public class AdminNguoiDungController {
                              @RequestParam("updateEmail") String email,
                              @RequestParam("updatePassword") String password,
                              @RequestParam("updateRoleId") Integer roleId,
-                             @ModelAttribute("nguoiDung") NguoiDung nguoiDung,
-                             ModelMap modelMap
+                             @ModelAttribute("nguoiDung") NguoiDung nguoiDung
     ) {
         try {
             if (nguoiDung == null) {
@@ -71,7 +71,7 @@ public class AdminNguoiDungController {
             nguoiDung.setMatKhau(password);
             nguoiDung.setMaVaiTro(roleId);
             nguoiDungRepository.save(nguoiDung);
-            return "redirect:/dashboard/user/list?updateSuccess=true";
+            return "redirect:/manager/user/list?updateSuccess=true";
         } catch (Exception e) {
             System.out.println("Đã xảy ra lỗi trong quá trình cập nhật người dùng:" + e.getMessage());
             return "redirect:/admin/Error404";
@@ -82,7 +82,6 @@ public class AdminNguoiDungController {
     public ResponseEntity<String> deleteUser(@PathVariable("maNguoiDung") Integer maNguoiDung) {
         Optional<NguoiDung> optionalNguoiDung = nguoiDungRepository.findById(maNguoiDung);
         if (optionalNguoiDung.isPresent()) {
-//            nguoiDungRepository.deleteById(maNguoiDung);
             return new ResponseEntity<>("Xóa người dùng thành công", HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Người dùng không tồn tại", HttpStatus.NOT_FOUND);

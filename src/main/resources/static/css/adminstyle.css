@@ -62,6 +62,13 @@ File: scss
  *  12. Forms
  *  14. Component
  */
+.truncate-text-admin {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 350px;
+}
+
 body[data-theme="dark"] {
   /* Card Color */
   /* Settings for the  element */

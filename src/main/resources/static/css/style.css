@@ -26,6 +26,13 @@ html,body {
     text-decoration: none;
 }
 
+.truncate-text-admin {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 350px;
+}
+
 .navbar {
     box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
 }

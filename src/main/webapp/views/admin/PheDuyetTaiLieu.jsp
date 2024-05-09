@@ -2,15 +2,18 @@
          pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
-<html lang="en">
+<html dir="ltr" lang="en">
+
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Quản lý học liệu - Trường Đại học Khoa học Huế</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin Dashboard</title>
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon.png">
     <!-- Custom CSS -->
     <link href="/css/style.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
 </head>
 
 <body>
@@ -65,13 +68,13 @@
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="AdminProfile.jsp" aria-expanded="false">
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="pages-profile.html" aria-expanded="false">
                             <i class="me-3 fas fa-user" aria-hidden="true"></i>
                             <span class="hide-menu">Hồ sơ người dùng</span>
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/document/approve" aria-expanded="false">
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="#" aria-expanded="false">
                             <i class="me-3 fas fa-check-circle" aria-hidden="true"></i>
                             <span class="hide-menu">Phê duyệt Tài liệu</span>
                         </a>
@@ -146,7 +149,7 @@
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="../Error404.jsp" aria-expanded="false">
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="pages-error-404.html" aria-expanded="false">
                             <i class="me-3 fas fa-exclamation-circle" aria-hidden="true"></i>
                             <span class="hide-menu">Lỗi 404</span>
                         </a>
@@ -159,12 +162,12 @@
         <div class="page-breadcrumb">
             <div class="row align-items-center">
                 <div class="col-md-6 col-8 align-self-center">
-                    <h3 class="page-title mb-0 p-0">Dashboard</h3>
+                    <h3 class="page-title mb-0 p-0">Phê duyệt Tài liệu</h3>
                     <div class="d-flex align-items-center">
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+                                <li class="breadcrumb-item"><a href="/dashboard/">Trang chủ</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Tài liệu chờ duyệt</li>
                             </ol>
                         </nav>
                     </div>
@@ -173,130 +176,43 @@
         </div>
         <div class="container-fluid">
             <div class="row">
-                <div class="col-sm-6">
+                <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Daily Sales</h4>
-                            <div class="text-end">
-                                <h2 class="font-light mb-0"><i class="ti-arrow-up text-success"></i> $120</h2>
-                                <span class="text-muted">Todays Income</span>
-                            </div>
-                            <span class="text-success">80%</span>
-                            <div class="progress">
-                                <div class="progress-bar bg-success" role="progressbar"
-                                     style="width: 80%; height: 6px;" aria-valuenow="25" aria-valuemin="0"
-                                     aria-valuemax="100"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title">Weekly Sales</h4>
-                            <div class="text-end">
-                                <h2 class="font-light mb-0"><i class="ti-arrow-up text-info"></i> $5,000</h2>
-                                <span class="text-muted">Todays Income</span>
-                            </div>
-                            <span class="text-info">30%</span>
-                            <div class="progress">
-                                <div class="progress-bar bg-info" role="progressbar"
-                                     style="width: 30%; height: 6px;" aria-valuenow="25" aria-valuemin="0"
-                                     aria-valuemax="100"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title">Revenue Statistics</h4>
-                            <div class="flot-chart">
-                                <div class="flot-chart-content " id="flot-line-chart"
-                                     style="padding: 0px; position: relative;">
-                                    <canvas class="flot-base w-100" height="400"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="d-md-flex">
-                                <h4 class="card-title col-md-10 mb-md-0 mb-3 align-self-center">Projects of the Month</h4>
-                                <div class="col-md-2 ms-auto">
-                                    <select class="form-select shadow-none col-md-2 ml-auto">
-                                        <option selected>January</option>
-                                        <option value="1">February</option>
-                                        <option value="2">March</option>
-                                        <option value="3">April</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="table-responsive mt-5">
-                                <table class="table stylish-table no-wrap">
+                            <h4 class="card-title">Thể loại</h4>
+                            <div class="table-responsive">
+                                <table class="table user-table no-wrap">
                                     <thead>
-                                    <tr>
-                                        <th class="border-top-0" colspan="2">Assigned</th>
-                                        <th class="border-top-0">Name</th>
-                                        <th class="border-top-0">Budget</th>
+                                    <tr class="text-center">
+                                        <th class="border-top-0 fs-5">ID</th>
+                                        <th class="border-top-0 fs-5">Tiêu đề</th>
+                                        <th class="border-top-0 fs-5">Mô tả</th>
+                                        <th class="border-top-0 fs-5">Người tải lên</th>
+                                        <th class="border-top-0 fs-5">Ngày tải lên</th>
+                                        <th class="border-top-0 fs-5">Thể loại</th>
+                                        <th class="border-top-0 fs-5">Chuyên ngành</th>
+                                        <th class="border-top-0 fs-5">Trạng thái</th>
+                                        <th class="border-top-0 fs-5">Hành động</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <td style="width:50px;"><span class="round">S</span></td>
-                                        <td class="align-middle">
-                                            <h6>Sunil Joshi</h6><small class="text-muted">Web Designer</small>
-                                        </td>
-                                        <td class="align-middle">Elite Admin</td>
-                                        <td class="align-middle">$3.9K</td>
-                                    </tr>
-                                    <tr class="active">
-                                        <td><span class="round"><img src="../assets/images/users/2.jpg"
-                                                                     alt="user" width="50"></span></td>
-                                        <td class="align-middle">
-                                            <h6>Andrew</h6><small class="text-muted">Project Manager</small>
-                                        </td>
-                                        <td class="align-middle">Real Homes</td>
-                                        <td class="align-middle">$23.9K</td>
-                                    </tr>
-                                    <tr>
-                                        <td><span class="round round-success">B</span></td>
-                                        <td class="align-middle">
-                                            <h6>Bhavesh patel</h6><small class="text-muted">Developer</small>
-                                        </td>
-                                        <td class="align-middle">MedicalPro Theme</td>
-                                        <td class="align-middle">$12.9K</td>
-                                    </tr>
-                                    <tr>
-                                        <td><span class="round round-primary">N</span></td>
-                                        <td class="align-middle">
-                                            <h6>Nirav Joshi</h6><small class="text-muted">Frontend Eng</small>
-                                        </td>
-                                        <td class="align-middle">Elite Admin</td>
-                                        <td class="align-middle">$10.9K</td>
-                                    </tr>
-                                    <tr>
-                                        <td><span class="round round-warning">M</span></td>
-                                        <td class="align-middle">
-                                            <h6>Micheal Doe</h6><small class="text-muted">Content Writer</small>
-                                        </td>
-                                        <td class="align-middle">Helping Hands</td>
-                                        <td class="align-middle">$12.9K</td>
-                                    </tr>
-                                    <tr>
-                                        <td><span class="round round-danger">N</span></td>
-                                        <td class="align-middle">
-                                            <h6>Johnathan</h6><small class="text-muted">Graphic</small>
-                                        </td>
-                                        <td class="align-middle">Digital Agency</td>
-                                        <td class="align-middle">$2.6K</td>
-                                    </tr>
+                                    <c:forEach var="tailieu" items="${listTaiLieu}" varStatus="loop">
+                                        <tr>
+                                            <td>${tailieu.maTaiLieu}</td>
+                                            <td class="truncate-text-admin">${tailieu.tieuDe}</td>
+                                            <td class="truncate-text-admin">${tailieu.moTa}</td>
+                                            <td>${tenNguoiDung[loop.index]}</td>
+                                            <td>${tailieu.ngayTaiLen}</td>
+                                            <td>${tenDanhMuc[loop.index]}</td> <!-- Hiển thị tên danh mục -->
+                                            <td>${tenChuyenNganh[loop.index]}</td>
+                                            <td>${tenTrangThai[loop.index]}</td>
+                                            <td class="text-center">
+                                                <button class="btn btn-sm btn-outline-info me-2" style="width: 30px;height: 30px">
+                                                    <i class="fas fa-info"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
                                     </tbody>
                                 </table>
                             </div>
@@ -304,51 +220,13 @@
                     </div>
                 </div>
             </div>
-            <div class="row justify-content-center">
-                <div class="col-lg-4 col-md-6">
-                    <div class="card">
-                        <img class="card-img-top img-responsive" src="../assets/images/big/img1.jpg" alt="Card">
-                        <div class="card-body">
-                            <ul class="list-inline d-flex align-items-center">
-                                <li class="ps-0">20 May 2021</li>
-                                <li class="ms-auto"><a href="javascript:void(0)" class="link">3 Comment</a></li>
-                            </ul>
-                            <h3 class="font-normal">Featured Hydroflora Pots Garden &amp; Outdoors</h3>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="card">
-                        <img class="card-img-top img-responsive" src="../assets/images/big/img2.jpg" alt="Card">
-                        <div class="card-body">
-                            <ul class="list-inline d-flex align-items-center">
-                                <li class="ps-0">20 May 2021</li>
-                                <li class="ms-auto"><a href="javascript:void(0)" class="link">3 Comment</a></li>
-                            </ul>
-                            <h3 class="font-normal">Featured Hydroflora Pots Garden &amp; Outdoors</h3>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="card">
-                        <img class="card-img-top img-responsive" src="../assets/images/big/img4.jpg" alt="Card">
-                        <div class="card-body">
-                            <ul class="list-inline d-flex align-items-center">
-                                <li class="ps-0">20 May 2021</li>
-                                <li class="ms-auto"><a href="javascript:void(0)" class="link">3 Comment</a></li>
-                            </ul>
-                            <h3 class="font-normal">Featured Hydroflora Pots Garden &amp; Outdoors</h3>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
-
         <footer class="footer text-center">
             Copyright © 2024. Designed by Phan Đức
         </footer>
     </div>
 </div>
+
 
 <script src="/assets/plugins/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap tether Core JavaScript -->

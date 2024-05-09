@@ -22,12 +22,15 @@
         <div class="lds-pos"></div>
     </div>
 </div>
-<div id="main-wrapper" data-layout="vertical" data-navbarbg="skin5" data-sidebartype="full"
+<div id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
      data-sidebar-position="absolute" data-header-position="absolute" data-boxed-layout="full">
     <header class="topbar" data-navbarbg="skin6">
         <nav class="navbar top-navbar navbar-expand-md navbar-dark">
             <div class="navbar-header" data-logobg="skin6">
                 <a class="navbar-brand" href="/dashboard">
+                    <!-- <b class="logo-icon">
+                        <img src="../assets/images/logo-icon.png" alt="homepage" class="dark-logo" />
+                    </b> -->
                     <span class="logo-text ms-3">
                             <img src="../assets/images/PD.png" alt="homepage" class="dark-logo" style="width: 100px;"/>
                         </span>
@@ -58,7 +61,7 @@
             <nav class="sidebar-nav">
                 <ul id="sidebarnav">
                     <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="dashboard" aria-expanded="false">
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/dashboard" aria-expanded="false">
                             <i class="me-3 fas fa-tachometer-alt" aria-hidden="true"></i>
                             <span class="hide-menu">Tổng quan</span>
                         </a>
@@ -87,7 +90,7 @@
                             <div class="collapse" id="manageItems">
                                 <ul class="list-unstyled">
                                     <li class="sidebar-item ms-3">
-                                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="table-basic.html">
+                                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/manager/tailieu">
                                             <i class="fas fa-file-alt me-3" aria-hidden="true"></i> <!-- Thêm icon File -->
                                             <span class="hide-menu">Tài liệu</span>
                                         </a>
@@ -99,19 +102,19 @@
                                         </a>
                                     </li>
                                     <li class="sidebar-item ms-3">
-                                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="table-basic.html" aria-expanded="false">
+                                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/dashboard/khoachuyennganh" aria-expanded="false">
                                             <i class="me-3 fas fa-university" aria-hidden="true"></i>
                                             <span class="hide-menu">Khoa</span>
                                         </a>
                                     </li>
                                     <li class="sidebar-item ms-3">
-                                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="table-basic.html" aria-expanded="false">
+                                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/dashboard/khoachuyennganh" aria-expanded="false">
                                             <i class="me-3 fas fa-graduation-cap" aria-hidden="true"></i>
                                             <span class="hide-menu">Chuyên ngành</span>
                                         </a>
                                     </li>
                                     <li class="sidebar-item ms-3">
-                                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="table-basic.html" aria-expanded="false">
+                                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/dashboard/user/list" aria-expanded="false">
                                             <i class="me-3 fas fa-users" aria-hidden="true"></i>
                                             <span class="hide-menu">Người dùng</span>
                                         </a>
@@ -158,12 +161,12 @@
         <div class="page-breadcrumb">
             <div class="row align-items-center">
                 <div class="col-md-6 col-8 align-self-center">
-                    <h3 class="page-title mb-0 p-0">Hồ sơ cá nhân</h3>
+                    <h3 class="page-title mb-0 p-0">Quản lý Tài liệu</h3>
                     <div class="d-flex align-items-center">
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Hồ sơ</li>
+                                <li class="breadcrumb-item"><a href="/dashboard/">Trang chủ</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Danh sách Tài liệu</li>
                             </ol>
                         </nav>
                     </div>
@@ -172,68 +175,57 @@
         </div>
         <div class="container-fluid">
             <div class="row">
-                <div class="col-lg-4 col-xlg-3 col-md-5">
-                    <div class="card">
-                        <div class="card-body profile-card">
-                            <center class="mt-4"> <img src="/upload/images/c74a56f3-81d1-4da9-8a22-85bbf4faf150_pd.jpg"
-                                                       class="rounded-circle" width="150" />
-                                <h4 class="card-title mt-2">Phan Đức</h4>
-                                <h6 class="card-subtitle">Administrate</h6>
-                                <div class="row justify-content-center">
-                                    <div class="col-4">
-                                        <a href="javascript:void(0)" class="link">
-                                            <i class="icon-people" aria-hidden="true"></i>
-                                            <span class="font-normal">254</span>
-                                        </a></div>
-                                    <div class="col-4">
-                                        <a href="javascript:void(0)" class="link">
-                                            <i class="icon-picture" aria-hidden="true"></i>
-                                            <span class="font-normal">54</span>
-                                        </a></div>
-                                </div>
-                            </center>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-8 col-xlg-9 col-md-7">
+                <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
-                            <form class="form-horizontal form-material mx-2">
-                                <div class="form-group">
-                                    <label class="col-md-12 mb-0">Tên người dùng:</label>
-                                    <div class="col-md-12">
-                                        <input type="text" placeholder="phanduc172"
-                                               class="form-control ps-0 form-control-line">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-12 mb-0">Họ tên</label>
-                                    <div class="col-md-12">
-                                        <input type="text" placeholder="Phan Đức"
-                                               class="form-control ps-0 form-control-line">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="example-email" class="col-md-12">Email</label>
-                                    <div class="col-md-12">
-                                        <input type="email" placeholder="admin@tailieu.com"
-                                               class="form-control ps-0 form-control-line" name="example-email"
-                                               id="example-email">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-12 mb-0">Password</label>
-                                    <div class="col-md-12">
-                                        <input type="password" value="password" class="form-control ps-0 form-control-line">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-sm-12 d-flex">
-                                        <button class="btn btn-success mx-auto mx-md-0 text-white">Update
-                                            Profile</button>
-                                    </div>
-                                </div>
-                            </form>
+                            <h4 class="card-title">Thể loại</h4>
+                            <div class="table-responsive">
+                                <table class="table user-table no-wrap">
+                                    <thead>
+                                    <tr class="text-center">
+                                        <th class="border-top-0 fs-5">ID</th>
+                                        <th class="border-top-0 fs-5">Tiêu đề</th>
+                                        <th class="border-top-0 fs-5">Mô tả</th>
+                                        <th class="border-top-0 fs-5">Đường dẫn tệp</th>
+                                        <th class="border-top-0 fs-5">Ảnh tài liệu</th>
+                                        <th class="border-top-0 fs-5">Người tải lên</th>
+                                        <th class="border-top-0 fs-5">Ngày tải lên</th>
+                                        <th class="border-top-0 fs-5">Tải xuống</th>
+                                        <th class="border-top-0 fs-5">Danh mục</th>
+                                        <th class="border-top-0 fs-5">Chuyên ngành</th>
+                                        <th class="border-top-0 fs-5">Lượt truy cập</th>
+                                        <th class="border-top-0 fs-5">Trạng thái</th>
+                                        <th class="border-top-0 fs-5">Hành động</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <c:forEach var="tailieu" items="${listTaiLieu}">
+                                        <tr>
+                                            <td>${tailieu.maTaiLieu}</td>
+                                            <td>${tailieu.tieuDe}</td>
+                                            <td>${tailieu.moTa}</td>
+                                            <td>${tailieu.duongDanTep}</td>
+                                            <td>${tailieu.anhTaiLieu}</td>
+                                            <td>${tailieu.taiLenBoi}</td>
+                                            <td>${tailieu.ngayTaiLen}</td>
+                                            <td>${tailieu.soLuotTaiXuong}</td>
+                                            <td>${tailieu.maDanhMuc}</td>
+                                            <td>${tailieu.maChuyenNganh}</td>
+                                            <td>${tailieu.soLuotTruyCap}</td>
+                                            <td>${tailieu.maTrangThai}</td>
+                                            <td class="text-center">
+                                                <button class="btn btn-sm btn-outline-info me-2" style="width: 30px; height: 30px">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-danger me-2" style="width: 30px; height: 30px">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -242,30 +234,16 @@
         <footer class="footer text-center">
             Copyright © 2024. Designed by Phan Đức
         </footer>
-        <!-- ============================================================== -->
-        <!-- End footer -->
-        <!-- ============================================================== -->
     </div>
-    <!-- ============================================================== -->
-    <!-- End Page wrapper  -->
-    <!-- ============================================================== -->
 </div>
-<!-- ============================================================== -->
-<!-- End Wrapper -->
-<!-- ============================================================== -->
-<!-- ============================================================== -->
-<!-- All Jquery -->
-<!-- ============================================================== -->
+
+
 <script src="/assets/plugins/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap tether Core JavaScript -->
 <script src="/assets/plugins/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script src="js/app-style-switcher.js"></script>
-<!--Wave Effects -->
-<script src="/js/waves.js"></script>
-<!--Menu sidebar -->
-<script src="/js/sidebarmenu.js"></script>
-<!--Custom JavaScript -->
+<!-- <script src="js/app-style-switcher.js"></script> -->
 <script src="/js/custom.js"></script>
+<!--This page JavaScript -->
 </body>
 
 </html>
