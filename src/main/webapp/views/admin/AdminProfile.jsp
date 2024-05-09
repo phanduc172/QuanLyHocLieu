@@ -28,9 +28,6 @@
         <nav class="navbar top-navbar navbar-expand-md navbar-dark">
             <div class="navbar-header" data-logobg="skin6">
                 <a class="navbar-brand" href="index.html">
-                    <!-- <b class="logo-icon">
-                        <img src="../assets/images/logo-icon.png" alt="homepage" class="dark-logo" />
-                    </b> -->
                     <span class="logo-text ms-3">
                             <img src="../assets/images/PD.png" alt="homepage" class="dark-logo" style="width: 100px;"/>
                         </span>
@@ -155,12 +152,12 @@
         <div class="page-breadcrumb">
             <div class="row align-items-center">
                 <div class="col-md-6 col-8 align-self-center">
-                    <h3 class="page-title mb-0 p-0">Profile</h3>
+                    <h3 class="page-title mb-0 p-0">Hồ sơ cá nhân</h3>
                     <div class="d-flex align-items-center">
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Profile</li>
+                                <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Hồ sơ</li>
                             </ol>
                         </nav>
                     </div>
@@ -172,10 +169,10 @@
                 <div class="col-lg-4 col-xlg-3 col-md-5">
                     <div class="card">
                         <div class="card-body profile-card">
-                            <center class="mt-4"> <img src="../assets/images/users/5.jpg"
+                            <center class="mt-4"> <img src="/upload/images/c74a56f3-81d1-4da9-8a22-85bbf4faf150_pd.jpg"
                                                        class="rounded-circle" width="150" />
-                                <h4 class="card-title mt-2">Hanna Gover</h4>
-                                <h6 class="card-subtitle">Accoubts Manager Amix corp</h6>
+                                <h4 class="card-title mt-2">Phan Đức</h4>
+                                <h6 class="card-subtitle">Administrate</h6>
                                 <div class="row justify-content-center">
                                     <div class="col-4">
                                         <a href="javascript:void(0)" class="link">
@@ -197,16 +194,23 @@
                         <div class="card-body">
                             <form class="form-horizontal form-material mx-2">
                                 <div class="form-group">
-                                    <label class="col-md-12 mb-0">Full Name</label>
+                                    <label class="col-md-12 mb-0">Tên người dùng:</label>
                                     <div class="col-md-12">
-                                        <input type="text" placeholder="Johnathan Doe"
+                                        <input type="text" placeholder="phanduc172"
+                                               class="form-control ps-0 form-control-line">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-12 mb-0">Họ tên</label>
+                                    <div class="col-md-12">
+                                        <input type="text" placeholder="Phan Đức"
                                                class="form-control ps-0 form-control-line">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="example-email" class="col-md-12">Email</label>
                                     <div class="col-md-12">
-                                        <input type="email" placeholder="johnathan@admin.com"
+                                        <input type="email" placeholder="admin@tailieu.com"
                                                class="form-control ps-0 form-control-line" name="example-email"
                                                id="example-email">
                                     </div>
@@ -214,33 +218,7 @@
                                 <div class="form-group">
                                     <label class="col-md-12 mb-0">Password</label>
                                     <div class="col-md-12">
-                                        <input type="password" value="password"
-                                               class="form-control ps-0 form-control-line">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-12 mb-0">Phone No</label>
-                                    <div class="col-md-12">
-                                        <input type="text" placeholder="123 456 7890"
-                                               class="form-control ps-0 form-control-line">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-12 mb-0">Message</label>
-                                    <div class="col-md-12">
-                                        <textarea rows="5" class="form-control ps-0 form-control-line"></textarea>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-12">Select Country</label>
-                                    <div class="col-sm-12 border-bottom">
-                                        <select class="form-select shadow-none border-0 ps-0 form-control-line">
-                                            <option>London</option>
-                                            <option>India</option>
-                                            <option>Usa</option>
-                                            <option>Canada</option>
-                                            <option>Thailand</option>
-                                        </select>
+                                        <input type="password" value="password" class="form-control ps-0 form-control-line">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -272,16 +250,16 @@
 <!-- ============================================================== -->
 <!-- All Jquery -->
 <!-- ============================================================== -->
-<script src="../assets/plugins/jquery/dist/jquery.min.js"></script>
+<script src="/assets/plugins/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap tether Core JavaScript -->
-<script src="../assets/plugins/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/plugins/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="js/app-style-switcher.js"></script>
 <!--Wave Effects -->
-<script src="js/waves.js"></script>
+<script src="/js/waves.js"></script>
 <!--Menu sidebar -->
-<script src="js/sidebarmenu.js"></script>
+<script src="/js/sidebarmenu.js"></script>
 <!--Custom JavaScript -->
-<script src="js/custom.js"></script>
+<script src="/js/custom.js"></script>
 </body>
 
 </html>

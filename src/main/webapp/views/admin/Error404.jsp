@@ -12,7 +12,7 @@
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon.png">
     <!-- Custom CSS -->
-    <link href="css/style.min.css" rel="stylesheet">
+    <link href="/css/style.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -30,13 +30,13 @@
             <p class="text-muted mb-4 mt-4">YOU SEEM TO BE TRYING TO FIND HIS WAY HOME</p>
             <a href="index.html" class="btn btn-info btn-rounded waves-effect waves-light mb-4 text-white">Back to home</a>
         </div>
-        <footer class="footer text-center">
+        <footer class="footer text-center w-100">
             Copyright © 2024. Designed by Phan Đức
         </footer>
     </div>
 </div>
-<script src="../assets/plugins/jquery/dist/jquery.min.js"></script>
-<script src="../assets/plugins/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/plugins/jquery/dist/jquery.min.js"></script>
+<script src="/assets/plugins/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     $(".preloader").fadeOut();
 </script>
