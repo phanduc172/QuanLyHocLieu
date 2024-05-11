@@ -15,6 +15,13 @@
     <link href="/css/style.min.css" rel="stylesheet">
     <link href="/css/style.css" rel="stylesheet">
 </head>
+<style>
+    @media (max-width: 1168px) {
+        .hide-below-1168 {
+            display: none !important;
+        }
+    }
+</style>
 
 <body>
 <div class="preloader">
@@ -82,23 +89,23 @@
                     <ul>
                         <!-- Mục Quản lý -->
                         <li class="sidebar-item">
-                            <a class="sidebar-link waves-effect waves-dark sidebar-link" data-bs-toggle="collapse" href="#manageItems" aria-expanded="false" aria-controls="manageItems">
+                            <a class="sidebar-link waves-effect waves-dark collapsed" data-bs-toggle="collapse" href="#manageItems" aria-expanded="false" aria-controls="manageItems">
                                 <i class="me-3 fas fa-cogs" aria-hidden="true"></i>
                                 <span class="hide-menu">Quản lý</span>
-                                <i class="fas fa-chevron-down ms-auto"></i>
+                                <i class="fas fa-chevron-down ms-auto d-lg-block d-none hide-below-1168"></i>
                             </a>
                             <!-- Danh sách con -->
                             <div class="collapse" id="manageItems">
                                 <ul class="list-unstyled">
                                     <li class="sidebar-item ms-3">
                                         <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/manager/tailieu">
-                                            <i class="fas fa-file-alt me-3" aria-hidden="true"></i> <!-- Thêm icon File -->
+                                            <i class="fas fa-file-alt me-3" aria-hidden="true"></i>
                                             <span class="hide-menu">Tài liệu</span>
                                         </a>
                                     </li>
                                     <li class="sidebar-item ms-3">
                                         <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/manager/danhmuc">
-                                            <i class="fas fa-folder me-3" aria-hidden="true"></i> <!-- Thêm icon Folder -->
+                                            <i class="fas fa-folder me-3" aria-hidden="true"></i>
                                             <span class="hide-menu">Danh mục</span>
                                         </a>
                                     </li>
@@ -181,18 +188,18 @@
                         <div class="card-body">
                             <h4 class="card-title">Thể loại</h4>
                             <div class="table-responsive">
-                                <table class="table user-table no-wrap">
+                                <table class="table">
                                     <thead>
-                                    <tr class="text-center">
-                                        <th class="border-top-0 fs-5">ID</th>
-                                        <th class="border-top-0 fs-5">Tiêu đề</th>
-                                        <th class="border-top-0 fs-5">Mô tả</th>
-                                        <th class="border-top-0 fs-5">Người tải lên</th>
-                                        <th class="border-top-0 fs-5">Ngày tải lên</th>
-                                        <th class="border-top-0 fs-5">Thể loại</th>
-                                        <th class="border-top-0 fs-5">Chuyên ngành</th>
-                                        <th class="border-top-0 fs-5">Trạng thái</th>
-                                        <th class="border-top-0 fs-5">Hành động</th>
+                                    <tr>
+                                        <th scope="col">Mã Tài Liệu</th>
+                                        <th scope="col">Tiêu Đề</th>
+                                        <th scope="col">Mô Tả</th>
+                                        <th scope="col">Người Đăng</th>
+                                        <th scope="col">Ngày Đăng</th>
+                                        <th scope="col">Danh Mục</th>
+                                        <th scope="col">Chuyên Ngành</th>
+                                        <th scope="col">Trạng Thái</th>
+                                        <th scope="col" class="text-center">Hành Động</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -203,7 +210,7 @@
                                             <td class="truncate-text-admin">${tailieu.moTa}</td>
                                             <td>${tenNguoiDung[loop.index]}</td>
                                             <td>${tailieu.ngayTaiLen}</td>
-                                            <td>${tenDanhMuc[loop.index]}</td> <!-- Hiển thị tên danh mục -->
+                                            <td>${tenDanhMuc[loop.index]}</td>
                                             <td>${tenChuyenNganh[loop.index]}</td>
                                             <td>${tenTrangThai[loop.index]}</td>
                                             <td class="text-center">
@@ -215,6 +222,32 @@
                                     </c:forEach>
                                     </tbody>
                                 </table>
+                                <!-- Phân trang -->
+                                <div class="d-flex justify-content-center">
+                                    <nav aria-label="Page navigation">
+                                        <ul class="pagination">
+                                            <c:if test="${currentPage > 0}">
+                                                <li class="page-item">
+                                                    <a class="page-link" href="?page=${currentPage - 1}&size=${size}" aria-label="Previous">
+                                                        <span aria-hidden="true">&laquo;</span>
+                                                    </a>
+                                                </li>
+                                            </c:if>
+                                            <c:forEach var="i" begin="0" end="${totalPages - 1}">
+                                                <li class="page-item ${i == currentPage ? 'active' : ''}">
+                                                    <a class="page-link" href="?page=${i}&size=${size}">${i + 1}</a>
+                                                </li>
+                                            </c:forEach>
+                                            <c:if test="${currentPage < totalPages - 1}">
+                                                <li class="page-item">
+                                                    <a class="page-link" href="?page=${currentPage + 1}&size=${size}" aria-label="Next">
+                                                        <span aria-hidden="true">&raquo;</span>
+                                                    </a>
+                                                </li>
+                                            </c:if>
+                                        </ul>
+                                    </nav>
+                                </div>
                             </div>
                         </div>
                     </div>
