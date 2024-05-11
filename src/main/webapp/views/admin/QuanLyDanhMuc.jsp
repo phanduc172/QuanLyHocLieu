@@ -64,9 +64,15 @@
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/document/approve" aria-expanded="false">
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="AdminProfile.jsp" aria-expanded="false">
                             <i class="me-3 fas fa-user" aria-hidden="true"></i>
                             <span class="hide-menu">Hồ sơ người dùng</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/document/approve" aria-expanded="false">
+                            <i class="me-3 fas fa-check-circle" aria-hidden="true"></i>
+                            <span class="hide-menu">Phê duyệt Tài liệu</span>
                         </a>
                     </li>
                     <ul>
@@ -82,13 +88,19 @@
                                 <ul class="list-unstyled">
                                     <li class="sidebar-item ms-3">
                                         <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/manager/tailieu">
-                                            <i class="fas fa-file-alt me-3" aria-hidden="true"></i> <!-- Thêm icon File -->
+                                            <i class="fas fa-file-alt me-3" aria-hidden="true"></i>
                                             <span class="hide-menu">Tài liệu</span>
                                         </a>
                                     </li>
                                     <li class="sidebar-item ms-3">
+                                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/document/approve/reject">
+                                            <i class="fas fa-times-circle me-3" aria-hidden="true"></i>
+                                            <span class="hide-menu">Tài liệu từ chối</span>
+                                        </a>
+                                    </li>
+                                    <li class="sidebar-item ms-3">
                                         <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/manager/danhmuc">
-                                            <i class="fas fa-folder me-3" aria-hidden="true"></i> <!-- Thêm icon Folder -->
+                                            <i class="fas fa-folder me-3" aria-hidden="true"></i>
                                             <span class="hide-menu">Danh mục</span>
                                         </a>
                                     </li>
@@ -139,7 +151,7 @@
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="pages-error-404.html" aria-expanded="false">
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="../Error404.jsp" aria-expanded="false">
                             <i class="me-3 fas fa-exclamation-circle" aria-hidden="true"></i>
                             <span class="hide-menu">Lỗi 404</span>
                         </a>

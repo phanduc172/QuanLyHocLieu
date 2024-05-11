@@ -8,14 +8,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -31,6 +26,8 @@ public class AdminTaiLieuController {
     private TrangThaiTaiLieuRepository trangThaiTaiLieuRepository;
     @Autowired
     private NguoiDungRepository nguoiDungRepository;
+    @Autowired
+    private KhoaRepository khoaRepository;
 
 //    @GetMapping("/approve")
 //    public String pheDuyetTaiLieu(ModelMap modelMap) {
@@ -77,11 +74,10 @@ public class AdminTaiLieuController {
     public String pheDuyetTaiLieu(@RequestParam(defaultValue = "0") int page,
                                   @RequestParam(defaultValue = "10") int size,
                                   ModelMap modelMap) {
+        Integer trangThaiChoDuyet = 2;
         Pageable pageable = PageRequest.of(page, size);
-        Page<TaiLieu> taiLieuPage = taiLieuRepository.findByMaTrangThai(2, pageable);
-
+        Page<TaiLieu> taiLieuPage = taiLieuRepository.findByMaTrangThai(trangThaiChoDuyet, pageable);
         List<TaiLieu> listTaiLieu = taiLieuPage.getContent();
-
         List<String> tenDanhMuc = new ArrayList<>();
         List<String> tenChuyenNganh = new ArrayList<>();
         List<String> tenTrangThai = new ArrayList<>();
@@ -93,7 +89,7 @@ public class AdminTaiLieuController {
             tenNguoiDung.add(getTenNguoiDung(taiLieu));
 
         }
-
+        modelMap.addAttribute("titleTaiLieu","Tài liệu chờ duyệt");
         modelMap.addAttribute("listTaiLieu", listTaiLieu);
         modelMap.addAttribute("tenDanhMuc", tenDanhMuc);
         modelMap.addAttribute("tenChuyenNganh", tenChuyenNganh);
@@ -105,6 +101,76 @@ public class AdminTaiLieuController {
 
         return "admin/PheDuyetTaiLieu";
     }
+
+    @GetMapping("/approve/reject")
+    public String pheDuyetTaiLieuTuChoi(@RequestParam(defaultValue = "0") int page,
+                                  @RequestParam(defaultValue = "10") int size,
+                                  ModelMap modelMap) {
+        Integer trangThaiTuChoi = 3;
+        Pageable pageable = PageRequest.of(page, size);
+        Page<TaiLieu> taiLieuPage = taiLieuRepository.findByMaTrangThai(trangThaiTuChoi, pageable);
+        List<TaiLieu> listTaiLieuTuChoi = taiLieuPage.getContent();
+        List<String> tenDanhMuc = new ArrayList<>();
+        List<String> tenChuyenNganh = new ArrayList<>();
+        List<String> tenTrangThai = new ArrayList<>();
+        List<String> tenNguoiDung = new ArrayList<>();
+        for (TaiLieu taiLieutuchoi : listTaiLieuTuChoi) {
+            tenDanhMuc.add(getTenDanhMuc(taiLieutuchoi));
+            tenChuyenNganh.add(getTenChuyenNganh(taiLieutuchoi));
+            tenTrangThai.add(getTenTrangThai(taiLieutuchoi));
+            tenNguoiDung.add(getTenNguoiDung(taiLieutuchoi));
+
+        }
+        modelMap.addAttribute("titleTaiLieu","Tài liệu từ chối");
+        modelMap.addAttribute("listTaiLieuTuChoi", listTaiLieuTuChoi);
+        modelMap.addAttribute("tenDanhMuc", tenDanhMuc);
+        modelMap.addAttribute("tenChuyenNganh", tenChuyenNganh);
+        modelMap.addAttribute("tenTrangThai", tenTrangThai);
+        modelMap.addAttribute("tenNguoiDung", tenNguoiDung);
+        modelMap.addAttribute("currentPage", taiLieuPage.getNumber());
+        modelMap.addAttribute("totalPages", taiLieuPage.getTotalPages());
+        modelMap.addAttribute("size", size);
+
+        return "admin/PheDuyetTaiLieu";
+    }
+
+    @GetMapping("/approve/detail/{maTaiLieu}")
+    public String duyetTaiLieuById(@PathVariable("maTaiLieu") Integer maTaiLieu, ModelMap modelMap) {
+        TaiLieu taiLieu = taiLieuRepository.findTaiLieuByMaTaiLieu(maTaiLieu);
+        String tenDanhMuc = getTenDanhMuc(taiLieu);
+        modelMap.addAttribute("tenDanhMuc", tenDanhMuc);
+        String tenChuyenNganh = getTenChuyenNganh(taiLieu);
+        modelMap.addAttribute("tenChuyenNganh", tenChuyenNganh);
+        String tenTrangThai = getTenTrangThai(taiLieu);
+        modelMap.addAttribute("tenTrangThai", tenTrangThai);
+        String tenNguoiDung = getTenNguoiDung(taiLieu);
+        modelMap.addAttribute("tenNguoiDung", tenNguoiDung);
+        String maChuyenNganh = taiLieu.getMaChuyenNganh();
+        Integer maKhoa = getMaKhoaByMaChuyenNganh(maChuyenNganh);
+        String tenKhoa = getTenKhoa(maKhoa);
+        modelMap.addAttribute("tenKhoa", tenKhoa);
+        modelMap.addAttribute("taiLieu", taiLieu);
+        return "/admin/PheDuyetTaiLieu";
+    }
+
+    @PostMapping("/detail/action")
+    public String approveDocument(@RequestParam("maTaiLieu") Integer maTaiLieu, @RequestParam("action") String action) {
+        Integer trangThaiDuyet = 1;
+        Integer trangThaiTuChoi = 3;
+        TaiLieu taiLieu = taiLieuRepository.findTaiLieuByMaTaiLieu(maTaiLieu);
+        if (action.equals("accept")) {
+            taiLieu.setMaTrangThai(trangThaiDuyet);
+            taiLieuRepository.save(taiLieu);
+            return "redirect:/document/approve";
+        } else if (action.equals("reject")) {
+            taiLieu.setMaTrangThai(trangThaiTuChoi);
+            taiLieuRepository.save(taiLieu);
+            return "redirect:/document/approve/reject";
+        }
+        return null;
+    }
+
+
 
     private String getTenDanhMuc(TaiLieu taiLieu) {
         DanhMuc danhMuc = danhMucRepository.findById(taiLieu.getMaDanhMuc()).orElse(null);
@@ -125,6 +191,17 @@ public class AdminTaiLieuController {
         NguoiDung nguoiDung = nguoiDungRepository.findById(taiLieu.getTaiLenBoi()).orElse(null);
         return nguoiDung != null ? nguoiDung.getHoTen() : "Unknown";
     }
+
+    public Integer getMaKhoaByMaChuyenNganh(String maChuyenNganh) {
+        ChuyenNganh chuyenNganh = chuyenNganhRepository.findById(maChuyenNganh).orElse(null);
+        return chuyenNganh != null ? chuyenNganh.getMaKhoa() : null;
+    }
+
+    public String getTenKhoa(Integer maKhoa) {
+        Khoa khoa = khoaRepository.findById(maKhoa).orElse(null);
+        return khoa != null ? khoa.getTenKhoa() : "Unknown";
+    }
+
 
 
 

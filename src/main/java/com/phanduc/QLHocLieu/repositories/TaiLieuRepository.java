@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface TaiLieuRepository extends JpaRepository<TaiLieu,String> {
+    TaiLieu findTaiLieuByMaTaiLieu(Integer maTaiLieu);
     List<TaiLieu> findByMaDanhMuc(Integer maDanhMuc);
 //    List<TaiLieu> findByMaTrangThai(Integer maTrangThai);
     Page<TaiLieu> findByMaTrangThai(Integer maTrangThai, Pageable pageable);

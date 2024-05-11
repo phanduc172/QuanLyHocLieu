@@ -11,6 +11,8 @@
     <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon.png">
     <!-- Custom CSS -->
     <link href="/css/style.min.css" rel="stylesheet">
+    <link href="/css/reponsive.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
 </head>
 
 <body>
@@ -79,7 +81,7 @@
                     <ul>
                         <!-- Mục Quản lý -->
                         <li class="sidebar-item">
-                            <a class="sidebar-link waves-effect waves-dark sidebar-link" data-bs-toggle="collapse" href="#manageItems" aria-expanded="false" aria-controls="manageItems">
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link hide-below-1168" data-bs-toggle="collapse" href="#manageItems" aria-expanded="false" aria-controls="manageItems">
                                 <i class="me-3 fas fa-cogs" aria-hidden="true"></i>
                                 <span class="hide-menu">Quản lý</span>
                                 <i class="fas fa-chevron-down ms-auto"></i>
@@ -89,13 +91,19 @@
                                 <ul class="list-unstyled">
                                     <li class="sidebar-item ms-3">
                                         <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/manager/tailieu">
-                                            <i class="fas fa-file-alt me-3" aria-hidden="true"></i> <!-- Thêm icon File -->
+                                            <i class="fas fa-file-alt me-3" aria-hidden="true"></i>
                                             <span class="hide-menu">Tài liệu</span>
                                         </a>
                                     </li>
                                     <li class="sidebar-item ms-3">
+                                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/document/approve/reject">
+                                            <i class="fas fa-times-circle me-3" aria-hidden="true"></i>
+                                            <span class="hide-menu">Tài liệu từ chối</span>
+                                        </a>
+                                    </li>
+                                    <li class="sidebar-item ms-3">
                                         <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/manager/danhmuc">
-                                            <i class="fas fa-folder me-3" aria-hidden="true"></i> <!-- Thêm icon Folder -->
+                                            <i class="fas fa-folder me-3" aria-hidden="true"></i>
                                             <span class="hide-menu">Danh mục</span>
                                         </a>
                                     </li>

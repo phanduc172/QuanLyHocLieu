@@ -67,7 +67,7 @@
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="pages-profile.html" aria-expanded="false">
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="AdminProfile.jsp" aria-expanded="false">
                             <i class="me-3 fas fa-user" aria-hidden="true"></i>
                             <span class="hide-menu">Hồ sơ người dùng</span>
                         </a>
@@ -91,30 +91,36 @@
                                 <ul class="list-unstyled">
                                     <li class="sidebar-item ms-3">
                                         <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/manager/tailieu">
-                                            <i class="fas fa-file-alt me-3" aria-hidden="true"></i> <!-- Thêm icon File -->
+                                            <i class="fas fa-file-alt me-3" aria-hidden="true"></i>
                                             <span class="hide-menu">Tài liệu</span>
                                         </a>
                                     </li>
                                     <li class="sidebar-item ms-3">
-                                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="table-basic.html">
-                                            <i class="fas fa-folder me-3" aria-hidden="true"></i> <!-- Thêm icon Folder -->
+                                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/document/approve/reject">
+                                            <i class="fas fa-times-circle me-3" aria-hidden="true"></i>
+                                            <span class="hide-menu">Tài liệu từ chối</span>
+                                        </a>
+                                    </li>
+                                    <li class="sidebar-item ms-3">
+                                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/manager/danhmuc">
+                                            <i class="fas fa-folder me-3" aria-hidden="true"></i>
                                             <span class="hide-menu">Danh mục</span>
                                         </a>
                                     </li>
                                     <li class="sidebar-item ms-3">
-                                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/dashboard/khoachuyennganh" aria-expanded="false">
+                                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/manager/khoachuyennganh" aria-expanded="false">
                                             <i class="me-3 fas fa-university" aria-hidden="true"></i>
                                             <span class="hide-menu">Khoa</span>
                                         </a>
                                     </li>
                                     <li class="sidebar-item ms-3">
-                                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/dashboard/khoachuyennganh" aria-expanded="false">
+                                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/manager/khoachuyennganh" aria-expanded="false">
                                             <i class="me-3 fas fa-graduation-cap" aria-hidden="true"></i>
                                             <span class="hide-menu">Chuyên ngành</span>
                                         </a>
                                     </li>
                                     <li class="sidebar-item ms-3">
-                                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/dashboard/user/list" aria-expanded="false">
+                                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/manager/user/list" aria-expanded="false">
                                             <i class="me-3 fas fa-users" aria-hidden="true"></i>
                                             <span class="hide-menu">Người dùng</span>
                                         </a>
@@ -148,7 +154,7 @@
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="pages-error-404.html" aria-expanded="false">
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="../Error404.jsp" aria-expanded="false">
                             <i class="me-3 fas fa-exclamation-circle" aria-hidden="true"></i>
                             <span class="hide-menu">Lỗi 404</span>
                         </a>
@@ -178,25 +184,25 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Thể loại</h4>
+                            <h4 class="card-title">Tài liệu</h4>
                             <div class="table-responsive">
                                 <table class="table user-table no-wrap">
                                     <thead>
-                                    <tr class="text-center">
-                                        <th class="border-top-0 fs-5">ID</th>
-                                        <th class="border-top-0 fs-5">Tiêu đề</th>
-                                        <th class="border-top-0 fs-5">Mô tả</th>
-                                        <th class="border-top-0 fs-5">Đường dẫn tệp</th>
-                                        <th class="border-top-0 fs-5">Ảnh tài liệu</th>
-                                        <th class="border-top-0 fs-5">Người tải lên</th>
-                                        <th class="border-top-0 fs-5">Ngày tải lên</th>
-                                        <th class="border-top-0 fs-5">Tải xuống</th>
-                                        <th class="border-top-0 fs-5">Danh mục</th>
-                                        <th class="border-top-0 fs-5">Chuyên ngành</th>
-                                        <th class="border-top-0 fs-5">Lượt truy cập</th>
-                                        <th class="border-top-0 fs-5">Trạng thái</th>
-                                        <th class="border-top-0 fs-5">Hành động</th>
-                                    </tr>
+                                        <tr class="text-center">
+                                            <th class="border-top-0 fs-5">ID</th>
+                                            <th class="border-top-0 fs-5">Tiêu đề</th>
+                                            <th class="border-top-0 fs-5">Mô tả</th>
+                                            <th class="border-top-0 fs-5">Đường dẫn tệp</th>
+                                            <th class="border-top-0 fs-5">Ảnh tài liệu</th>
+                                            <th class="border-top-0 fs-5">Người tải lên</th>
+                                            <th class="border-top-0 fs-5">Ngày tải lên</th>
+                                            <th class="border-top-0 fs-5">Tải xuống</th>
+                                            <th class="border-top-0 fs-5">Danh mục</th>
+                                            <th class="border-top-0 fs-5">Chuyên ngành</th>
+                                            <th class="border-top-0 fs-5">Lượt truy cập</th>
+                                            <th class="border-top-0 fs-5">Trạng thái</th>
+                                            <th class="border-top-0 fs-5">Hành động</th>
+                                        </tr>
                                     </thead>
                                     <tbody>
                                     <c:forEach var="tailieu" items="${listTaiLieu}">
@@ -225,6 +231,35 @@
                                     </c:forEach>
                                     </tbody>
                                 </table>
+                            </div>
+                            <!-- Phân trang -->
+                            <div class="d-flex justify-content-center">
+                                <nav aria-label="Page navigation">
+                                    <ul class="pagination">
+                                        <c:if test="${totalPages > 0}">
+                                            <c:if test="${currentPage > 0}">
+                                                <li class="page-item">
+                                                    <a class="page-link" href="?page=${currentPage - 1}&size=${size}" aria-label="Previous">
+                                                        <span aria-hidden="true">&laquo;</span>
+                                                    </a>
+                                                </li>
+                                            </c:if>
+                                            <c:forEach var="i" begin="0" end="${totalPages - 1}">
+                                                <li class="page-item ${i == currentPage ? 'active' : ''}">
+                                                    <a class="page-link" href="?page=${i}&size=${size}">${i + 1}</a>
+                                                </li>
+                                            </c:forEach>
+                                            <c:if test="${currentPage < totalPages - 1}">
+                                                <li class="page-item">
+                                                    <a class="page-link" href="?page=${currentPage + 1}&size=${size}" aria-label="Next">
+                                                        <span aria-hidden="true">&raquo;</span>
+                                                    </a>
+                                                </li>
+                                            </c:if>
+                                        </c:if>
+
+                                    </ul>
+                                </nav>
                             </div>
                         </div>
                     </div>

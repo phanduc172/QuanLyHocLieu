@@ -58,13 +58,13 @@
             <nav class="sidebar-nav">
                 <ul id="sidebarnav">
                     <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="dashboard" aria-expanded="false">
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/dashboard" aria-expanded="false">
                             <i class="me-3 fas fa-tachometer-alt" aria-hidden="true"></i>
                             <span class="hide-menu">Tổng quan</span>
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="pages-profile.html" aria-expanded="false">
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="AdminProfile.jsp" aria-expanded="false">
                             <i class="me-3 fas fa-user" aria-hidden="true"></i>
                             <span class="hide-menu">Hồ sơ người dùng</span>
                         </a>
@@ -87,31 +87,37 @@
                             <div class="collapse" id="manageItems">
                                 <ul class="list-unstyled">
                                     <li class="sidebar-item ms-3">
-                                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="table-basic.html">
-                                            <i class="fas fa-file-alt me-3" aria-hidden="true"></i> <!-- Thêm icon File -->
+                                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/manager/tailieu">
+                                            <i class="fas fa-file-alt me-3" aria-hidden="true"></i>
                                             <span class="hide-menu">Tài liệu</span>
                                         </a>
                                     </li>
                                     <li class="sidebar-item ms-3">
-                                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="table-basic.html">
-                                            <i class="fas fa-folder me-3" aria-hidden="true"></i> <!-- Thêm icon Folder -->
+                                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/document/approve/reject">
+                                            <i class="fas fa-times-circle me-3" aria-hidden="true"></i>
+                                            <span class="hide-menu">Tài liệu từ chối</span>
+                                        </a>
+                                    </li>
+                                    <li class="sidebar-item ms-3">
+                                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/manager/danhmuc">
+                                            <i class="fas fa-folder me-3" aria-hidden="true"></i>
                                             <span class="hide-menu">Danh mục</span>
                                         </a>
                                     </li>
                                     <li class="sidebar-item ms-3">
-                                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="table-basic.html" aria-expanded="false">
+                                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/manager/khoachuyennganh" aria-expanded="false">
                                             <i class="me-3 fas fa-university" aria-hidden="true"></i>
                                             <span class="hide-menu">Khoa</span>
                                         </a>
                                     </li>
                                     <li class="sidebar-item ms-3">
-                                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="table-basic.html" aria-expanded="false">
+                                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/manager/khoachuyennganh" aria-expanded="false">
                                             <i class="me-3 fas fa-graduation-cap" aria-hidden="true"></i>
                                             <span class="hide-menu">Chuyên ngành</span>
                                         </a>
                                     </li>
                                     <li class="sidebar-item ms-3">
-                                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="table-basic.html" aria-expanded="false">
+                                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/manager/user/list" aria-expanded="false">
                                             <i class="me-3 fas fa-users" aria-hidden="true"></i>
                                             <span class="hide-menu">Người dùng</span>
                                         </a>
@@ -145,7 +151,7 @@
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="pages-error-404.html" aria-expanded="false">
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="../Error404.jsp" aria-expanded="false">
                             <i class="me-3 fas fa-exclamation-circle" aria-hidden="true"></i>
                             <span class="hide-menu">Lỗi 404</span>
                         </a>

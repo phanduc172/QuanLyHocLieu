@@ -8,12 +8,14 @@ import com.phanduc.QLHocLieu.repositories.TaiLieuRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +30,25 @@ public class AdminManagerController {
     private DanhMucRepository danhMucRepository;
     @Autowired
     private TaiLieuRepository taiLieuRepository;
+
+    @GetMapping("/tailieu")
+    //http://localhost:8080/manager/tailieu
+    public String getAllTaiLieu(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            ModelMap modelMap
+    ) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<TaiLieu> taiLieuPage = taiLieuRepository.findAll(pageable);
+        List<TaiLieu> listTaiLieu = taiLieuPage.getContent();
+        modelMap.addAttribute("listTaiLieu", listTaiLieu);
+        modelMap.addAttribute("currentPage", taiLieuPage.getNumber());
+        modelMap.addAttribute("totalPages", taiLieuPage.getTotalPages());
+        modelMap.addAttribute("size", size);
+
+        return "admin/QuanLyTaiLieu";
+    }
+
     @GetMapping("/khoachuyennganh")
     //http://localhost:8080/manager/khoachuyennganh
     public String getKhoaChuyenNganh(@RequestParam(defaultValue = "0") int khoaPage,
@@ -75,19 +96,6 @@ public class AdminManagerController {
         }
     }
 
-//    @PostMapping("/danhmuc/update")
-//    //http://localhost:8080/manager/danhmuc/update/
-//    public String updateDanhMuc(@PathVariable("maDanhMuc") Integer maDanhMuc, @RequestParam("tenDanhMuc") String tenDanhMuc) {
-//        Optional<DanhMuc> optionalDanhMuc = danhMucRepository.findById(maDanhMuc);
-//        if (optionalDanhMuc.isPresent()) {
-//            DanhMuc danhMuc = optionalDanhMuc.get();
-//            danhMuc.setTenDanhMuc(tenDanhMuc);
-//            danhMucRepository.save(danhMuc);
-//            return "redirect:/manager/danhmuc";
-//        } else {
-//            return "redirect:/manager/danhmuc";
-//        }
-//    }
     @PostMapping("/danhmuc/update")
     public String updateDanhMuc(@RequestParam("maDanhMuc") Integer maDanhMuc, @RequestParam("tenDanhMuc") String tenDanhMuc) {
         Optional<DanhMuc> optionalDanhMuc = danhMucRepository.findById(maDanhMuc);
@@ -102,12 +110,4 @@ public class AdminManagerController {
     }
 
 
-
-    @GetMapping("/tailieu")
-    //http://localhost:8080/manager/tailieu
-    public String getAllTaiLieu(ModelMap modelMap) {
-        List<TaiLieu> listTaiLieu = taiLieuRepository.findAll();
-        modelMap.addAttribute("listTaiLieu",listTaiLieu);
-        return "admin/QuanLyTaiLieu";
-    }
 }
