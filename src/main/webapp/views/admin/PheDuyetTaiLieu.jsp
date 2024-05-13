@@ -185,13 +185,9 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="card m-0">
-                        <c:if test="${empty listTaiLieu}">
-                            <div class="card-body p-4">
-                                <h3 class="card-title text-center text-danger m-0 fs-3">Không có tài liệu chờ duyệt</h3>
-                            </div>
-                        </c:if>
-
-                        <c:if test="${not empty listTaiLieu}">
+<%--                        <c:if test="${not empty listTaiLieu}">--%>
+                    <c:choose>
+                    <c:when test="${not empty listTaiLieu}">
                         <div class="card-body">
                             <h4 class="card-title">Tài liệu chờ duyệt</h4>
                             <div class="table-responsive">
@@ -259,14 +255,16 @@
                                 </div>
                             </div>
                         </div>
-                        </c:if>
+                        </c:when>
+                        <c:when test="${not empty listTaiLieuTuChoi}">
+<%--                        </c:if>--%>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-12">
                     <div class="card m-0">
-                        <c:if test="${not empty listTaiLieuTuChoi}">
+<%--                        <c:if test="${not empty listTaiLieuTuChoi}">--%>
                             <div class="card-body">
                                 <h4 class="card-title">Tài liệu từ chối</h4>
                                 <div class="table-responsive">
@@ -339,12 +337,14 @@
                                     </div>
                                 </div>
                             </div>
-                        </c:if>
+                        </c:when>
+                        <c:when test="${not empty taiLieu}">
+<%--                        </c:if>--%>
                     </div>
                 </div>
             </div>
 
-            <c:if test="${not empty taiLieu}">
+<%--            <c:if test="${not empty taiLieu}">--%>
             <div class="row" id="detail-${taiLieu.maTaiLieu}">
                 <div class="col-md-12">
                     <div class="card">
@@ -403,14 +403,20 @@
                                 </div>
                             </form>
                         </div>
+
                     </div>
                 </div>
             </div>
-            </c:if>
-
-
+<%--            </c:if>--%>
+            </c:when>
+                <c:when test="${empty listTaiLieu or empty listTaiLieuTuChoi or empty taiLieu}">
+                    <div class="card-body p-4 d-flex justify-content-center align-items-center" style="min-height: 60vh;">
+                        <h3 class="card-title text-center text-danger m-0 fs-3">Không tồn tại danh sách</h3>
+                    </div>
+                </c:when>
+            </c:choose>
         </div>
-        <footer class="footer text-center">
+        <footer class="footer text-center mt-3">
             Copyright © 2024. Designed by Phan Đức
         </footer>
     </div>

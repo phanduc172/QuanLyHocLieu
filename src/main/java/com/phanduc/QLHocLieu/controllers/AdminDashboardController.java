@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -23,14 +24,15 @@ public class AdminDashboardController {
     @Autowired
     private ChuyenNganhRepository chuyenNganhRepository;
     @GetMapping("")
-    public String getDashboard(ModelMap modelMap) {
+    public String getDashboard(HttpSession session, ModelMap modelMap) {
+        if (session.getAttribute("loggedInAdmin") == null) {
+            return "redirect:/admin";
+        }
         List<Khoa> listKhoa = khoaRepository.findAll();
         List<ChuyenNganh> listChuyenNganh = chuyenNganhRepository.findAll();
         modelMap.addAttribute("listKhoa",listKhoa);
         modelMap.addAttribute("listChuyenNganh",listChuyenNganh);
         return "admin/AdminTrangChu";
     }
-
-
 
 }
