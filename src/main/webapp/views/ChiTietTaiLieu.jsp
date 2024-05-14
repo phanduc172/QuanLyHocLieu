@@ -287,6 +287,8 @@
                                 <div class="col-12">
                                     <div class="pdf-container ">
                                         <embed src="${taiLieu.duongDanTep}" type="application/pdf">
+                                        <embed src="/upload/documents/C%C6%A1%20s%E1%BB%9F%20d%E1%BB%AF%20li%E1%BB%87u%20quan%20h%E1%BB%87%20v%C3%A0%20c%C3%B4ng%20ngh%E1%BB%87%20ph%C3%A2n%20t%C3%ADch%20-%20thi%E1%BA%BFt%20k%E1%BA%BF.pdf" type="application/pdf" width="1000" height="600" toolbar="no">
+
                                     </div>
                                 </div>
                             </div>

@@ -280,6 +280,7 @@ public class TaiLieuController {
                 hoatDong.setMaNguoiDung(nguoiDung.getMaNguoiDung());
                 hoatDong.setLoaiHoatDong("Tải lên");
                 hoatDong.setMoTaHoatDong("Vừa tải lên tài liệu: " + taiLieu.getTieuDe());
+                hoatDong.setNgay(new Date());
                 hoatDongGanDayRepository.save(hoatDong);
                 System.out.println("Tài liệu tải lên thành công");
                 return "redirect:/userinfo/"+nguoiDung.getMaNguoiDung();
@@ -318,6 +319,7 @@ public class TaiLieuController {
                 hoatDong.setMaNguoiDung(nguoiDung.getMaNguoiDung());
                 hoatDong.setLoaiHoatDong("Cập nhật");
                 hoatDong.setMoTaHoatDong("Vừa cập nhật tài liệu: " + taiLieu.getTieuDe());
+                hoatDong.setNgay(new Date());
                 hoatDongGanDayRepository.save(hoatDong);
                 return "redirect:/userinfo/"+nguoiDung.getMaNguoiDung();
             } else {

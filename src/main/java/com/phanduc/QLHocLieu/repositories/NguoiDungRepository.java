@@ -7,6 +7,7 @@ public interface NguoiDungRepository extends JpaRepository<NguoiDung, Integer> {
     NguoiDung findByTenNguoiDungAndMatKhau(String tenNguoiDung, String matKhau);
     NguoiDung getUserByMaNguoiDung(Integer maNguoiDung);
     NguoiDung findByTenNguoiDung(String tenNguoiDung);
+    long count();
 
     default void printUser(String tenNguoiDung, String matKhau) {
         NguoiDung nguoiDung = findByTenNguoiDungAndMatKhau(tenNguoiDung, matKhau);

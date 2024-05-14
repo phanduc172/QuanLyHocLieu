@@ -14,7 +14,7 @@
     <!-- Custom CSS -->
     <link href="/css/style.min.css" rel="stylesheet">
 </head>
-
+<%@ include file="../ui/modal_updateSuccess.jsp" %>
 <body>
 <div class="preloader">
     <div class="lds-ripple">
@@ -29,7 +29,7 @@
             <div class="navbar-header" data-logobg="skin6">
                 <a class="navbar-brand" href="/dashboard">
                     <span class="logo-text ms-3">
-                            <img src="../assets/images/PD.png" alt="homepage" class="dark-logo" style="width: 100px;"/>
+                            <img src="/assets/images/PD.png" alt="homepage" class="dark-logo" style="width: 100px;"/>
                         </span>
                 </a>
             </div>
@@ -45,7 +45,7 @@
                 <ul class="navbar-nav">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle waves-effect waves-dark" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="../assets/images/avt.png" alt="user" class="profile-pic me-2">Phan Đức
+                            <img src="/assets/images/avt.png" alt="user" class="profile-pic me-2">Phan Đức
                         </a>
                         <ul class="dropdown-menu show" aria-labelledby="navbarDropdown"></ul>
                     </li>
@@ -64,7 +64,7 @@
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="AdminProfile.jsp" aria-expanded="false">
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/admin/profile/${loggedInAdmin.maNguoiDung}" aria-expanded="false">
                             <i class="me-3 fas fa-user" aria-hidden="true"></i>
                             <span class="hide-menu">Hồ sơ người dùng</span>
                         </a>
@@ -151,7 +151,7 @@
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="../Error404.jsp" aria-expanded="false">
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link " href="dashboard/error" aria-expanded="false">
                             <i class="me-3 fas fa-exclamation-circle" aria-hidden="true"></i>
                             <span class="hide-menu">Lỗi 404</span>
                         </a>
@@ -181,22 +181,10 @@
                 <div class="col-lg-4 col-xlg-3 col-md-5">
                     <div class="card">
                         <div class="card-body profile-card">
-                            <center class="mt-4"> <img src="/upload/images/c74a56f3-81d1-4da9-8a22-85bbf4faf150_pd.jpg"
+                            <center class="mt-4"> <img src="${nguoiDung.anh}"
                                                        class="rounded-circle" width="150" />
-                                <h4 class="card-title mt-2">Phan Đức</h4>
-                                <h6 class="card-subtitle">Administrate</h6>
-                                <div class="row justify-content-center">
-                                    <div class="col-4">
-                                        <a href="javascript:void(0)" class="link">
-                                            <i class="icon-people" aria-hidden="true"></i>
-                                            <span class="font-normal">254</span>
-                                        </a></div>
-                                    <div class="col-4">
-                                        <a href="javascript:void(0)" class="link">
-                                            <i class="icon-picture" aria-hidden="true"></i>
-                                            <span class="font-normal">54</span>
-                                        </a></div>
-                                </div>
+                                <h3 class="card-title mt-4">${nguoiDung.hoTen}</h3>
+<%--                                <h6 class="card-subtitle">Administrate</h6>--%>
                             </center>
                         </div>
                     </div>
@@ -204,39 +192,41 @@
                 <div class="col-lg-8 col-xlg-9 col-md-7">
                     <div class="card">
                         <div class="card-body">
-                            <form class="form-horizontal form-material mx-2">
+                            <form class="form-horizontal form-material mx-2" action="/admin/profile/update" method="post" name="updateProfileForm">
+                                <input type="hidden" name="maNguoiDung" value="${nguoiDung.maNguoiDung}">
                                 <div class="form-group">
                                     <label class="col-md-12 mb-0">Tên người dùng:</label>
                                     <div class="col-md-12">
-                                        <input type="text" placeholder="phanduc172"
-                                               class="form-control ps-0 form-control-line">
+                                        <input type="text" placeholder="" value="${nguoiDung.tenNguoiDung}"
+                                               class="form-control ps-0 form-control-line" name="updateUsername">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-12 mb-0">Họ tên</label>
                                     <div class="col-md-12">
-                                        <input type="text" placeholder="Phan Đức"
-                                               class="form-control ps-0 form-control-line">
+                                        <input type="text" placeholder="Họ tên"
+                                               class="form-control ps-0 form-control-line" name="updateFullName"
+                                               value="${nguoiDung.hoTen}">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="example-email" class="col-md-12">Email</label>
                                     <div class="col-md-12">
-                                        <input type="email" placeholder="admin@tailieu.com"
-                                               class="form-control ps-0 form-control-line" name="example-email"
-                                               id="example-email">
+                                        <input type="email" placeholder="example@email.com"
+                                               class="form-control ps-0 form-control-line" name="updateEmail"
+                                               id="example-email"
+                                               value="${nguoiDung.email}">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-12 mb-0">Password</label>
                                     <div class="col-md-12">
-                                        <input type="password" value="password" class="form-control ps-0 form-control-line">
+                                        <input type="text" name="updatePassword" value="${nguoiDung.matKhau}" class="form-control ps-0 form-control-line">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="col-sm-12 d-flex">
-                                        <button class="btn btn-success mx-auto mx-md-0 text-white">Update
-                                            Profile</button>
+                                        <button class="btn btn-info mx-auto mx-md-0 text-white"><i class="fas fa-edit"></i> Cập nhật </button>
                                     </div>
                                 </div>
                             </form>
@@ -248,29 +238,14 @@
         <footer class="footer text-center">
             Copyright © 2024. Designed by Phan Đức
         </footer>
-        <!-- ============================================================== -->
-        <!-- End footer -->
-        <!-- ============================================================== -->
     </div>
-    <!-- ============================================================== -->
-    <!-- End Page wrapper  -->
-    <!-- ============================================================== -->
 </div>
-<!-- ============================================================== -->
-<!-- End Wrapper -->
-<!-- ============================================================== -->
-<!-- ============================================================== -->
-<!-- All Jquery -->
-<!-- ============================================================== -->
+
 <script src="/assets/plugins/jquery/dist/jquery.min.js"></script>
-<!-- Bootstrap tether Core JavaScript -->
 <script src="/assets/plugins/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="js/app-style-switcher.js"></script>
-<!--Wave Effects -->
 <script src="/js/waves.js"></script>
-<!--Menu sidebar -->
 <script src="/js/sidebarmenu.js"></script>
-<!--Custom JavaScript -->
 <script src="/js/custom.js"></script>
 </body>
 

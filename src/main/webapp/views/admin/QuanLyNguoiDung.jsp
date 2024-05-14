@@ -15,7 +15,7 @@
     <link href="/css/style.min.css" rel="stylesheet">
     <link href="/css/style.css" rel="stylesheet">
 </head>
-
+<%@ include file="../ui/modal_updateSuccess.jsp" %>
 <body>
 <div class="preloader">
     <div class="lds-ripple">
@@ -65,7 +65,7 @@
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="AdminProfile.jsp" aria-expanded="false">
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/admin/profile/${loggedInAdmin.maNguoiDung}" aria-expanded="false">
                             <i class="me-3 fas fa-user" aria-hidden="true"></i>
                             <span class="hide-menu">Hồ sơ người dùng</span>
                         </a>
@@ -152,7 +152,7 @@
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="../Error404.jsp" aria-expanded="false">
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="dashboard/error" aria-expanded="false">
                             <i class="me-3 fas fa-exclamation-circle" aria-hidden="true"></i>
                             <span class="hide-menu">Lỗi 404</span>
                         </a>
@@ -319,22 +319,6 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- Hiển thị modal thông báo khi cập nhật thành công -->
-                            <div class="modal fade" id="updateSuccessModal" tabindex="-1" aria-labelledby="updateSuccessModalLabel" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content border">
-                                        <div class="modal-header bg-custom-blue text-white">
-                                            <h5 class="modal-title" id="updateSuccessModalLabel">Chỉnh sửa thành công</h5>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="fs-5">
-                                                Thông tin người dùng đã được cập nhật thành công.
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -356,24 +340,6 @@
                 });
             });
         </script>
-
-
-
-        <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                const urlParams = new URLSearchParams(window.location.search);
-                const updateSuccess = urlParams.get('updateSuccess');
-                if (updateSuccess === 'true') {
-                    var myModal = new bootstrap.Modal(document.getElementById('updateSuccessModal'));
-                    myModal.show();
-                    // Tắt modal sau 3 giây
-                    setTimeout(function() {
-                        myModal.hide();
-                    }, 2000);
-                }
-            });
-        </script>
-
 
 
         <script>

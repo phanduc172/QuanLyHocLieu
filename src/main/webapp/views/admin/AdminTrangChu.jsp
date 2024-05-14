@@ -13,7 +13,14 @@
     <link href="/css/style.min.css" rel="stylesheet">
     <link href="/css/reponsive.css" rel="stylesheet">
     <link href="/css/style.css" rel="stylesheet">
-</head>
+</head>\
+<style>
+    .hover-cell:hover {
+        background-color: #f0f0f0;
+        transition: background-color 0.3s;
+    }
+
+</style>
 
 <body>
 <div class="preloader">
@@ -47,12 +54,18 @@
                 </ul>
                 <ul class="navbar-nav">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle waves-effect waves-dark" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="../assets/images/avt.png" alt="user" class="profile-pic me-2">Phan Đức
-                        </a>
-                        <ul class="dropdown-menu show" aria-labelledby="navbarDropdown"></ul>
+                        <div class="dropdown">
+                            <a class="nav-link dropdown-toggle waves-effect waves-dark" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="${loggedInAdmin.anh}" alt="user" class="profile-pic me-2">${loggedInAdmin.hoTen}
+                            </a>
+                            <ul class="dropdown-menu p-0" aria-labelledby="navbarDropdown">
+                                <li ><a class="dropdown-item" href="/admin/logout" id="logoutBtn">Đăng xuất</a></li>
+                            </ul>
+                        </div>
                     </li>
                 </ul>
+
+
             </div>
         </nav>
     </header>
@@ -67,7 +80,7 @@
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/manager/profile" aria-expanded="false">
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/admin/profile/${loggedInAdmin.maNguoiDung}" aria-expanded="false">
                             <i class="me-3 fas fa-user" aria-hidden="true"></i>
                             <span class="hide-menu">Hồ sơ người dùng</span>
                         </a>
@@ -154,7 +167,7 @@
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="../Error404.jsp" aria-expanded="false">
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="dashboard/error" aria-expanded="false">
                             <i class="me-3 fas fa-exclamation-circle" aria-hidden="true"></i>
                             <span class="hide-menu">Lỗi 404</span>
                         </a>
@@ -167,12 +180,12 @@
         <div class="page-breadcrumb">
             <div class="row align-items-center">
                 <div class="col-md-6 col-8 align-self-center">
-                    <h3 class="page-title mb-0 p-0">Dashboard</h3>
+                    <h3 class="page-title mb-0 p-0">Bảng điều khiển</h3>
                     <div class="d-flex align-items-center">
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+                                <li class="breadcrumb-item"><a href="/dashboard">Trang chủ</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Bảng điều khiển</li>
                             </ol>
                         </nav>
                     </div>
@@ -184,34 +197,16 @@
                 <div class="col-sm-6">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Daily Sales</h4>
-                            <div class="text-end">
-                                <h2 class="font-light mb-0"><i class="ti-arrow-up text-success"></i> $120</h2>
-                                <span class="text-muted">Todays Income</span>
-                            </div>
-                            <span class="text-success">80%</span>
-                            <div class="progress">
-                                <div class="progress-bar bg-success" role="progressbar"
-                                     style="width: 80%; height: 6px;" aria-valuenow="25" aria-valuemin="0"
-                                     aria-valuemax="100"></div>
-                            </div>
+                            <h4 class="card-title text-center">Số lượng tải liệu tải lên theo ngày</h4>
+                            <canvas id="myChartDocument" width="800" height="400"></canvas>
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-6">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Weekly Sales</h4>
-                            <div class="text-end">
-                                <h2 class="font-light mb-0"><i class="ti-arrow-up text-info"></i> $5,000</h2>
-                                <span class="text-muted">Todays Income</span>
-                            </div>
-                            <span class="text-info">30%</span>
-                            <div class="progress">
-                                <div class="progress-bar bg-info" role="progressbar"
-                                     style="width: 30%; height: 6px;" aria-valuenow="25" aria-valuemin="0"
-                                     aria-valuemax="100"></div>
-                            </div>
+                            <h4 class="card-title text-center">Thống kê hoạt động theo ngày</h4>
+                            <canvas id="myChartActivity" width="800" height="400"></canvas>
                         </div>
                     </div>
                 </div>
@@ -220,12 +215,30 @@
                 <div class="col-sm-12">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Revenue Statistics</h4>
-                            <div class="flot-chart">
-                                <div class="flot-chart-content " id="flot-line-chart"
-                                     style="padding: 0px; position: relative;">
-                                    <canvas class="flot-base w-100" height="400"></canvas>
-                                </div>
+                            <h4 class="card-title text-center">Thống kê số lượng</h4>
+                            <div class="table-responsive">
+                                <table class="table user-table">
+                                    <thead>
+                                    <tr class="text-center">
+                                        <th></th>
+                                        <th class="border-top-0 fs-5">Người dùng</th>
+                                        <th class="border-top-0 fs-5">Tài liệu</th>
+                                        <th class="border-top-0 fs-5">Khoa</th>
+                                        <th class="border-top-0 fs-5">Chuyên ngành</th>
+                                        <th class="border-top-0 fs-5">Thể loại</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr class="text-center">
+                                        <td>Tổng số:</td>
+                                        <td class="border-top-0 hover-cell"><a class="px-4 text-dark" href="/manager/user/list">${totalNguoiDung}</a></td>
+                                        <td class="border-top-0 hover-cell"><a class="px-4 text-dark" href="/manager/tailieu">${totalTaiLieu}</a></td>
+                                        <td class="border-top-0 hover-cell"><a class="px-4 text-dark" href="/manager/khoachuyennganh">${totalKhoa}</a></td>
+                                        <td class="border-top-0 hover-cell"><a class="px-4 text-dark" href="/manager/khoachuyennganh">${totalChuyenNganh}</a></td>
+                                        <td class="border-top-0 hover-cell"><a class="px-4 text-dark" href="/manager/danhmuc">${totalDanhMuc}</a></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -363,8 +376,116 @@
     <script src="/assets/plugins/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <!-- <script src="js/app-style-switcher.js"></script> -->
     <script src="/js/custom.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <c:choose>
+<script>
+    // Thực hiện yêu cầu HTTP GET để lấy dữ liệu từ endpoint
+    fetch('http://localhost:8080/dashboard/api/tailieu')
+        .then(response => response.json())
+        .then(data => {
+            // Lấy chỉ 10 ngày mới nhất từ dữ liệu
+            const lastTenDaysData = data.slice(-7);
+
+            // Lấy dữ liệu từ phản hồi JSON
+            const labels = lastTenDaysData.map(entry => entry.ngay);
+            const values = lastTenDaysData.map(entry => entry.soLuongTaiLieu);
+
+            // Vẽ biểu đồ
+            const ctx = document.getElementById('myChartDocument').getContext('2d');
+            const myChartDocument = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Số lượng tài liệu tải lên theo ngày',
+                        data: values,
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+        });
+</script>
+
+
+<script>
+        fetch('http://localhost:8080/dashboard/api/hoatdong')
+            .then(response => response.json())
+            .then(data => {
+                var labels = [];
+                var soLuongDangNhap = [];
+                var soLuongTaiLen = [];
+                var soLuongCapNhat = [];
+
+                // Lấy tối đa 10 ngày cuối cùng
+                var lastTenDaysData = data.slice(-10);
+
+                lastTenDaysData.forEach(item => {
+                    labels.push(item.ngay);
+                    if (item.loaiHoatDong === 'Đăng nhập') {
+                        soLuongDangNhap.push(item.soLuongHoatDong);
+                    } else if (item.loaiHoatDong === 'Tải lên') {
+                        soLuongTaiLen.push(item.soLuongHoatDong);
+                    } else if (item.loaiHoatDong === 'Cập nhật') {
+                        soLuongCapNhat.push(item.soLuongHoatDong);
+                    }
+                });
+
+                var ctx = document.getElementById('myChartActivity').getContext('2d');
+                var myChartActivity = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [
+                            {
+                                label: 'Đăng nhập',
+                                data: soLuongDangNhap,
+                                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                borderColor: 'rgba(255, 99, 132, 1)',
+                                borderWidth: 1
+                            },
+                            {
+                                label: 'Tải lên',
+                                data: soLuongTaiLen,
+                                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                                borderColor: 'rgba(54, 162, 235, 1)',
+                                borderWidth: 1
+                            },
+                            {
+                                label: 'Cập nhật',
+                                data: soLuongCapNhat,
+                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                borderWidth: 1
+                            }
+                        ]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            })
+            .catch(error => console.error('Lỗi:', error));
+    </script>
+
+
+
+<c:choose>
         <c:when test="${sessionScope.loggedInAdmin != null}">
             <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered modal-sm">
@@ -403,9 +524,9 @@
             } else if (statusLogin === "false") {
                 $('#failureModal').modal('show');
             }
-                // setTimeout(function() {
-                //     $('#successModal, #failureModal').modal('hide');
-                // }, 800);
+            setTimeout(function() {
+                $('#successModal, #failureModal').modal('hide');
+            }, 800);
         });
     </script>
 </body>

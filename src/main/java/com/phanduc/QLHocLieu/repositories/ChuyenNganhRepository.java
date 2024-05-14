@@ -11,4 +11,6 @@ public interface ChuyenNganhRepository extends JpaRepository<ChuyenNganh,String>
 
     @Query("SELECT c FROM ChuyenNganh c WHERE c.maChuyenNganh = :maChuyenNganh")
     ChuyenNganh findChuyenNganhByMaChuyenNganh(String maChuyenNganh);
+
+    long count();
 }

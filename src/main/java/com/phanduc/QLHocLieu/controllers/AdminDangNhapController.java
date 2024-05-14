@@ -18,8 +18,8 @@ public class AdminDangNhapController {
     @Autowired
     private NguoiDungRepository nguoiDungRepository;
 
-    @GetMapping("")
-    public String formLoginAdmin() {
+    @GetMapping("/login")
+    public String login() {
         return "admin/AdminDangNhap";
     }
 
@@ -42,11 +42,10 @@ public class AdminDangNhapController {
     }
 
 
-//    @RequestMapping(value = "/logout", method = {RequestMethod.GET, RequestMethod.POST})
-//    public String logout(HttpSession session) {
-//        // Xóa thông tin đăng nhập khỏi session khi đăng xuất
-//        session.removeAttribute("loggedInUser");
-//        System.out.println("Đăng xuất thành công");
-//        return "redirect:/trangchu";
-//    }
+    @RequestMapping(value = "/logout", method = {RequestMethod.GET, RequestMethod.POST})
+    public String logout(HttpSession session) {
+        session.removeAttribute("loggedInAdmin");
+        System.out.println("Đăng xuất thành công");
+        return "redirect:/dashboard";
+    }
 }
