@@ -184,7 +184,32 @@
                 <div class="col-md-6">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Khoa</h4>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h4 class="card-title m-0">Khoa</h4>
+                                <button type="button" class="btn btn-info text-white" data-bs-toggle="modal" data-bs-target="#themKhoa">Thêm Khoa</button>
+                            </div>
+                            <%--Model Thêm Khoa--%>
+                            <div class="modal fade" id="themKhoa" tabindex="-1" aria-labelledby="themKhoaModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header bg-info text-white">
+                                            <h5 class="modal-title" id="themKhoaModalLabel">Thêm Khoa</h5>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form id="themKhoaForm" action="/manager/khoa/addkhoa" method="post">
+                                                <div class="mb-3">
+                                                    <label for="tenKhoa" class="form-label">Tên khoa:</label>
+                                                    <input type="text" class="form-control" id="tenKhoa" name="tenKhoa">
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Đóng</button>
+                                            <button type="submit" form="themKhoaForm" class="btn btn-info text-white">Thêm</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="table-responsive">
                                 <table class="table user-table no-wrap">
                                     <thead>
@@ -200,10 +225,10 @@
                                             <td class="text-center">${khoa.maKhoa}</td>
                                             <td>${khoa.tenKhoa}</td>
                                             <td class="text-center">
-                                                <button class="btn btn-sm btn-outline-info me-2" style="width: 30px; height: 30px">
+                                                <button class="btn btn-sm btn-outline-info me-2" style="width: 30px; height: 30px" data-bs-toggle="modal" data-bs-target="#capNhatKhoaModal" data-ma-khoa="${khoa.maKhoa}" data-ten-khoa="${khoa.tenKhoa}">
                                                     <i class="fas fa-edit"></i>
                                                 </button>
-                                                <button class="btn btn-sm btn-outline-danger me-2" style="width: 30px; height: 30px">
+                                                <button id="btnXoa" class="btn btn-sm btn-outline-danger me-2" data-id="${khoa.maKhoa}" style="width: 30px; height: 30px" data-bs-toggle="modal" data-bs-target="#xoaKhoaModal">
                                                     <i class="fas fa-trash-alt"></i>
                                                 </button>
                                             </td>
@@ -211,6 +236,46 @@
                                     </c:forEach>
                                     </tbody>
                                 </table>
+                            </div>
+                            <!-- Modal Xác nhận xóa Khoa-->
+                            <div class="modal fade" id="xoaKhoaModal" tabindex="-1" aria-labelledby="xoaKhoaModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="xoaKhoaModalLabel">Xóa Khoa</h5>
+                                        </div>
+                                        <div class="modal-body">
+                                            Bạn có chắc chắn muốn xóa khoa này không?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">Hủy</button>
+                                            <button type="button" class="btn btn-sm btn-danger text-white" id="btnXacNhanXoa">Xác nhận</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal fade" id="capNhatKhoaModal" tabindex="-1" aria-labelledby="capNhatKhoaModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="capNhatKhoaModalLabel">Cập Nhật Khoa</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form id="formCapNhatKhoa" action="/manager/khoa/update" method="POST">
+                                                <input type="hidden" id="maKhoa" name="maKhoa">
+                                                <div class="mb-3">
+                                                    <label for="tenKhoa" class="form-label">Tên Khoa:</label>
+                                                    <input type="text" class="form-control" id="updateTenKhoa" name="tenKhoa">
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Hủy</button>
+                                            <button type="submit" form="formCapNhatKhoa" class="btn btn-info text-white">Cập nhật</button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <nav aria-label="Page navigation">
                                 <ul class="pagination justify-content-center">
@@ -250,7 +315,10 @@
                 <div class="col-md-6">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Chuyên ngành</h4>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h4 class="card-title m-0">Chuyên ngành</h4>
+                                <button type="button" class="btn btn-info text-white" data-bs-toggle="modal" data-bs-target="#themChuyenNganh">Thêm Chuyên ngành</button>
+                            </div>
                             <div class="table-responsive">
                                 <table class="table user-table no-wrap">
                                     <thead>
@@ -266,10 +334,10 @@
                                             <td>${chuyennganh.maChuyenNganh}</td>
                                             <td>${chuyennganh.tenChuyenNganh}</td>
                                             <td>
-                                                <button class="btn btn-sm btn-outline-info me-2" style="width: 30px; height: 30px">
+                                                <button type="button" class="btn btn-sm btn-outline-info me-2" style="width: 30px; height: 30px" data-bs-toggle="modal" data-bs-target="#capNhatChuyenNganhModal" data-ma-chuyen-nganh="${chuyennganh.maChuyenNganh}" data-ten-chuyen-nganh="${chuyennganh.tenChuyenNganh}">
                                                     <i class="fas fa-edit"></i>
                                                 </button>
-                                                <button class="btn btn-sm btn-outline-danger me-2" style="width: 30px; height: 30px">
+                                                <button class="btn btn-sm btn-outline-danger me-2 btn-xoa-chuyen-nganh" data-maChuyenNganh="${chuyennganh.maChuyenNganh}" style="width: 30px; height: 30px" data-bs-toggle="modal" data-bs-target="#xoaChuyenNganhModal">
                                                     <i class="fas fa-trash-alt"></i>
                                                 </button>
                                             </td>
@@ -277,11 +345,100 @@
                                     </c:forEach>
                                     <c:if test="${empty listChuyenNganh}">
                                         <tr>
-                                            <td colspan="2" class="text-center">Không có dữ liệu.</td>
+                                            <td colspan="3" class="text-center">Không có dữ liệu.</td>
                                         </tr>
                                     </c:if>
                                     </tbody>
                                 </table>
+                            </div>
+                            <!-- Modal Xóa Chuyên Ngành -->
+                            <div class="modal fade" id="xoaChuyenNganhModal" tabindex="-1" aria-labelledby="xoaChuyenNganhModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="xoaChuyenNganhModalLabel">Xóa Chuyên ngành</h5>
+                                        </div>
+                                        <div class="modal-body">
+                                            Bạn có chắc chắn muốn xóa chuyên ngành này không?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">Hủy</button>
+                                            <button type="button" class="btn btn-sm btn-danger text-white" id="btnXacNhanXoaChuyenNganh">Xác nhận</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <%--Modal Thêm Chuyên ngành--%>
+                            <div class="modal fade" id="themChuyenNganh" tabindex="-1" aria-labelledby="themChuyenNganhModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header bg-info text-white">
+                                            <h5 class="modal-title" id="themChuyenNganhModalLabel">Thêm Chuyên ngành</h5>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form id="themChuyenNganhForm" action="/manager/chuyennganh/addchuyennganh" method="post">
+                                                <div class="mb-3">
+                                                    <label for="maChuyenNganh" class="form-label">Mã chuyên ngành:</label>
+                                                    <input type="text" class="form-control" id="maChuyenNganh" name="maChuyenNganh">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="tenChuyenNganh" class="form-label">Tên chuyên ngành:</label>
+                                                    <input type="text" class="form-control" id="tenChuyenNganh" name="tenChuyenNganh">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="maKhoa" class="form-label">Khoa:</label>
+                                                    <select class="form-select" id="maKhoaCN" name="selectedMaKhoa" required>
+                                                        <option value="" selected disabled>-- Chọn Khoa --</option>
+                                                        <c:forEach items="${listKhoa}" var="khoa">
+                                                            <option value="${khoa.maKhoa}">${khoa.tenKhoa}</option>
+                                                        </c:forEach>
+                                                    </select>
+                                                </div>
+                                                <input type="hidden" id="selectedMaKhoa" name="selectedMaKhoa">
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Đóng</button>
+                                            <button type="submit" form="themChuyenNganhForm" class="btn btn-info text-white">Thêm</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <%-- Modal Cập Nhật Chuyên Ngành --%>
+                            <div class="modal fade" id="capNhatChuyenNganhModal" tabindex="-1" aria-labelledby="capNhatChuyenNganhModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header bg-info text-white">
+                                            <h5 class="modal-title" id="capNhatChuyenNganhModalLabel">Cập Nhật Chuyên Ngành</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form id="capNhatChuyenNganhForm" action="/manager/chuyennganh/update" method="post">
+                                                <div class="mb-3">
+                                                    <label for="updateMaChuyenNganh" class="form-label">Mã chuyên ngành:</label>
+                                                    <input type="text" class="form-control" id="updateMaChuyenNganh" name="maChuyenNganh" readonly>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="updateTenChuyenNganh" class="form-label">Tên chuyên ngành:</label>
+                                                    <input type="text" class="form-control" id="updateTenChuyenNganh" name="tenChuyenNganh" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="updateMaKhoa" class="form-label">Khoa:</label>
+                                                    <select class="form-select" id="updateMaKhoa" name="selectedMaKhoa" required>
+                                                        <option value="" selected disabled>-- Chọn Khoa --</option>
+                                                        <c:forEach items="${listKhoa}" var="khoa">
+                                                            <option value="${khoa.maKhoa}">${khoa.tenKhoa}</option>
+                                                        </c:forEach>
+                                                    </select>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Đóng</button>
+                                            <button type="submit" form="capNhatChuyenNganhForm" class="btn btn-info text-white">Cập Nhật</button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <nav aria-label="Page navigation">
                                 <ul class="pagination justify-content-center">
@@ -325,12 +482,76 @@
 </div>
 
 
-<script src="/assets/plugins/jquery/dist/jquery.min.js"></script>
-<!-- Bootstrap tether Core JavaScript -->
-<script src="/assets/plugins/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<!-- <script src="js/app-style-switcher.js"></script> -->
-<script src="/js/custom.js"></script>
-<!--This page JavaScript -->
+    <script src="/assets/plugins/jquery/dist/jquery.min.js"></script>
+    <script src="/assets/plugins/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/custom.js"></script>
+    <script src="/js/admin.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('#maKhoaCN').change(function() {
+                var selectedMaKhoa = $(this).val();
+                $('#selectedMaKhoa').val(selectedMaKhoa);
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('#xoaKhoaModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                var maKhoa = button.data('id');
+                var confirmBtn = $(this).find('.modal-footer .btn-danger');
+                confirmBtn.click(function () {
+                    $.ajax({
+                        type: "DELETE",
+                        url: "/manager/khoa/delete/" + maKhoa,
+                        success: function (response) {
+                            $('#xoaKhoaModal').modal('hide');
+                            location.reload();
+                        },
+                        error: function (xhr, status, error) {
+                            console.log(error);
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let maChuyenNganhToDelete;
+
+            // Lắng nghe sự kiện click trên tất cả các nút xóa
+            document.querySelectorAll(".btn-xoa-chuyen-nganh").forEach(button => {
+                button.addEventListener("click", function() {
+                    maChuyenNganhToDelete = this.getAttribute("data-maChuyenNganh");
+                });
+            });
+
+            // Lắng nghe sự kiện click trên nút "Xác nhận" trong modal
+            document.getElementById("btnXacNhanXoaChuyenNganh").addEventListener("click", function() {
+                console.log(maChuyenNganhToDelete);
+                // Gửi yêu cầu xóa chuyên ngành đến server
+                fetch("/manager/chuyennganh/delete/" + maChuyenNganhToDelete, {
+                    method: "DELETE"
+                })
+                    .then(function(response) {
+                        if (response.ok) {
+                            window.location.reload();
+                        } else {
+                            alert("Đã xảy ra lỗi khi xóa chuyên ngành.");
+                        }
+                    })
+                    .catch(function(error) {
+                        console.error("Lỗi:", error);
+                    });
+            });
+        });
+    </script>
+
+
+
 </body>
 
 </html>

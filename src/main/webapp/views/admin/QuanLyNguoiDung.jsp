@@ -355,7 +355,7 @@
                 var confirmDeleteButton = document.getElementById("confirmDeleteButton");
                 confirmDeleteButton.addEventListener("click", function() {
                     var userId = confirmDeleteButton.getAttribute("data-userid");
-                    fetch("/dashboard/delete/" + userId, {
+                    fetch("/manager/delete/user/" + userId, {
                         method: "DELETE"
                     })
                         .then(response => {

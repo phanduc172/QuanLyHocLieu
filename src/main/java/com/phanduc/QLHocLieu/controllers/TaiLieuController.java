@@ -3,6 +3,10 @@ package com.phanduc.QLHocLieu.controllers;
 import com.phanduc.QLHocLieu.models.*;
 import com.phanduc.QLHocLieu.repositories.*;
 import com.phanduc.QLHocLieu.services.StorageService;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.rendering.ImageType;
+import org.apache.pdfbox.rendering.PDFRenderer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
@@ -18,7 +22,17 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpSession;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.sql.Timestamp;
 import java.util.stream.Collectors;
@@ -242,6 +256,59 @@ public class TaiLieuController {
         return "TaiLenTaiLieu";
     }
 
+//    @PostMapping("/uploadfile")
+//    public String handleFileUpload(@RequestParam("file") MultipartFile file,
+//                                   @RequestParam("title") String title,
+//                                   @RequestParam("description") String description,
+//                                   @RequestParam("faculty") String faculty,
+//                                   @RequestParam("category") Integer category,
+//                                   @RequestParam("major") String major,
+//                                   HttpSession session, ModelMap modelMap) {
+//        NguoiDung nguoiDung = (NguoiDung) session.getAttribute("loggedInUser");
+//        if (!CheckLogin.isLoggedIn(session)) {
+//            modelMap.addAttribute("messageLogin", "Bạn cần đăng nhập để truy cập tính năng này.");
+//            return "redirect:/trangchu";
+//        }
+//        if (!file.isEmpty()) {
+//            try {
+//                String fileName = storageService.store(file);
+//                Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
+//                String prefixedFilePath = "/upload/documents/" + fileName;
+//                String anhTaiLieu = "/images/1.jpg";
+//                TaiLieu taiLieu = new TaiLieu();
+//                taiLieu.setTieuDe(title);
+//                taiLieu.setMoTa(description);
+//                taiLieu.setDuongDanTep(prefixedFilePath);
+//                taiLieu.setAnhTaiLieu(anhTaiLieu);
+//                taiLieu.setTaiLenBoi(nguoiDung.getMaNguoiDung());
+//                taiLieu.setNgayTaiLen(currentTimestamp);
+//                taiLieu.setSoLuotTaiXuong(0);
+//                taiLieu.setMaDanhMuc(category);
+//                taiLieu.setMaChuyenNganh(major);
+//                taiLieu.setSoLuotTruyCap(0);
+//                taiLieu.setMaTrangThai(2);
+//                taiLieuRepository.save(taiLieu);
+//                System.out.println("Đường dẫn lưu trữ tệp: " + prefixedFilePath);
+//
+//                HoatDongGanDay hoatDong = new HoatDongGanDay();
+//                hoatDong.setMaNguoiDung(nguoiDung.getMaNguoiDung());
+//                hoatDong.setLoaiHoatDong("Tải lên");
+//                hoatDong.setMoTaHoatDong("Vừa tải lên tài liệu: " + taiLieu.getTieuDe());
+//                hoatDong.setNgay(new Date());
+//                hoatDongGanDayRepository.save(hoatDong);
+//                System.out.println("Tài liệu tải lên thành công");
+//                return "redirect:/userinfo/"+nguoiDung.getMaNguoiDung();
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//                System.out.println("Tài liệu tải lên không thành công");
+//                return "redirect:/uploadfile";
+//            }
+//        } else {
+//            System.out.println("Không có tài liệu được chọn");
+//            return "redirect:/uploadfile";
+//        }
+//    }
+
     @PostMapping("/uploadfile")
     public String handleFileUpload(@RequestParam("file") MultipartFile file,
                                    @RequestParam("title") String title,
@@ -260,12 +327,13 @@ public class TaiLieuController {
                 String fileName = storageService.store(file);
                 Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
                 String prefixedFilePath = "/upload/documents/" + fileName;
-                String anhTaiLieu = "/images/1.jpg";
+                BufferedImage firstPageImage = extractFirstPageImage(file);
+                String thumbnailFilePath = saveThumbnailImage(firstPageImage);
                 TaiLieu taiLieu = new TaiLieu();
                 taiLieu.setTieuDe(title);
                 taiLieu.setMoTa(description);
                 taiLieu.setDuongDanTep(prefixedFilePath);
-                taiLieu.setAnhTaiLieu(anhTaiLieu);
+                taiLieu.setAnhTaiLieu(thumbnailFilePath);
                 taiLieu.setTaiLenBoi(nguoiDung.getMaNguoiDung());
                 taiLieu.setNgayTaiLen(currentTimestamp);
                 taiLieu.setSoLuotTaiXuong(0);
@@ -274,15 +342,6 @@ public class TaiLieuController {
                 taiLieu.setSoLuotTruyCap(0);
                 taiLieu.setMaTrangThai(2);
                 taiLieuRepository.save(taiLieu);
-                System.out.println("Đường dẫn lưu trữ tệp: " + prefixedFilePath);
-
-                HoatDongGanDay hoatDong = new HoatDongGanDay();
-                hoatDong.setMaNguoiDung(nguoiDung.getMaNguoiDung());
-                hoatDong.setLoaiHoatDong("Tải lên");
-                hoatDong.setMoTaHoatDong("Vừa tải lên tài liệu: " + taiLieu.getTieuDe());
-                hoatDong.setNgay(new Date());
-                hoatDongGanDayRepository.save(hoatDong);
-                System.out.println("Tài liệu tải lên thành công");
                 return "redirect:/userinfo/"+nguoiDung.getMaNguoiDung();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -293,6 +352,30 @@ public class TaiLieuController {
             System.out.println("Không có tài liệu được chọn");
             return "redirect:/uploadfile";
         }
+    }
+
+
+    public BufferedImage extractFirstPageImage(MultipartFile file) throws IOException {
+        try (PDDocument document = PDDocument.load(file.getInputStream())) {
+            PDFRenderer renderer = new PDFRenderer(document);
+            return renderer.renderImageWithDPI(0, 300, ImageType.RGB);
+        }
+    }
+
+    public String saveThumbnailImage(BufferedImage image) throws IOException {
+        String uploadDir = "src/main/upload/images/";
+        String fileName = "thumbnail_" + System.currentTimeMillis() + ".jpg";
+        String filePath = uploadDir + fileName;
+        File dir = new File(uploadDir);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+        File output = new File(filePath);
+        ImageIO.write(image, "jpg", output);
+        String relativePath = "/upload/images/" + fileName;
+        System.out.println("Đường dẫn lưu ảnh: " + output.getAbsolutePath());
+
+        return relativePath;
     }
 
     @PostMapping("/document/updatedocument")
@@ -386,10 +469,14 @@ public class TaiLieuController {
             Integer maNguoiDung = hoatDongGanDay.getMaNguoiDung();
             NguoiDung hoatDongND = nguoiDungRepository.getUserByMaNguoiDung(maNguoiDung);
             moTaHoatDong.put(hoatDongGanDay.getMaHoatDong(), hoatDongGanDay.getMoTaHoatDong());
-            hoTenNguoiDung.put(hoatDongGanDay.getMaHoatDong(), hoatDongND.getHoTen());
-            anhNguoiDung.put(hoatDongGanDay.getMaHoatDong(), hoatDongND.getAnh());
+            if (hoatDongND != null) {
+                hoTenNguoiDung.put(hoatDongGanDay.getMaHoatDong(), hoatDongND.getHoTen());
+                anhNguoiDung.put(hoatDongGanDay.getMaHoatDong(), hoatDongND.getAnh());
+            } else {
+                hoTenNguoiDung.put(hoatDongGanDay.getMaHoatDong(), "Tên người dùng không tồn tại");
+                anhNguoiDung.put(hoatDongGanDay.getMaHoatDong(), "Ảnh người dùng không tồn tại");
+            }
         }
-
         modelMap.addAttribute("khoas", khoas);
         modelMap.addAttribute("chuyenNganhs", chuyenNganhs);
         modelMap.addAttribute("hoatDongGanDays", hoatDongGanDays);

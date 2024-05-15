@@ -98,9 +98,9 @@
             } else if (statusLogin === "false") {
                 $('#failureModal').modal('show');
             }
-            // setTimeout(function() {
-            //     $('#successModal, #failureModal').modal('hide');
-            // }, 800);
+            setTimeout(function() {
+                $('#successModal, #failureModal').modal('hide');
+            }, 800);
         });
     </script>
 </body>

@@ -47,7 +47,7 @@ public class AdminManagerController {
 
         return "admin/QuanLyTaiLieu";
     }
-
+    //Khoa - Chuyên ngành
     @GetMapping("/khoachuyennganh")
     //http://localhost:8080/manager/khoachuyennganh
     public String getKhoaChuyenNganh(@RequestParam(defaultValue = "0") int khoaPage,
@@ -66,6 +66,89 @@ public class AdminManagerController {
         return "admin/QuanLyKhoaChuyenNganh";
     }
 
+    @PostMapping("/khoa/addkhoa")
+    //http://localhost:8080/manager/khoa/addkhoa
+    public String themKhoa(@RequestParam("tenKhoa") String tenKhoa) {
+        Khoa khoa = new Khoa();
+        khoa.setTenKhoa(tenKhoa);
+        khoaRepository.save(khoa);
+        return "redirect:/manager/khoachuyennganh";
+    }
+
+    @DeleteMapping("/khoa/delete/{maKhoa}")
+    //http://localhost:8080/manager/khoa/delete/{maKhoa}
+    public ResponseEntity<String> deleteKhoa(@PathVariable("maKhoa") Integer maKhoa) {
+        Optional<Khoa> khoa = khoaRepository.findById(maKhoa);
+        if (khoa.isPresent()) {
+            khoaRepository.deleteById(maKhoa);
+            return new ResponseEntity<>("Xóa khoa thành công", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Khoa không tồn tại", HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping("/khoa/update")
+    public String updateKhoa(@RequestParam("maKhoa") Integer maKhoa, @RequestParam("tenKhoa") String tenKhoa) {
+        Optional<Khoa> optionalKhoa = khoaRepository.findById(maKhoa);
+        if (optionalKhoa.isPresent()) {
+            Khoa khoa = optionalKhoa.get();
+            khoa.setTenKhoa(tenKhoa);
+            khoaRepository.save(khoa);
+            return "redirect:/manager/khoachuyennganh";
+        } else {
+            return "redirect:/manager/khoachuyennganh";
+        }
+    }
+
+    @PostMapping("/chuyennganh/addchuyennganh")
+    public String themChuyenNganh(@RequestParam("maChuyenNganh") String maChuyenNganh,
+                                  @RequestParam("tenChuyenNganh") String tenChuyenNganh,
+                                  @RequestParam("selectedMaKhoa") Integer selectedMaKhoa) {
+        ChuyenNganh chuyenNganh = new ChuyenNganh();
+        chuyenNganh.setMaChuyenNganh(maChuyenNganh);
+        chuyenNganh.setTenChuyenNganh(tenChuyenNganh);
+        Optional<Khoa> khoa = khoaRepository.findById(selectedMaKhoa);
+        chuyenNganh.setMaKhoa(selectedMaKhoa);
+        chuyenNganhRepository.save(chuyenNganh);
+        return "redirect:/manager/khoachuyennganh";
+    }
+
+    @DeleteMapping("/chuyennganh/delete/{maChuyenNganh}")
+    public ResponseEntity<String> deleteChuyenNganh(@PathVariable("maChuyenNganh") String maChuyenNganh) {
+        Optional<ChuyenNganh> optionalChuyenNganh = chuyenNganhRepository.findById(maChuyenNganh);
+        if (optionalChuyenNganh.isPresent()) {
+            chuyenNganhRepository.deleteById(maChuyenNganh);
+            return new ResponseEntity<>("Xóa chuyên ngành thành công", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Chuyên ngành không tồn tại", HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping("/chuyennganh/update")
+    public String updateChuyenNganh(@RequestParam("maChuyenNganh") String maChuyenNganh,
+                                    @RequestParam("tenChuyenNganh") String tenChuyenNganh,
+                                    @RequestParam("selectedMaKhoa") Integer selectedMaKhoa) {
+        Optional<ChuyenNganh> optionalChuyenNganh = chuyenNganhRepository.findById(maChuyenNganh);
+        if (optionalChuyenNganh.isPresent()) {
+            ChuyenNganh chuyenNganh = optionalChuyenNganh.get();
+            chuyenNganh.setTenChuyenNganh(tenChuyenNganh);
+            if (selectedMaKhoa != null) {
+                chuyenNganh.setMaKhoa(selectedMaKhoa);
+            }
+            chuyenNganhRepository.save(chuyenNganh);
+        }
+        return "redirect:/manager/khoachuyennganh";
+    }
+
+
+
+
+
+
+    //Khoa - Chuyên ngành
+
+
+    //Danh mục
     @GetMapping("/danhmuc")
     //http://localhost:8080/manager/danhmuc
     public String getAllDanhMuc(ModelMap modelMap) {
@@ -107,7 +190,10 @@ public class AdminManagerController {
             return "redirect:/manager/danhmuc";
         }
     }
+    //Danh mục
 
+
+    // Người dùng//
     @GetMapping("/user/list")
     //http://localhost:8080/manager/user/list
     public String getAllNguoiDung(
@@ -157,15 +243,17 @@ public class AdminManagerController {
         }
     }
 
-    @DeleteMapping("/delete/{maNguoiDung}")
+    @DeleteMapping("/delete/user/{maNguoiDung}")
     public ResponseEntity<String> deleteUser(@PathVariable("maNguoiDung") Integer maNguoiDung) {
         Optional<NguoiDung> optionalNguoiDung = nguoiDungRepository.findById(maNguoiDung);
         if (optionalNguoiDung.isPresent()) {
+            nguoiDungRepository.deleteById(maNguoiDung);
             return new ResponseEntity<>("Xóa người dùng thành công", HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Người dùng không tồn tại", HttpStatus.NOT_FOUND);
         }
     }
+    // Người dùng//
 
 
 }

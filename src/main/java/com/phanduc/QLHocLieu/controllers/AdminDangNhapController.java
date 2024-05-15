@@ -37,7 +37,7 @@ public class AdminDangNhapController {
             System.out.println("Đăng nhập không thành công");
             session.setAttribute("notLoggedInUser", nguoiDung);
             modelMap.addAttribute("notLoggedInAdmin", true);
-            return "redirect:/admin?statusLogin=false";
+            return "redirect:/admin/login?statusLogin=false";
         }
     }
 

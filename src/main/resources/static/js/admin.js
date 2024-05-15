@@ -40,3 +40,38 @@ document.querySelectorAll('.btn-edit').forEach(function(button) {
 });
 
 //Hiển thị thông tin danh mục lên form  chỉnh sửa người dùng ở admin
+
+//Hiển thị thông tin khoa lên form  chỉnh sửa khoa ở admin
+$(document).ready(function () {
+    $('#capNhatKhoaModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var maKhoa = button.data('ma-khoa');
+        var tenKhoa = button.data('ten-khoa');
+        var modal = $(this);
+        modal.find('#maKhoa').val(maKhoa);
+        modal.find('#updateTenKhoa').val(tenKhoa);
+    });
+});
+//Hiển thị thông tin khoa lên form  chỉnh sửa khoa ở admin
+
+
+//Hiển thị thông tin chuyên ngành lên form  chỉnh sửa khoa ở admin
+document.addEventListener("DOMContentLoaded", function() {
+    var updateModal = document.getElementById('capNhatChuyenNganhModal');
+    updateModal.addEventListener('show.bs.modal', function(event) {
+        // Nút mà người dùng nhấp vào
+        var button = event.relatedTarget;
+        // Lấy giá trị từ thuộc tính data
+        var maChuyenNganh = button.getAttribute('data-ma-chuyen-nganh');
+        var tenChuyenNganh = button.getAttribute('data-ten-chuyen-nganh');
+
+        // Cập nhật các input trong modal với các giá trị tương ứng
+        var modalMaChuyenNganh = updateModal.querySelector('#updateMaChuyenNganh');
+        var modalTenChuyenNganh = updateModal.querySelector('#updateTenChuyenNganh');
+
+        modalMaChuyenNganh.value = maChuyenNganh;
+        modalTenChuyenNganh.value = tenChuyenNganh;
+    });
+});
+
+//Hiển thị thông tin chuyên ngành lên form  chỉnh sửa khoa ở admin
