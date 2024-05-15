@@ -2,6 +2,7 @@ package com.phanduc.QLHocLieu.models;
 
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "hoatdongganday")
@@ -12,6 +13,9 @@ public class HoatDongGanDay {
     private Integer maNguoiDung;
     private String loaiHoatDong;
     private String moTaHoatDong;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "ngay", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private Date ngay;
 
     public HoatDongGanDay() {
     }
@@ -53,5 +57,13 @@ public class HoatDongGanDay {
 
     public void setMoTaHoatDong(String moTaHoatDong) {
         this.moTaHoatDong = moTaHoatDong;
+    }
+
+    public Date getNgay() {
+        return ngay;
+    }
+
+    public void setNgay(Date ngay) {
+        this.ngay = ngay;
     }
 }

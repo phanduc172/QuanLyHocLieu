@@ -10,6 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.Date;
+
 @Controller
 public class DangNhapController {
     @Autowired
@@ -29,7 +31,8 @@ public class DangNhapController {
             hoatDong.setMaNguoiDung(nguoiDung.getMaNguoiDung());
             hoatDong.setLoaiHoatDong("Đăng nhập");
             hoatDong.setMoTaHoatDong("Vừa đăng nhập vào hệ thống");
-//            hoatDongGanDayRepository.save(hoatDong);
+            hoatDong.setNgay(new Date());
+            hoatDongGanDayRepository.save(hoatDong);
 
             System.out.println("Đăng nhập thành công");
             return "redirect:/trangchu?statusLogin=true";

@@ -5,9 +5,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 @Service("uploadFileService")
@@ -29,7 +33,7 @@ public class UploadFileService implements StorageService {
             if (file.isEmpty()) {
                 throw new IllegalArgumentException("Không thể lưu trữ tệp trống");
             }
-            String fileName = generateFileName(file);
+            String fileName = generateUniqueFileName(file);
             Files.copy(file.getInputStream(), this.locationDocument.resolve(fileName));
             return fileName;
         } catch (IOException e) {
@@ -57,8 +61,16 @@ public class UploadFileService implements StorageService {
 
     }
 
-    private String generateFileName(MultipartFile file) {
-        return file.getOriginalFilename();
+    private String generateEncodedFileName(MultipartFile file) {
+        String originalFileName = file.getOriginalFilename();
+        String encodedFileName = URLEncoder.encode(originalFileName, StandardCharsets.UTF_8);
+        return encodedFileName;
     }
 
+    private String generateUniqueFileName(MultipartFile file) {
+        String originalFileName = file.getOriginalFilename();
+        String uniqueFileName = UUID.randomUUID().toString() + "_";
+        uniqueFileName += URLEncoder.encode(originalFileName, StandardCharsets.UTF_8);
+        return uniqueFileName;
+    }
 }

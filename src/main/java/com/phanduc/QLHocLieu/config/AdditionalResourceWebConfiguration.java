@@ -11,5 +11,7 @@ public class AdditionalResourceWebConfiguration implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/upload/images/**")
                 .addResourceLocations("file:src/main/upload/images/");
+        registry.addResourceHandler("/upload/documents/**")
+                .addResourceLocations("file:src/main/upload/documents/");
     }
 }

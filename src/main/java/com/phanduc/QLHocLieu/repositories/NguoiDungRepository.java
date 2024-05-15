@@ -3,10 +3,11 @@ package com.phanduc.QLHocLieu.repositories;
 import com.phanduc.QLHocLieu.models.NguoiDung;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface NguoiDungRepository extends JpaRepository<NguoiDung, String> {
+public interface NguoiDungRepository extends JpaRepository<NguoiDung, Integer> {
     NguoiDung findByTenNguoiDungAndMatKhau(String tenNguoiDung, String matKhau);
     NguoiDung getUserByMaNguoiDung(Integer maNguoiDung);
     NguoiDung findByTenNguoiDung(String tenNguoiDung);
+    long count();
 
     default void printUser(String tenNguoiDung, String matKhau) {
         NguoiDung nguoiDung = findByTenNguoiDungAndMatKhau(tenNguoiDung, matKhau);

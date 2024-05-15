@@ -17,6 +17,7 @@ html,body {
     background-color: #009efb; /* Màu blue tùy chỉnh */
 }
 
+
 .truncate-text {
     display: block;
     width: 80%;
@@ -24,6 +25,13 @@ html,body {
     overflow: hidden;
     text-overflow: ellipsis;
     text-decoration: none;
+}
+
+.truncate-text-admin {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 350px;
 }
 
 .navbar {

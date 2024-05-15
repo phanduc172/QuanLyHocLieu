@@ -8,3 +8,9 @@
         max-width: 350px;
     }
 }
+
+@media (max-width: 1168px) {
+    .hide-below-1168 {
+        display: none !important;
+    }
+}

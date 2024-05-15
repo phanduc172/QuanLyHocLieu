@@ -10,8 +10,12 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
+
 public interface TaiLieuRepository extends JpaRepository<TaiLieu,String> {
+    TaiLieu findTaiLieuByMaTaiLieu(Integer maTaiLieu);
     List<TaiLieu> findByMaDanhMuc(Integer maDanhMuc);
+//    List<TaiLieu> findByMaTrangThai(Integer maTrangThai);
+    Page<TaiLieu> findByMaTrangThai(Integer maTrangThai, Pageable pageable);
     List<TaiLieu> findByTaiLenBoi(Integer taiLenBoi);
     Optional<TaiLieu> findByMaTaiLieu(Integer maTaiLieu);
     List<TaiLieu> findByTieuDeContaining(String keyword);
@@ -26,5 +30,14 @@ public interface TaiLieuRepository extends JpaRepository<TaiLieu,String> {
             "INNER JOIN khoa ON chuyennganh.MaKhoa = khoa.MaKhoa " +
             "WHERE chuyennganh.MaKhoa = ?1", nativeQuery = true)
     Page<TaiLieu> findByMaKhoa(Integer maKhoa, Pageable pageable);
-//    List<TaiLieu> findByMaKhoa(Integer maKhoa);
+
+    @Query(value = "SELECT DATE(ngayTaiLen) AS ngay, COUNT(*) AS soLuongTaiLieu " +
+            "FROM TaiLieu " +
+            "GROUP BY DATE(ngayTaiLen) ", nativeQuery = true)
+    List<Object[]> findDailyUploadStats();
+
+    @Query(value = "SELECT COUNT(*) AS TongTaiLieu FROM qlhoclieu.tailieu", nativeQuery = true)
+    Integer countTotalTaiLieu();
+
+
 }

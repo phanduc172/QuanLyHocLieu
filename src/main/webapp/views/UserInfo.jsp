@@ -307,11 +307,11 @@
                 <!-- Các trường thông tin cá nhân cần chỉnh sửa -->
                 <div class="mb-3">
                   <label for="fullName" class="form-label">Họ và tên:</label>
-                  <input type="text" class="form-control" id="fullName" name="hoTen" data-fullname="${nguoiDung.hoTen} " required>
+                  <input type="text" class="form-control" id="fullName" name="hoTen" data-fullname="${nguoiDung.hoTen}" required>
                 </div>
                 <div class="mb-3">
                   <label for="username" class="form-label">Tên người dùng:</label>
-                  <input type="text" class="form-control" id="username" name="tenNguoiDung" data-username="${nguoiDung.tenNguoiDung} " required>
+                  <input type="text" class="form-control" id="username" name="tenNguoiDung" data-username="${nguoiDung.tenNguoiDung}" required>
                 </div>
                 <div class="mb-3">
                   <label for="email" class="form-label">Email:</label>
