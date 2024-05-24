@@ -1,5 +1,6 @@
 package com.phanduc.QLHocLieu.repositories;
 
+import com.phanduc.QLHocLieu.dto.TotalDocumentUser;
 import com.phanduc.QLHocLieu.models.TaiLieu;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -39,5 +40,19 @@ public interface TaiLieuRepository extends JpaRepository<TaiLieu,String> {
     @Query(value = "SELECT COUNT(*) AS TongTaiLieu FROM qlhoclieu.tailieu", nativeQuery = true)
     Integer countTotalTaiLieu();
 
+    @Query("SELECT nd.hoTen, tl.tieuDe, dg.giaTriDanhGia, bl.noiDung, bl.ngayBinhLuan " +
+            "FROM NguoiDung nd " +
+            "JOIN TaiLieu tl ON nd.maNguoiDung = tl.taiLenBoi " +
+            "JOIN DanhGia dg ON tl.maTaiLieu = dg.maTaiLieu " +
+            "JOIN BinhLuan bl ON bl.maTaiLieu = dg.maTaiLieu " +
+            "ORDER BY bl.ngayBinhLuan desc "
+    )
+    List<Object[]> getBinhluanDanhGia();
+
+    @Query("SELECT new com.phanduc.QLHocLieu.dto.TotalDocumentUser(nd.hoTen, nd.anh, COUNT(tl.maTaiLieu)) " +
+            "FROM NguoiDung nd " +
+            "LEFT JOIN TaiLieu tl ON nd.maNguoiDung = tl.taiLenBoi " +
+            "GROUP BY nd.maNguoiDung")
+    List<TotalDocumentUser> getSoLuongTaiLieuByNguoiDung();
 
 }

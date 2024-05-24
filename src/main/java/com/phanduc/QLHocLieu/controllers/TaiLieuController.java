@@ -3,7 +3,6 @@ package com.phanduc.QLHocLieu.controllers;
 import com.phanduc.QLHocLieu.models.*;
 import com.phanduc.QLHocLieu.repositories.*;
 import com.phanduc.QLHocLieu.services.StorageService;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.ImageType;
 import org.apache.pdfbox.rendering.PDFRenderer;
@@ -13,10 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,14 +21,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 import java.sql.Timestamp;
 import java.util.stream.Collectors;
@@ -70,8 +60,19 @@ public class TaiLieuController {
     }
 
     @GetMapping("/introduction")
-    public String introduction() {
+    public String introduction(ModelMap modelMap, HttpSession session) {
+        NguoiDung nguoiDung = (NguoiDung) session.getAttribute("loggedInUser");
+        modelMap.addAttribute("nguoiDung", nguoiDung);
+        addCommonAttributesIsEmpty(modelMap);
         return "GioiThieu";
+    }
+
+    @GetMapping("/contact")
+    public String conTact(ModelMap modelMap,HttpSession session) {
+        NguoiDung nguoiDung = (NguoiDung) session.getAttribute("loggedInUser");
+        modelMap.addAttribute("nguoiDung", nguoiDung);
+        addCommonAttributesIsEmpty(modelMap);
+        return "LienHe";
     }
 
     @GetMapping("/trangchu")

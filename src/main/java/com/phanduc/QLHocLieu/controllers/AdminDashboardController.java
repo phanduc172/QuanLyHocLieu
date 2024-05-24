@@ -2,6 +2,7 @@ package com.phanduc.QLHocLieu.controllers;
 
 import com.phanduc.QLHocLieu.dto.ActivityCurrentDto;
 import com.phanduc.QLHocLieu.dto.DailyUploadStatsDto;
+import com.phanduc.QLHocLieu.dto.TotalDocumentUser;
 import com.phanduc.QLHocLieu.models.*;
 import com.phanduc.QLHocLieu.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -86,6 +86,12 @@ public class AdminDashboardController {
             activityCurrentList.add(new ActivityCurrentDto(ngayFormatted, loaiHoatDong, soLuongHoatDong));
         }
         return ResponseEntity.ok(activityCurrentList);
+    }
+
+    @GetMapping("/api/soluongtailieu")
+    public ResponseEntity<List<TotalDocumentUser>> getSoLuongTaiLieuJson() {
+        List<TotalDocumentUser> soLuongTaiLieuByNguoiDung = taiLieuRepository.getSoLuongTaiLieuByNguoiDung();
+        return ResponseEntity.ok().body(soLuongTaiLieuByNguoiDung);
     }
 
     @GetMapping("error")

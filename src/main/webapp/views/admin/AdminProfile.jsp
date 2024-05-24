@@ -123,7 +123,7 @@
                                         </a>
                                     </li>
                                     <li class="sidebar-item ms-3">
-                                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="table-basic.html" aria-expanded="false">
+                                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/manager/comment" aria-expanded="false">
                                             <i class="me-3 fas fa-comments" aria-hidden="true"></i>
                                             <span class="hide-menu">Bình luận & Đánh giá</span>
                                         </a>
@@ -151,7 +151,7 @@
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link " href="dashboard/error" aria-expanded="false">
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="dashboard/error" aria-expanded="false">
                             <i class="me-3 fas fa-exclamation-circle" aria-hidden="true"></i>
                             <span class="hide-menu">Lỗi 404</span>
                         </a>

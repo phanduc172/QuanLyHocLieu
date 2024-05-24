@@ -128,7 +128,7 @@
                                         </a>
                                     </li>
                                     <li class="sidebar-item ms-3">
-                                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="table-basic.html" aria-expanded="false">
+                                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/manager/comment" aria-expanded="false">
                                             <i class="me-3 fas fa-comments" aria-hidden="true"></i>
                                             <span class="hide-menu">Bình luận & Đánh giá</span>
                                         </a>
@@ -188,7 +188,7 @@
 <%--                        <c:if test="${not empty listTaiLieu}">--%>
                     <c:choose>
                     <c:when test="${not empty listTaiLieu}">
-                        <div class="card-body">
+                        <div class="card-body" style="min-height: 60vh;">
                             <h4 class="card-title">Tài liệu chờ duyệt</h4>
                             <div class="table-responsive">
                                 <table class="table">
@@ -265,7 +265,7 @@
                 <div class="col-md-12">
                     <div class="card m-0">
 <%--                        <c:if test="${not empty listTaiLieuTuChoi}">--%>
-                            <div class="card-body">
+                            <div class="card-body" style="min-height: 60vh;">
                                 <h4 class="card-title">Tài liệu từ chối</h4>
                                 <div class="table-responsive">
                                     <table class="table">
@@ -298,13 +298,13 @@
                                                 <td>${tenChuyenNganh[loop.index]}</td>
                                                 <td class="text-center">${tenTrangThai[loop.index]}</td>
                                                 <td class="text-center">
-                                                    <button class="btn btn-sm btn-outline-danger me-2" style="width: 30px;height: 30px" data-maTaiLieu="${tailieu.maTaiLieu}">
+                                                    <button class="btn btn-sm btn-outline-danger me-2 delete-btn" style="width: 30px;height: 30px" data-maTaiLieu="${tailieu.maTaiLieu}" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">
                                                         <i class="fas fa-trash-alt"></i>
                                                     </button>
                                                 </td>
+
                                             </tr>
                                         </c:forEach>
-
                                         </tbody>
                                     </table>
                                     <!-- Phân trang -->
@@ -348,7 +348,7 @@
             <div class="row" id="detail-${taiLieu.maTaiLieu}">
                 <div class="col-md-12">
                     <div class="card">
-                        <div class="card-body">
+                        <div class="card-body" style="min-height: 60vh;">
                             <form action="/document/detail/action" method="post">
                                 <div class="mt-3 d-flex justify-content-end align-items-center">
                                     <h4 class="card-title me-auto">Chi tiết tài liệu chờ duyệt</h4>
@@ -416,11 +416,53 @@
                 </c:when>
             </c:choose>
         </div>
+        <%--Modal Xác nhận xóa tài liệu--%>
+        <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmDeleteModalLabel">Xác nhận xóa tài liệu</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Bạn có chắc chắn muốn xóa tài liệu này không?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Hủy</button>
+                        <button type="button" class="btn btn-danger text-white" id="confirmDeleteButton">Xóa</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <footer class="footer text-center mt-3">
             Copyright © 2024. Designed by Phan Đức
         </footer>
     </div>
 </div>
+
+<script>
+    document.querySelectorAll('.delete-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const maTaiLieu = this.getAttribute('data-maTaiLieu');
+            console.log(maTaiLieu);
+
+            document.getElementById('confirmDeleteButton').addEventListener('click', function() {
+                fetch(`/document/approve/reject/delete/` + maTaiLieu, {
+                    method: 'DELETE'
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            window.location.reload();
+                        } else {
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+            });
+        });
+    });
+
+</script>
+
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {

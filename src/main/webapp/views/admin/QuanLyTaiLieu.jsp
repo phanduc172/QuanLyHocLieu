@@ -126,7 +126,7 @@
                                         </a>
                                     </li>
                                     <li class="sidebar-item ms-3">
-                                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="table-basic.html" aria-expanded="false">
+                                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/manager/comment" aria-expanded="false">
                                             <i class="me-3 fas fa-comments" aria-hidden="true"></i>
                                             <span class="hide-menu">Bình luận & Đánh giá</span>
                                         </a>
@@ -184,7 +184,10 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Tài liệu</h4>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h4 class="card-title m-0">Tài liệu</h4>
+                                <a href="/manager/export/tailieu/excel" class="btn btn-info text-white">Xuất Excel</a>
+                            </div>
                             <div class="table-responsive">
                                 <table class="table user-table no-wrap">
                                     <thead>

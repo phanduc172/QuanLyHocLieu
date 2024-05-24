@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -134,6 +136,17 @@ public class AdminTaiLieuController {
         return "admin/PheDuyetTaiLieu";
     }
 
+    @DeleteMapping("/approve/reject/delete/{maTaiLieu}")
+    public ResponseEntity<String> deleteDocumentReject(@PathVariable("maTaiLieu") Integer maTaiLieu) {
+        TaiLieu taiLieu = taiLieuRepository.findTaiLieuByMaTaiLieu(maTaiLieu);
+        if (taiLieu != null) {
+            taiLieuRepository.delete(taiLieu);
+            return new ResponseEntity<>("Xóa tài liệu thành công", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Tài liệu không tồn tại", HttpStatus.NOT_FOUND);
+        }
+    }
+
     @GetMapping("/approve/detail/{maTaiLieu}")
     public String duyetTaiLieuById(@PathVariable("maTaiLieu") Integer maTaiLieu, ModelMap modelMap) {
         TaiLieu taiLieu = taiLieuRepository.findTaiLieuByMaTaiLieu(maTaiLieu);
@@ -169,8 +182,6 @@ public class AdminTaiLieuController {
         }
         return null;
     }
-
-
 
     private String getTenDanhMuc(TaiLieu taiLieu) {
         DanhMuc danhMuc = danhMucRepository.findById(taiLieu.getMaDanhMuc()).orElse(null);

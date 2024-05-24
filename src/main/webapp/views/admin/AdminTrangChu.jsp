@@ -13,7 +13,7 @@
     <link href="/css/style.min.css" rel="stylesheet">
     <link href="/css/reponsive.css" rel="stylesheet">
     <link href="/css/style.css" rel="stylesheet">
-</head>\
+</head>
 <style>
     .hover-cell:hover {
         background-color: #f0f0f0;
@@ -137,7 +137,7 @@
                                         </a>
                                     </li>
                                     <li class="sidebar-item ms-3">
-                                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="table-basic.html" aria-expanded="false">
+                                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/manager/comment" aria-expanded="false">
                                             <i class="me-3 fas fa-comments" aria-hidden="true"></i>
                                             <span class="hide-menu">Bình luận & Đánh giá</span>
                                         </a>
@@ -258,64 +258,16 @@
                                 </div>
                             </div>
                             <div class="table-responsive mt-5">
-                                <table class="table stylish-table no-wrap">
+                                <table class="table stylish-table no-wrap" id="userDataTable">
                                     <thead>
                                     <tr>
-                                        <th class="border-top-0" colspan="2">Assigned</th>
-                                        <th class="border-top-0">Name</th>
-                                        <th class="border-top-0">Budget</th>
+                                        <th class="border-top-0">Ảnh</th>
+                                        <th class="border-top-0">Họ tên</th>
+                                        <th class="border-top-0">Số lượng tài liệu</th>
                                     </tr>
                                     </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td style="width:50px;"><span class="round">S</span></td>
-                                        <td class="align-middle">
-                                            <h6>Sunil Joshi</h6><small class="text-muted">Web Designer</small>
-                                        </td>
-                                        <td class="align-middle">Elite Admin</td>
-                                        <td class="align-middle">$3.9K</td>
-                                    </tr>
-                                    <tr class="active">
-                                        <td><span class="round"><img src="../assets/images/users/2.jpg"
-                                                                     alt="user" width="50"></span></td>
-                                        <td class="align-middle">
-                                            <h6>Andrew</h6><small class="text-muted">Project Manager</small>
-                                        </td>
-                                        <td class="align-middle">Real Homes</td>
-                                        <td class="align-middle">$23.9K</td>
-                                    </tr>
-                                    <tr>
-                                        <td><span class="round round-success">B</span></td>
-                                        <td class="align-middle">
-                                            <h6>Bhavesh patel</h6><small class="text-muted">Developer</small>
-                                        </td>
-                                        <td class="align-middle">MedicalPro Theme</td>
-                                        <td class="align-middle">$12.9K</td>
-                                    </tr>
-                                    <tr>
-                                        <td><span class="round round-primary">N</span></td>
-                                        <td class="align-middle">
-                                            <h6>Nirav Joshi</h6><small class="text-muted">Frontend Eng</small>
-                                        </td>
-                                        <td class="align-middle">Elite Admin</td>
-                                        <td class="align-middle">$10.9K</td>
-                                    </tr>
-                                    <tr>
-                                        <td><span class="round round-warning">M</span></td>
-                                        <td class="align-middle">
-                                            <h6>Micheal Doe</h6><small class="text-muted">Content Writer</small>
-                                        </td>
-                                        <td class="align-middle">Helping Hands</td>
-                                        <td class="align-middle">$12.9K</td>
-                                    </tr>
-                                    <tr>
-                                        <td><span class="round round-danger">N</span></td>
-                                        <td class="align-middle">
-                                            <h6>Johnathan</h6><small class="text-muted">Graphic</small>
-                                        </td>
-                                        <td class="align-middle">Digital Agency</td>
-                                        <td class="align-middle">$2.6K</td>
-                                    </tr>
+                                    <tbody id="userDataBody">
+                                    <!-- Data will be populated here -->
                                     </tbody>
                                 </table>
                             </div>
@@ -374,6 +326,24 @@
     <script src="/js/custom.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="/js/chart.js"></script>
+
+    <script>
+        function populateTable(data) {
+            var tableBody = document.getElementById("userDataBody");
+            tableBody.innerHTML = "";
+            data.forEach(function(user) {
+                var row = document.createElement("tr");
+                row.innerHTML = "<td><span class='round'><img src='" + user.anh + "' alt='user' width='50'></span></td>" +
+                    "<td class='align-middle'>" + user.hoTen + "</td>" +
+                    "<td class='align-middle'>" + user.soLuongTaiLieu + "</td>";
+                tableBody.appendChild(row);
+            });
+        }
+        fetch('http://localhost:8080/dashboard/api/soluongtailieu')
+            .then(response => response.json())
+            .then(data => populateTable(data))
+            .catch(error => console.error('Error fetching data:', error));
+    </script>
 
 
     <c:choose>

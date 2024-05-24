@@ -47,10 +47,11 @@ fetch('http://localhost:8080/dashboard/api/hoatdong')
         var soLuongTaiLen = [];
         var soLuongCapNhat = [];
 
-        // Lấy tối đa 10 ngày cuối cùng
-        var lastTenDaysData = data.slice(-10);
+        // Lấy 7 mục cuối cùng trong dữ liệu
+        var lastSevenItems = data.slice(-7);
 
-        lastTenDaysData.forEach(item => {
+        // Lặp qua các mục cuối cùng và thêm dữ liệu vào các mảng
+        lastSevenItems.forEach(item => {
             labels.push(item.ngay);
             if (item.loaiHoatDong === 'Đăng nhập') {
                 soLuongDangNhap.push(item.soLuongHoatDong);
@@ -63,7 +64,7 @@ fetch('http://localhost:8080/dashboard/api/hoatdong')
 
         var ctx = document.getElementById('myChartActivity').getContext('2d');
         var myChartActivity = new Chart(ctx, {
-            type: 'line',
+            type: 'bar',
             data: {
                 labels: labels,
                 datasets: [
@@ -100,4 +101,5 @@ fetch('http://localhost:8080/dashboard/api/hoatdong')
         });
     })
     .catch(error => console.error('Lỗi:', error));
+
 //Biểu đồ thống kê hoạt động gần đây

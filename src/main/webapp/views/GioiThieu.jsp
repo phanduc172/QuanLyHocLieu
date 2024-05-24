@@ -15,6 +15,19 @@
 </head>
 <body>
 
+<style>
+    .feature-list .list-group-item {
+        margin-bottom: 10px;
+        padding: 15px;
+        border-radius: 10px;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .star-icon {
+        color: gold;
+    }
+</style>
+
 
 <header>
     <nav class="navbar navbar-expand-xl bg-light fixed-top" style="z-index: 1080">
@@ -73,10 +86,10 @@
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Giới thiệu</a>
+                        <a class="nav-link" href="/introduction">Giới thiệu</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Liên hệ</a>
+                        <a class="nav-link" href="/contact">Liên hệ</a>
                     </li>
                 </ul>
 
@@ -250,46 +263,55 @@
 <div class="container main min-vh-100">
     <div class="row justify-content-center mt-5">
         <div class="col-lg-8 text-center">
-            <h2 class="text-primary">Hệ thống Quản lý Tài liệu và Chia sẻ Tài liệu học tập của sinh viên Trường Đại học Khoa học - Đại học Huế</h2>
-            <p class="fs-5">Chào mừng bạn đến với nền tảng quản lý tài liệu học tập của chúng tôi!</p>
+            <h2 class="text-danger">Hệ thống Quản lý và chia sẻ Tài liệu học tập của sinh viên Trường Đại học Khoa học - Đại học Huế</h2>
         </div>
     </div>
-
-    <section class="container">
-        <h4 class="">Tính năng</h4>
-        <ul class="list-unstyled">
-            <li class="mb-2 fs-6"><strong>Tải lên tài liệu</strong> Sinh viên có thể tải lên bài tập, báo cáo và các tài liệu khác.</li>
-            <li class="mb-2"><strong>Tải xuống tài liệu:</strong> Người dùng có thể tải xuống tài liệu được chia sẻ bởi người khác.</li>
-            <li class="mb-2"><strong>Đánh giá tài liệu:</strong> Đánh giá các giá trị từ 1 <i class="bi bi-star-fill" style="color: gold"></i>
-                đến 5 <i class="bi bi-star-fill" style="color: gold"></i> về tài liệu có hữu ích với bạn.</li>
-            <li class="mb-2"><strong>Bình luận:</strong> Để lại bình luận trên tài liệu để cung cấp phản hồi hoặc đặt câu hỏi.</li>
-        </ul>
-    </section>
-
-    <section class="container">
-        <h4 class="">Cách hoạt động</h4>
-        <div>
-            <h5>Cách thức để truy cập tài liệu </h5>
-            <ol>
-                <li>Đăng nhập vào tài khoản của bạn.</li>
-                <li>Nếu bạn chưa có tài khoản thì vui lòng đăng ký</li>
-                <li>Chọn tài liệu bạn tìm hoặc tài liệu liên quan.</li>
-                <li>Tải lên tài liệu hoặc tải xuống tệp được chia sẻ bởi người khác.</li>
-                <li>Tham gia thảo luận bằng cách để lại bình luận trên tài liệu.</li>
+    <section>
+        <div class="card p-3 my-3">
+            <h5 class="text-primary ms-3">Tính năng của người dùng</h5>
+            <ol class="list-group list-group-numbered feature-list">
+                <li class="list-group-item"><strong>Tìm kiếm tài liệu:</strong> Sinh viên có thể tìm kiếm tài liệu nhanh chóng.</li>
+                <li class="list-group-item"><strong>Tải lên tài liệu:</strong> Sinh viên có thể tải lên bài tập, báo cáo và các tài liệu khác.</li>
+                <li class="list-group-item"><strong>Tải xuống tài liệu:</strong> Người dùng có thể tải xuống tài liệu được chia sẻ bởi người khác.</li>
+                <li class="list-group-item"><strong>Đánh giá tài liệu:</strong> Đánh giá các giá trị từ 1 <i class="bi bi-star-fill star-icon"></i> đến 5 <i class="bi bi-star-fill star-icon"></i> về tài liệu có hữu ích với bạn.</li>
+                <li class="list-group-item"><strong>Bình luận:</strong> Để lại bình luận trên tài liệu để cung cấp phản hồi hoặc đặt câu hỏi.</li>
             </ol>
         </div>
-        <div>
-            <h5>Cách thức để chia sẻ tài liệu lên hệ thống </h5>
-                <ol>
-                    <li>Đăng nhập vào tài khoản của bạn.</li>
-                    <li>Nếu bạn chưa có tài khoản thì vui lòng đăng ký</li>
-                    <li>Chọn tài liệu bạn tìm hoặc tài liệu liên quan.</li>
-                    <li>Tải lên tài liệu hoặc tải xuống tệp được chia sẻ bởi người khác.</li>
-                    <li>Tham gia thảo luận bằng cách để lại bình luận trên tài liệu.</li>
+    </section>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card p-3 my-3">
+                <h5 class="text-primary ms-3">Cách thức để truy cập tài liệu</h5>
+                <ol class="list-group list-group-numbered access-steps">
+                    <li class="list-group-item">Người dùng truy cập vào Trang chủ.</li>
+                    <li class="list-group-item">Chọn tài liệu phù hợp ở Trang chủ hoặc Tìm kiếm tài liệu bằng từ khóa.</li>
+                    <li class="list-group-item">Hệ thống hiển thị danh sách tài liệu phù hợp hoặc Không tìm thấy tài liệu.</li>
+                    <li class="list-group-item">Chọn vào xem Chi tiết tài liệu.</li>
+                    <li class="list-group-item">Bạn chưa đăng nhập hệ thống quay về Trang chủ.</li>
+                    <li class="list-group-item">Bạn đã đăng nhập thành công vào hệ thống.</li>
+                    <li class="list-group-item">Hiển thị danh sách tài liệu phù hợp với bạn.</li>
+                    <li class="list-group-item">Người dùng đọc tài liệu, và tải xuống tài liệu nếu cần thiết.</li>
+                    <li class="list-group-item">Người dùng xem những đánh giá và nội dung bình luận của người khác.</li>
+                    <li class="list-group-item">Tham gia thảo luận bằng cách để lại bình luận trên tài liệu.</li>
                 </ol>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card p-3 my-3">
+                <h5 class="text-primary ms-3">Cách thức để chia sẻ tài liệu lên hệ thống</h5>
+                <ol class="list-group list-group-numbered access-steps">
+                    <li class="list-group-item">Đăng nhập vào tài khoản của bạn.</li>
+                    <li class="list-group-item">Nếu bạn chưa có tài khoản thì vui lòng đăng ký tài khoản.</li>
+                    <li class="list-group-item">Tại bất cứ màn hình nào người dùng có thể bấm nút "Tải lên tài liệu".</li>
+                    <li class="list-group-item">Hệ thống hiển thị giao diện tải lên tài liệu.</li>
+                    <li class="list-group-item">Người dùng thực hiện chọn tệp và nội dung tài liệu.</li>
+                    <li class="list-group-item">Hệ thống thực hiện xử lý tài liệu tải lên ở trạng thái chờ duyệt.</li>
+                    <li class="list-group-item">Tham gia thảo luận bằng cách để lại bình luận trên tài liệu.</li>
+                </ol>
+            </div>
         </div>
 
-    </section>
     </div>
 </div>
 

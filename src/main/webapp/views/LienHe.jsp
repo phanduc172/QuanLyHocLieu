@@ -1,27 +1,78 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-
-
-<!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản lý học liệu - Trường Đại học Khoa học Huế</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-<your-integrity-hash>" crossorigin="anonymous" />
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/reponsive.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
-
 <body>
 
-    <header>
+<style>
+
+    .contact-card {
+        margin-bottom: 20px;
+        padding: 20px;
+        border-radius: 10px;
+        background-color: #fff;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .contact-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    }
+    .contact-icon {
+        color: #003C6C;
+        margin-right: 10px;
+    }
+    .contact-card h5 {
+        border-bottom: 3px solid #007bff;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+    }
+    .contact-link a {
+        text-decoration: none;
+        color: #007bff;
+    }
+    .contact-link a:hover {
+        text-decoration: underline;
+    }
+    .contact-detail {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    .map-card {
+        margin-bottom: 20px;
+        padding: 20px;
+        border-radius: 10px;
+        background-color: #fff;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+    .map-card h5 {
+        border-bottom: 3px solid #007bff;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+    }
+    .map-iframe {
+        width: 100%;
+        height: 600px;
+        border: 0;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+</style>
+
+
+<header>
     <nav class="navbar navbar-expand-xl bg-light fixed-top" style="z-index: 1080">
         <div class="container">
             <a class="navbar-brand" href="/trangchu">
@@ -252,136 +303,93 @@
     </nav>
 </header>
 
-    <div class="container-fluid main">
-        <div class="row">
-            <div class="col-12 col-lg-9 ">
-                <h5 class="text-center">${taiLieu.tieuDe}</h5>
-                <div class="card">
-                    <div class="row g-0">
-                        <div class="col-5 d-flex align-items-center">
-                            <div class="ms-3">
-                                <img src="${docImage}" class="img-fluid rounded-start me-3" alt="Avatar" style="max-width: 50px">
-                            </div>
-                            <div>
-                                <p class="card-text m-0">Tải lên: ${nguoiTaiLen}</p>
-                                <a href="#" class="btn btn-outline-danger btn-sm mt-1 cursor-pointer">Báo cáo tài liệu</a>
-                            </div>
-                        </div>
-
-                        <div class="col-7 d-flex align-items-center">
-                            <div class="document-stats">
-                                <span class="eye-icon"><i class="bi bi-eye fs-5 me-2"></i>${taiLieu.getSoLuotTruyCap()}</span>
-                                <span class="ms-5 download-count"><i class="bi bi-download fs-5 me-2"></i>${ taiLieu.getSoLuotTaiXuong()}</span>
-                            </div>
-                            <div class="card-body d-flex justify-content-end align-items-center">
-                                <h6 class="card-title mb-0 me-3 p-2 border border-2 rounded text-secondary">
-                                    Yêu thích
-                                </h6>
-                                <a href="${urlDoc}" class="btn btn-warning p-2 text-white" >Tải xuống</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <div class="container " style="max-width: none;">
-                            <div class="row justify-content-center" >
-                                <div class="col-12">
-                                    <div class="pdf-container ">
-                                        <embed src="${taiLieu.duongDanTep}" type="application/pdf">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mt-4 ps-4">
-                    <h5>Xếp hạng và đánh giá</h5>
-                    <div class="rating-stars ms-1" id="rating-stars">
-                        <span class="bi bi-star fs-3 " data-rating="1" title="Rất tệ"></span>
-                        <span class="bi bi-star fs-3 mx-1" data-rating="2" title="Không tốt"></span>
-                        <span class="bi bi-star fs-3 mx-1" data-rating="3" title="Bình thường"></span>
-                        <span class="bi bi-star fs-3 mx-1" data-rating="4" title="Tốt"></span>
-                        <span class="bi bi-star fs-3 mx-1" data-rating="5" title="Rất tốt"></span>
-                    </div>
-
-                    <form class="d-none" id="comment-form" action="/document/addcomment" method="post">
-                        <input type="hidden" id="rating-input" name="rating">
-                        <input type="hidden" name="maTaiLieu" value="${taiLieu.getMaTaiLieu()}">
-                        <div class="my-2">
-                            <textarea class="form-control border border-secondary rounded" name="comment" id="comment" rows="3" placeholder="Viết bình luận..."></textarea>
-                        </div>
-                        <div class="d-flex justify-content-end">
-                            <button type="button" class="btn btn-outline-secondary px-3 text-dark rounded-pill me-2">Hủy</button>
-                            <button type="submit" class="btn btn-success px-5 rounded-pill" onclick="setRating()">Gửi</button>
-                        </div>
-                    </form>
-                </div>
-                <div class="mt-4 ps-4">
-                    <h5>Bình luận của người khác</h5>
-                    <div class="comments mt-3">
-                        <c:forEach var="binhLuan" items="${binhLuans}" varStatus="loop">
-                            <div class="d-flex my-2">
-                                <img src="${anhNguoiBinhLuans[loop.index]}" alt="Avatar" class="avatar me-3 rounded-pill" style="width: 50px; height: 50px; object-fit: contain;">
-                                <div class="w-100">
-                                    <div class="d-flex justify-content-between align-items-center mb-1">
-                                        <h6 class="fw-bold mb-1">${hoTenNguoiBinhLuans[loop.index]}</h6>
-                                        <%@ include file="ui/format_time.jsp" %>
-                                    </div>
-
-                                    <div class="d-flex align-items-center mb-1">
-                                        <div class="rating-stars">
-                                            <c:forEach var="i" begin="1" end="5">
-                                                <svg height="30px" width="30px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-5.39 -5.39 64.65 64.65" xml:space="preserve" fill="#FFD700" stroke="#FFD700" transform="matrix(1, 0, 0, 1, 0, 0)">
-                                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC" stroke-width="0.430936"></g>
-                                                    <g id="SVGRepo_iconCarrier">
-                                                        <polygon class="${i > giaTriDanhGias[loop.index] ? 'star-hidden' : ''}" style="fill:#FFD700; stroke:#FFD700;" points="26.934,1.318 35.256,18.182 53.867,20.887 40.4,34.013 43.579,52.549 26.934,43.798 10.288,52.549 13.467,34.013 0,20.887 18.611,18.182 "></polygon>
-                                                    </g>
-                                                </svg>
-                                            </c:forEach>
-                                        </div>
-                                    </div>
-                                    <p>${binhLuan.noiDung}</p>
-                                </div>
-                            </div>
-                        </c:forEach>
-                    </div>
-                </div>
-
-            </div>
-            <div class="col-3 d-none d-lg-block">
-                <h5 class="text-center">Tài liệu Người dùng</h5>
-                <ul class="list-group">
-                    <c:forEach var="tieuDe" items="${danhSachTieuDe}">
-                    <li class="row align-items-center mb-2 p-1">
-                        <div class="col-auto ms-1">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                 class="absolute left-0 top-1 w-4 h-4">
-                                <rect width="24" height="24" rx="5" fill="#E2574C"></rect>
-                                <path fill="#fff" d="M2 6h19v12H2z"></path>
-                                <path
-                                        d="M20 3.5 5.333 2C4.626 2.002 3.5 2 3 2.5c-.5.5-1.998.793-2 1.5v14.5c0 1.467 1.033.5 2.5.5L18 20.5c1.467 0 4-1.033 4-2.5l.5-11c0-1.467-1.033-3.5-2.5-3.5ZM8.667 11.333c0 1.067-.934 2-2 2H5.333V16h-2V8h3.334c1.066 0 2 .933 2 2v1.333ZM15.333 14c0 1.067-.933 2-2 2H10V8h3.333c1.067 0 2 .933 2 2v4Zm5.334-4h-2v1.333h2v2h-2V16h-2V8h4v2ZM12 10h1.333v4H12v-4Zm-6.667 0h1.334v1.333H5.333V10Z"
-                                        fill="#E2574C"></path>
-                            </svg>
-                        </div>
-                        <a href="#" class="text-start truncate-text flex items-start p-0">
-                            ${tieuDe}
-                        </a>
-                    </li>
-                    </c:forEach>
-                </ul>
-            </div>
+<div class="container main min-vh-100">
+    <div class="row justify-content-center mt-5">
+        <div class="col-lg-8 text-center">
+            <h2 class="text-danger mb-4">Thông tin liên hệ</h2>
         </div>
     </div>
 
-    <footer>
-        <div class="p-3 text-center bg-light text-danger fw-bold fs-6 mt-5">
-            Copyright © 2024. Designed by Phan Đức
-        </div>
-    </footer>
-    <script src="/js/reviewcomment.js"></script>
-    <script src="/js/main.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+    <div class="row ">
+        <div class="col-lg-6">
+            <div class="contact-card">
+                <h5 class="text-center">Liên hệ với chúng tôi</h5>
+                <div class="mb-2">
+                    <strong class="ms-4">Trường Đại học Khoa học - Đại học Huế</strong>
+                </div>
+                <div class="contact-detail">
+                    <i class="bi bi-geo-alt-fill contact-icon"></i>
+                    <div>
+                        <strong>Địa chỉ:</strong>77 Nguyễn Huệ, Thành phố Huế, Thừa Thiên Huế, Việt Nam
+                    </div>
+                </div>
+                <div class="contact-detail">
+                    <i class="bi bi-telephone-fill contact-icon"></i>
+                    <div>
+                        <strong>Điện thoại:</strong> (+84) 0234.3823290 – Fax: (+84) 0234.3824901
+                    </div>
+                </div>
+                <div class="contact-detail contact-link">
+                    <i class="bi bi-globe2 contact-icon"></i>
+                    <div>
+                        <strong>Website:</strong> <a href="http://husc.edu.vn" target="_blank">http://husc.edu.vn</a>
+                    </div>
+                </div>
+            </div>
+            <div class="contact-card mt-5">
+                <h5 class="mb-3 text-center">Gửi tin nhắn</h5>
+                <form id="contactForm">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Họ và tên</label>
+                        <input type="text" class="form-control" id="name" placeholder="Nhập họ và tên">
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" placeholder="Nhập email">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Gửi</button>
+                </form>
 
+                <script>
+                    document.getElementById('contactForm').addEventListener('submit', function(event) {
+                        event.preventDefault();
+                        const formData = {
+                            name: document.getElementById('name').value,
+                            email: document.getElementById('email').value
+                        };
+
+                        fetch('/api/contact/submit', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(formData)
+                        })
+                            .then(response => response.text())
+                            .then(data => alert(data))
+                            .catch(error => console.error('Error:', error));
+                    });
+                </script>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="map-card">
+                <h5 class="mb-3 text-center">Vị trí trên bản đồ</h5>
+                <iframe class="map-iframe"
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3826.324044905867!2d107.59014767417914!3d16.459121584278318!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3141a13f462a1445%3A0x1b70ba6cb49fb526!2zVHLGsOG7nW5nIMSQ4bqhaSBo4buNYyBLaG9hIGjhu41jIEh14bq_!5e0!3m2!1svi!2s!4v1716175901979!5m2!1svi!2s"
+                        allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <div class="p-3 text-center bg-light text-danger fw-bold fs-6 mt-5">
+        Copyright © 2024. Designed by Phan Đức
+    </div>
+</footer>
+
+<script src="/js/main.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>

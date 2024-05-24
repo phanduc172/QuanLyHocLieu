@@ -12,9 +12,10 @@ import java.util.List;
 public interface HoatDongGanDayRepository extends JpaRepository<HoatDongGanDay, Integer> {
     List<HoatDongGanDay> findAll(Sort sort);
 
-    @Query(value = "SELECT Ngay, LoaiHoatDong, COUNT(LoaiHoatDong) AS SoLuong " +
+    @Query(value = "SELECT DATE(Ngay) AS Ngay, LoaiHoatDong, COUNT(*) AS TongSoLuong " +
             "FROM hoatdongganday " +
-            "WHERE MONTH(ngay) = MONTH(CURRENT_DATE()) AND YEAR(ngay) = YEAR(CURRENT_DATE()) " +
-            "GROUP BY Ngay, LoaiHoatDong ORDER BY Ngay ASC", nativeQuery = true)
+            "WHERE MONTH(Ngay) = MONTH(CURRENT_DATE()) AND YEAR(Ngay) = YEAR(CURRENT_DATE()) " +
+            "GROUP BY DATE(Ngay), LoaiHoatDong " +
+            "ORDER BY DATE(Ngay) ASC; ", nativeQuery = true)
     List<Object[]> statisticActivityCurrent();
 }
