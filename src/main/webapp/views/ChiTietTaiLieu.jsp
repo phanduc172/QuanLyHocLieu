@@ -359,24 +359,25 @@
             <div class="col-3 d-none d-lg-block">
                 <h5 class="text-center">Tài liệu Người dùng</h5>
                 <ul class="list-group">
-                    <c:forEach var="tieuDe" items="${danhSachTieuDe}">
-                    <li class="row align-items-center mb-2 p-1">
-                        <div class="col-auto ms-1">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                 class="absolute left-0 top-1 w-4 h-4">
-                                <rect width="24" height="24" rx="5" fill="#E2574C"></rect>
-                                <path fill="#fff" d="M2 6h19v12H2z"></path>
-                                <path
-                                        d="M20 3.5 5.333 2C4.626 2.002 3.5 2 3 2.5c-.5.5-1.998.793-2 1.5v14.5c0 1.467 1.033.5 2.5.5L18 20.5c1.467 0 4-1.033 4-2.5l.5-11c0-1.467-1.033-3.5-2.5-3.5ZM8.667 11.333c0 1.067-.934 2-2 2H5.333V16h-2V8h3.334c1.066 0 2 .933 2 2v1.333ZM15.333 14c0 1.067-.933 2-2 2H10V8h3.333c1.067 0 2 .933 2 2v4Zm5.334-4h-2v1.333h2v2h-2V16h-2V8h4v2ZM12 10h1.333v4H12v-4Zm-6.667 0h1.334v1.333H5.333V10Z"
-                                        fill="#E2574C"></path>
-                            </svg>
-                        </div>
-                        <a href="#" class="text-start truncate-text flex items-start p-0">
-                            ${tieuDe}
-                        </a>
-                    </li>
+                    <c:forEach var="taiLieu" items="${taiLieusByUploader}" varStatus="loop">
+                        <li class="row align-items-center mb-2 p-1">
+                            <div class="col-auto ms-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                     class="absolute left-0 top-1 w-4 h-4">
+                                    <rect width="24" height="24" rx="5" fill="#E2574C"></rect>
+                                    <path fill="#fff" d="M2 6h19v12H2z"></path>
+                                    <path
+                                            d="M20 3.5 5.333 2C4.626 2.002 3.5 2 3 2.5c-.5.5-1.998.793-2 1.5v14.5c0 1.467 1.033.5 2.5.5L18 20.5c1.467 0 4-1.033 4-2.5l.5-11c0-1.467-1.033-3.5-2.5-3.5ZM8.667 11.333c0 1.067-.934 2-2 2H5.333V16h-2V8h3.334c1.066 0 2 .933 2 2v1.333ZM15.333 14c0 1.067-.933 2-2 2H10V8h3.333c1.067 0 2 .933 2 2v4Zm5.334-4h-2v1.333h2v2h-2V16h-2V8h4v2ZM12 10h1.333v4H12v-4Zm-6.667 0h1.334v1.333H5.333V10Z"
+                                            fill="#E2574C"></path>
+                                </svg>
+                            </div>
+                            <a href="/document/${taiLieu.maTaiLieu}" class="text-start truncate-text flex items-start p-0">
+                                    ${taiLieu.tieuDe}
+                            </a>
+                        </li>
                     </c:forEach>
                 </ul>
+
             </div>
         </div>
     </div>
