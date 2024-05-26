@@ -193,6 +193,7 @@ public class TaiLieuController {
             modelMap.addAttribute("anhNguoiBinhLuans", anhNguoiBinhLuans);
             modelMap.addAttribute("giaTriDanhGias", giaTriDanhGias);
             modelMap.addAttribute("danhSachTieuDe", danhSachTieuDe);
+            modelMap.addAttribute("taiLieusByUploader", taiLieusByUploader);
             for (String tieuDe : danhSachTieuDe) {
                 System.out.println(tieuDe);
             }
