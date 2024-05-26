@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,7 @@ public class AdminManagerController {
     private TaiLieuRepository taiLieuRepository;
     @Autowired
     private NguoiDungRepository nguoiDungRepository;
+    private CheckLogin loginChecker = new CheckLogin();
 
     //Tài liệu
     @GetMapping("/tailieu")
@@ -41,10 +43,13 @@ public class AdminManagerController {
     public String getAllTaiLieu(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            ModelMap modelMap
-    ) {
+            ModelMap modelMap, HttpSession session
+            ) {
+        if (!loginChecker.checkLoginAdmin(session)) {
+            return "redirect:/admin/login";
+        }
         Pageable pageable = PageRequest.of(page, size);
-        Page<TaiLieu> taiLieuPage = taiLieuRepository.findAll(pageable);
+        Page<TaiLieu> taiLieuPage = taiLieuRepository.findByMaTrangThai(1,pageable);
         List<TaiLieu> listTaiLieu = taiLieuPage.getContent();
         modelMap.addAttribute("listTaiLieu", listTaiLieu);
         modelMap.addAttribute("currentPage", taiLieuPage.getNumber());
@@ -53,6 +58,7 @@ public class AdminManagerController {
 
         return "admin/QuanLyTaiLieu";
     }
+
     @GetMapping("/export/tailieu/excel")
     public void exportToExcel(HttpServletResponse response) throws IOException {
         response.setContentType("application/octet-stream");
@@ -107,6 +113,19 @@ public class AdminManagerController {
         outputStream.close();
     }
 
+    @DeleteMapping("/delete/document/{maTaiLieu}")
+    //http://localhost:8080/manager/delete/document/12
+    public ResponseEntity<String> deleteDocument(@PathVariable("maTaiLieu") Integer maTaiLieu) {
+        Optional<TaiLieu> taiLieuOptional = taiLieuRepository.findByMaTaiLieu(maTaiLieu);
+        if (taiLieuOptional.isPresent()) {
+            taiLieuRepository.deleteByMaTaiLieu(maTaiLieu);
+            return new ResponseEntity<>("Xóa tài liệu thành công", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Tài liệu không tồn tại", HttpStatus.NOT_FOUND);
+        }
+    }
+
+
     //Tài liệu
     //Khoa - Chuyên ngành
     @GetMapping("/khoachuyennganh")
@@ -114,7 +133,10 @@ public class AdminManagerController {
     public String getKhoaChuyenNganh(@RequestParam(defaultValue = "0") int khoaPage,
                                      @RequestParam(defaultValue = "0") int chuyenNganhPage,
                                      @RequestParam(defaultValue = "10") int size,
-                                     ModelMap modelMap) {
+                                     ModelMap modelMap,HttpSession session) {
+        if (!loginChecker.checkLoginAdmin(session)) {
+            return "redirect:/admin/login";
+        }
         Page<Khoa> listKhoa = khoaRepository.findAll(PageRequest.of(khoaPage, size));
         Page<ChuyenNganh> listChuyenNganh = chuyenNganhRepository.findAll(PageRequest.of(chuyenNganhPage, size));
         modelMap.addAttribute("listKhoa", listKhoa.getContent());
@@ -201,18 +223,16 @@ public class AdminManagerController {
         return "redirect:/manager/khoachuyennganh";
     }
 
-
-
-
-
-
     //Khoa - Chuyên ngành
 
 
     //Danh mục
     @GetMapping("/danhmuc")
     //http://localhost:8080/manager/danhmuc
-    public String getAllDanhMuc(ModelMap modelMap) {
+    public String getAllDanhMuc(ModelMap modelMap,HttpSession session) {
+        if (!loginChecker.checkLoginAdmin(session)) {
+            return "redirect:/admin/login";
+        }
         List<DanhMuc> listDanhMuc = danhMucRepository.findAll();
         modelMap.addAttribute("listDanhMuc",listDanhMuc);
         return "admin/QuanLyDanhMuc";
@@ -260,7 +280,10 @@ public class AdminManagerController {
     public String getAllNguoiDung(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            ModelMap modelMap) {
+            ModelMap modelMap,HttpSession session) {
+        if (!loginChecker.checkLoginAdmin(session)) {
+            return "redirect:/admin/login";
+        }
         Pageable pageable = PageRequest.of(page, size);
         Page<NguoiDung> nguoiDungPage = nguoiDungRepository.findAll(pageable);
 
@@ -319,10 +342,13 @@ public class AdminManagerController {
 
     //Đánh giá và bình luận
     @GetMapping("/comment")
-    //http://localhost:8080/manager/comment
-    public String getAllReviewAndComment(ModelMap modelMap) {
-        List<Object[]> listComment = taiLieuRepository.getBinhluanDanhGia();
-        modelMap.addAttribute("listComment",listComment);
+    // http://localhost:8080/manager/comment?page=0&size=10
+    public String getAllReviewAndComment(ModelMap modelMap,
+                                         @RequestParam(defaultValue = "0") int page,
+                                         @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Object[]> listComment = taiLieuRepository.getBinhluanDanhGiaPage(pageable);
+        modelMap.addAttribute("listComment", listComment);
         return "admin/QuanLyDanhGiaBinhLuan";
     }
 

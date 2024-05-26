@@ -1,19 +1,20 @@
     //Ẩn hiện mật khẩu khi nhập vào input
-    function togglePasswordVisibility() {
-        const passwordInput = document.getElementById('passwordInput');
-        const eyeIcon = document.querySelector('.toggle-password i');
+    function togglePasswordVisibility(formId) {
+        const passwordInput = document.querySelector(`#${formId} input[type='password']`);
+        const eyeIcon = document.querySelector(`#${formId} .toggle-password i`);
 
-        if (passwordInput.type !== 'password') {
-            passwordInput.type = 'password';
-            eyeIcon.classList.remove('bi-eye-slash');
-            eyeIcon.classList.add('bi-eye');
-        } else {
-
+        if (passwordInput.type === 'password') {
             passwordInput.type = 'text';
             eyeIcon.classList.remove('bi-eye');
             eyeIcon.classList.add('bi-eye-slash');
+        } else {
+            passwordInput.type = 'password';
+            eyeIcon.classList.remove('bi-eye-slash');
+            eyeIcon.classList.add('bi-eye');
         }
     }
+
+
     //Ẩn hiện mật khẩu khi nhập vào input
 
     // Kiểm tra mật khẩu hiện tại và mật khẩu mới có giống nhau không

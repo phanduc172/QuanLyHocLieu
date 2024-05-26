@@ -1,17 +1,25 @@
 package com.phanduc.QLHocLieu.controllers;
 
+import com.phanduc.QLHocLieu.dto.DanhGiaDto;
 import com.phanduc.QLHocLieu.models.*;
 import com.phanduc.QLHocLieu.repositories.*;
 import com.phanduc.QLHocLieu.services.StorageService;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.ImageType;
 import org.apache.pdfbox.rendering.PDFRenderer;
+import org.apache.poi.hwpf.HWPFDocument;
+import org.apache.poi.hwpf.extractor.WordExtractor;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -20,11 +28,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpSession;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.*;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
@@ -54,6 +65,7 @@ public class TaiLieuController {
     @Autowired
     @Qualifier("uploadFileService")
     private StorageService storageService;
+    private boolean checkMessageLogin = false;
     @GetMapping("/")
     public String home() {
         return "redirect:/trangchu";
@@ -78,9 +90,18 @@ public class TaiLieuController {
     @GetMapping("/trangchu")
     public String getAll(@RequestParam(defaultValue = "0") int page, ModelMap modelMap, HttpSession session) {
         NguoiDung nguoiDung = (NguoiDung) session.getAttribute("loggedInUser");
+        if (checkMessageLogin) {
+            modelMap.addAttribute("messageLogin", "Bạn cần đăng nhập để truy cập đầy đủ tính năng.");
+            checkMessageLogin = false;
+        }
         // Tạo đối tượng Pageable để yêu cầu trang hiện tại và kích thước trang
         Pageable pageable = PageRequest.of(page, 8);
-        Page<TaiLieu> taiLieusPage = taiLieuRepository.findAll(pageable);
+        Page<TaiLieu> taiLieusPage = taiLieuRepository.findByMaTrangThai(1,pageable);
+
+        List<TaiLieu> top10TaiLieus = taiLieuRepository.findTop10BySLTaiXuong();
+        modelMap.addAttribute("top10TaiLieus", top10TaiLieus);
+        List<DanhGiaDto> top10DanhGia = taiLieuRepository.findTop10DanhGia();
+        modelMap.addAttribute("top10DanhGia", top10DanhGia);
         modelMap.addAttribute("titleHome","Danh sách tài liệu");
         modelMap.addAttribute("taiLieus", taiLieusPage.getContent());
         modelMap.addAttribute("nguoiDung", nguoiDung);
@@ -91,6 +112,7 @@ public class TaiLieuController {
         if(nguoiDung != null) {
             modelMap.addAttribute("currentPasswordHidden", nguoiDung.getMatKhau());
         }
+
         return "TrangChu";
     }
 
@@ -125,52 +147,70 @@ public class TaiLieuController {
         return "TrangChu";
     }
 
-    @GetMapping("/document/{maTaiLieu}")
-    public String getDocumentById(@PathVariable("maTaiLieu") Integer maTaiLieu, ModelMap modelMap, HttpSession session) {
-        NguoiDung nguoiDung = (NguoiDung) session.getAttribute("loggedInUser");
+        @GetMapping("/document/{maTaiLieu}")
+        public String getDocumentById(@PathVariable("maTaiLieu") Integer maTaiLieu, ModelMap modelMap, HttpSession session) {
+            NguoiDung nguoiDung = (NguoiDung) session.getAttribute("loggedInUser");
+            if (!CheckLogin.isLoggedIn(session)) {
+                checkMessageLogin = true;
+                return "redirect:/trangchu";
+            }
+            Optional<TaiLieu> optionalTaiLieu = taiLieuRepository.findByMaTaiLieu(maTaiLieu);
+            if (!optionalTaiLieu.isPresent()) {
+                return "redirect:/trangchu";
+            }
+            TaiLieu taiLieu = optionalTaiLieu.get();
+            String nguoiTaiLen = taiLieuRepository.findHoTenByMaNguoiDung(taiLieu.getTaiLenBoi());
+            String docImage = taiLieuRepository.findAnhByMaNguoiDung(taiLieu.getTaiLenBoi());
+            String urlDoc = taiLieu.getDuongDanTep();
+            taiLieu.setSoLuotTruyCap(taiLieu.getSoLuotTruyCap() + 1);
+            taiLieuRepository.save(taiLieu);
+            //Lấy thông tin người bình luận qua maNguoiDung
+            List<BinhLuan> binhLuans = binhLuanRepository.findByMaTaiLieu(maTaiLieu);
+            List<String> hoTenNguoiBinhLuans = binhLuans.stream()
+                    .map(binhLuan -> nguoiDungRepository.getUserByMaNguoiDung(binhLuan.getMaNguoiDung()).getHoTen())
+                    .collect(Collectors.toList());
+            List<String> anhNguoiBinhLuans = binhLuans.stream()
+                    .map(binhLuan -> nguoiDungRepository.getUserByMaNguoiDung(binhLuan.getMaNguoiDung()).getAnh())
+                    .collect(Collectors.toList());
+            List<DanhGia> danhGias = danhGiaRepository.findByMaTaiLieu(maTaiLieu);
+            List<Integer> giaTriDanhGias = danhGias.stream()
+                    .map(DanhGia::getGiaTriDanhGia)
+                    .collect(Collectors.toList());
+            //Lấy ra danh sách tiêu đề tải lên bởi cùng người đăng tài liệu
+    //        List<TaiLieu> taiLieusByUploader = taiLieuRepository.findByTaiLenBoi(taiLieu.getTaiLenBoi());
+            List<TaiLieu> taiLieusByUploader = taiLieuRepository.findByMaTrangThaiAndTaiLenBoi(1, taiLieu.getTaiLenBoi());
+            List<String> danhSachTieuDe = taiLieusByUploader.stream()
+                    .map(TaiLieu::getTieuDe)
+                    .collect(Collectors.toList());
+            addCommonAttributes(modelMap);
+            modelMap.addAttribute("nguoiDung", nguoiDung);
+            modelMap.addAttribute("nguoiTaiLen", nguoiTaiLen);
+            modelMap.addAttribute("taiLieu", taiLieu);
+            modelMap.addAttribute("docImage", docImage);
+            modelMap.addAttribute("urlDoc", urlDoc);
+            modelMap.addAttribute("binhLuans", binhLuans);
+            modelMap.addAttribute("hoTenNguoiBinhLuans", hoTenNguoiBinhLuans);
+            modelMap.addAttribute("anhNguoiBinhLuans", anhNguoiBinhLuans);
+            modelMap.addAttribute("giaTriDanhGias", giaTriDanhGias);
+            modelMap.addAttribute("danhSachTieuDe", danhSachTieuDe);
+            for (String tieuDe : danhSachTieuDe) {
+                System.out.println(tieuDe);
+            }
+            String filepath = "../QuanLyHocLieu/src/main/"+taiLieu.getDuongDanTep();
+
+            return viewFile(filepath, modelMap);
+        }
+
+    @PostMapping("/document/download/{maTaiLieu}")
+    public ResponseEntity<?> increaseDownloadCount(@PathVariable("maTaiLieu") Integer maTaiLieu) {
         Optional<TaiLieu> optionalTaiLieu = taiLieuRepository.findByMaTaiLieu(maTaiLieu);
         if (!optionalTaiLieu.isPresent()) {
-            return "redirect:/trangchu";
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Không tìm thấy tài liệu");
         }
         TaiLieu taiLieu = optionalTaiLieu.get();
-        String nguoiTaiLen = taiLieuRepository.findHoTenByMaNguoiDung(taiLieu.getTaiLenBoi());
-        String docImage = taiLieuRepository.findAnhByMaNguoiDung(taiLieu.getTaiLenBoi());
-        String urlDoc = taiLieu.getDuongDanTep();
-        taiLieu.setSoLuotTruyCap(taiLieu.getSoLuotTruyCap() + 1);
+        taiLieu.setSoLuotTaiXuong(taiLieu.getSoLuotTaiXuong() + 1);
         taiLieuRepository.save(taiLieu);
-        //Lấy thông tin người bình luận qua maNguoiDung
-        List<BinhLuan> binhLuans = binhLuanRepository.findByMaTaiLieu(maTaiLieu);
-        List<String> hoTenNguoiBinhLuans = binhLuans.stream()
-                .map(binhLuan -> nguoiDungRepository.getUserByMaNguoiDung(binhLuan.getMaNguoiDung()).getHoTen())
-                .collect(Collectors.toList());
-        List<String> anhNguoiBinhLuans = binhLuans.stream()
-                .map(binhLuan -> nguoiDungRepository.getUserByMaNguoiDung(binhLuan.getMaNguoiDung()).getAnh())
-                .collect(Collectors.toList());
-        List<DanhGia> danhGias = danhGiaRepository.findByMaTaiLieu(maTaiLieu);
-        List<Integer> giaTriDanhGias = danhGias.stream()
-                .map(DanhGia::getGiaTriDanhGia)
-                .collect(Collectors.toList());
-        //Lấy ra danh sách tiêu đề tải lên bởi cùng người đăng tài liệu
-//        List<TaiLieu> taiLieusByUploader = taiLieuRepository.findByTaiLenBoi(taiLieu.getTaiLenBoi());
-        List<TaiLieu> taiLieusByUploader = taiLieuRepository.findByMaTrangThaiAndTaiLenBoi(1, taiLieu.getTaiLenBoi());
-        List<String> danhSachTieuDe = taiLieusByUploader.stream()
-                .map(TaiLieu::getTieuDe)
-                .collect(Collectors.toList());
-        addCommonAttributes(modelMap);
-        modelMap.addAttribute("nguoiDung", nguoiDung);
-        modelMap.addAttribute("nguoiTaiLen", nguoiTaiLen);
-        modelMap.addAttribute("taiLieu", taiLieu);
-        modelMap.addAttribute("docImage", docImage);
-        modelMap.addAttribute("urlDoc", urlDoc);
-        modelMap.addAttribute("binhLuans", binhLuans);
-        modelMap.addAttribute("hoTenNguoiBinhLuans", hoTenNguoiBinhLuans);
-        modelMap.addAttribute("anhNguoiBinhLuans", anhNguoiBinhLuans);
-        modelMap.addAttribute("giaTriDanhGias", giaTriDanhGias);
-        modelMap.addAttribute("danhSachTieuDe", danhSachTieuDe);
-        for (String tieuDe : danhSachTieuDe) {
-            System.out.println(tieuDe);
-        }
-        return "ChiTietTaiLieu";
+        return ResponseEntity.ok("Đã tăng số lượt tải xuống");
     }
 
     @PostMapping("/search/{keyword}")
@@ -256,60 +296,6 @@ public class TaiLieuController {
 
         return "TaiLenTaiLieu";
     }
-
-//    @PostMapping("/uploadfile")
-//    public String handleFileUpload(@RequestParam("file") MultipartFile file,
-//                                   @RequestParam("title") String title,
-//                                   @RequestParam("description") String description,
-//                                   @RequestParam("faculty") String faculty,
-//                                   @RequestParam("category") Integer category,
-//                                   @RequestParam("major") String major,
-//                                   HttpSession session, ModelMap modelMap) {
-//        NguoiDung nguoiDung = (NguoiDung) session.getAttribute("loggedInUser");
-//        if (!CheckLogin.isLoggedIn(session)) {
-//            modelMap.addAttribute("messageLogin", "Bạn cần đăng nhập để truy cập tính năng này.");
-//            return "redirect:/trangchu";
-//        }
-//        if (!file.isEmpty()) {
-//            try {
-//                String fileName = storageService.store(file);
-//                Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
-//                String prefixedFilePath = "/upload/documents/" + fileName;
-//                String anhTaiLieu = "/images/1.jpg";
-//                TaiLieu taiLieu = new TaiLieu();
-//                taiLieu.setTieuDe(title);
-//                taiLieu.setMoTa(description);
-//                taiLieu.setDuongDanTep(prefixedFilePath);
-//                taiLieu.setAnhTaiLieu(anhTaiLieu);
-//                taiLieu.setTaiLenBoi(nguoiDung.getMaNguoiDung());
-//                taiLieu.setNgayTaiLen(currentTimestamp);
-//                taiLieu.setSoLuotTaiXuong(0);
-//                taiLieu.setMaDanhMuc(category);
-//                taiLieu.setMaChuyenNganh(major);
-//                taiLieu.setSoLuotTruyCap(0);
-//                taiLieu.setMaTrangThai(2);
-//                taiLieuRepository.save(taiLieu);
-//                System.out.println("Đường dẫn lưu trữ tệp: " + prefixedFilePath);
-//
-//                HoatDongGanDay hoatDong = new HoatDongGanDay();
-//                hoatDong.setMaNguoiDung(nguoiDung.getMaNguoiDung());
-//                hoatDong.setLoaiHoatDong("Tải lên");
-//                hoatDong.setMoTaHoatDong("Vừa tải lên tài liệu: " + taiLieu.getTieuDe());
-//                hoatDong.setNgay(new Date());
-//                hoatDongGanDayRepository.save(hoatDong);
-//                System.out.println("Tài liệu tải lên thành công");
-//                return "redirect:/userinfo/"+nguoiDung.getMaNguoiDung();
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//                System.out.println("Tài liệu tải lên không thành công");
-//                return "redirect:/uploadfile";
-//            }
-//        } else {
-//            System.out.println("Không có tài liệu được chọn");
-//            return "redirect:/uploadfile";
-//        }
-//    }
-
     @PostMapping("/uploadfile")
     public String handleFileUpload(@RequestParam("file") MultipartFile file,
                                    @RequestParam("title") String title,
@@ -328,7 +314,19 @@ public class TaiLieuController {
                 String fileName = storageService.store(file);
                 Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
                 String prefixedFilePath = "/upload/documents/" + fileName;
-                BufferedImage firstPageImage = extractFirstPageImage(file);
+
+                BufferedImage firstPageImage;
+                String originalFilename = file.getOriginalFilename().toLowerCase();
+                if (originalFilename.endsWith(".pdf")) {
+                    firstPageImage = extractFirstPageImageFromPDF(file);
+                } else if (originalFilename.endsWith(".docx")) {
+                    firstPageImage = extractFirstPageImageFromDOCX(file);
+                } else if (originalFilename.endsWith(".doc")) {
+                    firstPageImage = extractFirstPageImageFromDOC(file);
+                } else {
+                    throw new UnsupportedFileTypeException("Loại tệp không được hỗ trợ");
+                }
+
                 String thumbnailFilePath = saveThumbnailImage(firstPageImage);
                 TaiLieu taiLieu = new TaiLieu();
                 taiLieu.setTieuDe(title);
@@ -343,6 +341,12 @@ public class TaiLieuController {
                 taiLieu.setSoLuotTruyCap(0);
                 taiLieu.setMaTrangThai(2);
                 taiLieuRepository.save(taiLieu);
+                HoatDongGanDay hoatDong = new HoatDongGanDay();
+                hoatDong.setMaNguoiDung(nguoiDung.getMaNguoiDung());
+                hoatDong.setLoaiHoatDong("Tải lên");
+                hoatDong.setMoTaHoatDong("Tải lên tài liệu: " + taiLieu.getTieuDe());
+                hoatDong.setNgay(new Date());
+                hoatDongGanDayRepository.save(hoatDong);
                 return "redirect:/userinfo/"+nguoiDung.getMaNguoiDung();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -355,12 +359,45 @@ public class TaiLieuController {
         }
     }
 
-
-    public BufferedImage extractFirstPageImage(MultipartFile file) throws IOException {
+    public BufferedImage extractFirstPageImageFromPDF(MultipartFile file) throws IOException {
         try (PDDocument document = PDDocument.load(file.getInputStream())) {
             PDFRenderer renderer = new PDFRenderer(document);
             return renderer.renderImageWithDPI(0, 300, ImageType.RGB);
         }
+    }
+
+    public BufferedImage extractFirstPageImageFromDOCX(MultipartFile file) throws IOException {
+        try (XWPFDocument document = new XWPFDocument(file.getInputStream())) {
+            List<XWPFParagraph> paragraphs = document.getParagraphs();
+            StringBuilder firstPageText = new StringBuilder();
+            for (XWPFParagraph paragraph : paragraphs) {
+                for (XWPFRun run : paragraph.getRuns()) {
+                    firstPageText.append(run.toString());
+                }
+                firstPageText.append("\n");
+            }
+            return createImageFromText(firstPageText.toString());
+        }
+    }
+
+    public BufferedImage extractFirstPageImageFromDOC(MultipartFile file) throws IOException {
+        try (HWPFDocument document = new HWPFDocument(file.getInputStream())) {
+            WordExtractor extractor = new WordExtractor(document);
+            String firstPageText = extractor.getText().split("\f")[0];
+            return createImageFromText(firstPageText);
+        }
+    }
+
+    private BufferedImage createImageFromText(String text) {
+        BufferedImage image = new BufferedImage(800, 600, BufferedImage.TYPE_INT_RGB);
+        Graphics2D g2d = image.createGraphics();
+        g2d.setPaint(Color.WHITE);
+        g2d.fillRect(0, 0, image.getWidth(), image.getHeight());
+        g2d.setPaint(Color.BLACK);
+        g2d.setFont(new Font("Serif", Font.PLAIN, 24));
+        g2d.drawString(text, 10, 50);
+        g2d.dispose();
+        return image;
     }
 
     public String saveThumbnailImage(BufferedImage image) throws IOException {
@@ -378,6 +415,54 @@ public class TaiLieuController {
 
         return relativePath;
     }
+
+    private static class UnsupportedFileTypeException extends Exception {
+        public UnsupportedFileTypeException(String message) {
+            super(message);
+        }
+    }
+
+    @GetMapping("/viewfile")
+    public String viewFile(@RequestParam("filepath") String filepath, ModelMap modelMap) {
+        File file = new File(filepath);
+        String fileContent = "";
+        try {
+            if (filepath.endsWith(".doc")) {
+                fileContent = extractTextFromDOC(file);
+            } else if (filepath.endsWith(".docx")) {
+                fileContent = extractTextFromDOCX(file);
+            }
+            modelMap.addAttribute("fileContent", fileContent);
+            return "ChiTietTaiLieu";
+        } catch (IOException e) {
+            e.printStackTrace();
+            modelMap.addAttribute("errorMessage", "Không thể đọc tệp");
+            return "error";
+        }
+    }
+
+
+    private String extractTextFromDOC(File file) throws IOException {
+        try (HWPFDocument document = new HWPFDocument(new FileInputStream(file))) {
+            WordExtractor extractor = new WordExtractor(document);
+            return extractor.getText();
+        }
+    }
+
+    private String extractTextFromDOCX(File file) throws IOException {
+        try (XWPFDocument document = new XWPFDocument(new FileInputStream(file))) {
+            StringBuilder text = new StringBuilder();
+            for (XWPFParagraph paragraph : document.getParagraphs()) {
+                for (XWPFRun run : paragraph.getRuns()) {
+                    text.append(run.toString());
+                }
+                text.append("\n");
+            }
+            return text.toString();
+        }
+    }
+
+    //..............................
 
     @PostMapping("/document/updatedocument")
     public String updateDocument(@RequestParam("editTitle") String title,

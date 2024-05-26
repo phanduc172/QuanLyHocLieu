@@ -27,6 +27,13 @@ html,body {
     text-decoration: none;
 }
 
+.truncate-mota {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+}
+
 .truncate-text-admin {
     white-space: nowrap;
     overflow: hidden;
@@ -110,6 +117,15 @@ html,body {
 
 #userAvatar {
     width: 150px;
+    cursor: pointer;
+    height: 150px;
+    object-fit: cover;
+}
+
+.userAvatar {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
     cursor: pointer;
 }
 

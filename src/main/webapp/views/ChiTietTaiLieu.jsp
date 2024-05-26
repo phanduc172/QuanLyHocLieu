@@ -277,16 +277,23 @@
                                 <h6 class="card-title mb-0 me-3 p-2 border border-2 rounded text-secondary">
                                     Yêu thích
                                 </h6>
-                                <a href="${urlDoc}" class="btn btn-warning p-2 text-white" >Tải xuống</a>
+                                <a href="${urlDoc}" id="downloadBtn" class="btn btn-warning p-2 text-white" data-id="${maTaiLieu}">Tải xuống</a>
                             </div>
                         </div>
                     </div>
                     <div class="card-footer">
-                        <div class="container " style="max-width: none;">
-                            <div class="row justify-content-center" >
+                        <div class="container" style="max-width: none;">
+                            <div class="row justify-content-center">
                                 <div class="col-12">
-                                    <div class="pdf-container ">
-                                        <embed src="${taiLieu.duongDanTep}" type="application/pdf">
+                                    <div class="pdf-container">
+                                        <c:choose>
+                                            <c:when test="${fn:endsWith(taiLieu.duongDanTep, '.pdf')}">
+                                                <embed src="${taiLieu.duongDanTep}" type="application/pdf">
+                                            </c:when>
+                                            <c:otherwise>
+                                                <textarea class="w-100" style="height: 500px" c:if="${fn:endsWith(taiLieu.duongDanTep, '.docx')}">${fileContent}</textarea>
+                                            </c:otherwise>
+                                        </c:choose>
                                     </div>
                                 </div>
                             </div>
@@ -382,6 +389,31 @@
     <script src="/js/reviewcomment.js"></script>
     <script src="/js/main.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('downloadBtn').addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent the default action of the link
+
+            // Get the document ID from the data attribute
+            const maTaiLieu = this.getAttribute('data-id');
+            const urlDoc = this.getAttribute('href');
+
+            // Send an AJAX request to increment the download count
+            fetch(`/document/download/${maTaiLieu}`, {
+                method: 'POST'
+            })
+                .then(response => {
+                    if (response.ok) {
+                        // If the increment is successful, proceed with the download
+                        window.location.href = urlDoc;
+                    } else {
+                        console.error('Failed to increment download count');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    </script>
+
+
 </body>
 
 </html>

@@ -2,6 +2,11 @@ package com.phanduc.QLHocLieu.controllers;
 
 import com.phanduc.QLHocLieu.models.*;
 import com.phanduc.QLHocLieu.repositories.*;
+import org.apache.poi.hwpf.HWPFDocument;
+import org.apache.poi.hwpf.extractor.WordExtractor;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,6 +17,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -30,52 +39,14 @@ public class AdminTaiLieuController {
     private NguoiDungRepository nguoiDungRepository;
     @Autowired
     private KhoaRepository khoaRepository;
-
-//    @GetMapping("/approve")
-//    public String pheDuyetTaiLieu(ModelMap modelMap) {
-//        List<TaiLieu> listTaiLieu = taiLieuRepository.findByMaTrangThai(2);
-//        List<String> tenDanhMuc = new ArrayList<>();
-//        List<String> tenChuyenNganh = new ArrayList<>();
-//        List<String> tenTrangThai = new ArrayList<>();
-//        List<String> tenNguoiDung = new ArrayList<>();
-//        for (TaiLieu taiLieu : listTaiLieu) {
-//            DanhMuc danhMuc = danhMucRepository.findById(taiLieu.getMaDanhMuc()).orElse(null);
-//            ChuyenNganh chuyenNganh = chuyenNganhRepository.findById(taiLieu.getMaChuyenNganh()).orElse(null);
-//            TrangThaiTaiLieu trangThaiTaiLieu = trangThaiTaiLieuRepository.findById(taiLieu.getMaTrangThai()).orElse(null);
-//            NguoiDung nguoiDung = nguoiDungRepository.findById(taiLieu.getTaiLenBoi()).orElse(null);
-//            if (danhMuc != null) {
-//                tenDanhMuc.add(danhMuc.getTenDanhMuc());
-//            } else {
-//                tenDanhMuc.add("Unknown");
-//            }
-//            if (chuyenNganh != null) {
-//                tenChuyenNganh.add(chuyenNganh.getTenChuyenNganh());
-//            } else {
-//                tenChuyenNganh.add("Unknown");
-//            }
-//            if (trangThaiTaiLieu != null) {
-//                tenTrangThai.add(trangThaiTaiLieu.getMoTaTrangThai());
-//            } else {
-//                tenTrangThai.add("Unknown");
-//            }
-//            if (nguoiDung != null) {
-//                tenNguoiDung.add(nguoiDung.getHoTen());
-//            } else {
-//                tenNguoiDung.add("Unknown");
-//            }
-//        }
-//        modelMap.addAttribute("listTaiLieu", listTaiLieu);
-//        modelMap.addAttribute("tenDanhMuc", tenDanhMuc);
-//        modelMap.addAttribute("tenChuyenNganh", tenChuyenNganh);
-//        modelMap.addAttribute("tenTrangThai", tenTrangThai);
-//        modelMap.addAttribute("tenNguoiDung", tenNguoiDung);
-//        return "admin/PheDuyetTaiLieu";
-//    }
-
+    private CheckLogin loginChecker = new CheckLogin();
     @GetMapping("/approve")
     public String pheDuyetTaiLieu(@RequestParam(defaultValue = "0") int page,
                                   @RequestParam(defaultValue = "10") int size,
-                                  ModelMap modelMap) {
+                                  ModelMap modelMap, HttpSession session) {
+        if (!loginChecker.checkLoginAdmin(session)) {
+            return "redirect:/admin/login";
+        }
         Integer trangThaiChoDuyet = 2;
         Pageable pageable = PageRequest.of(page, size);
         Page<TaiLieu> taiLieuPage = taiLieuRepository.findByMaTrangThai(trangThaiChoDuyet, pageable);
@@ -107,7 +78,10 @@ public class AdminTaiLieuController {
     @GetMapping("/approve/reject")
     public String pheDuyetTaiLieuTuChoi(@RequestParam(defaultValue = "0") int page,
                                   @RequestParam(defaultValue = "10") int size,
-                                  ModelMap modelMap) {
+                                  ModelMap modelMap,HttpSession session) {
+        if (!loginChecker.checkLoginAdmin(session)) {
+            return "redirect:/admin/login";
+        }
         Integer trangThaiTuChoi = 3;
         Pageable pageable = PageRequest.of(page, size);
         Page<TaiLieu> taiLieuPage = taiLieuRepository.findByMaTrangThai(trangThaiTuChoi, pageable);
@@ -148,7 +122,10 @@ public class AdminTaiLieuController {
     }
 
     @GetMapping("/approve/detail/{maTaiLieu}")
-    public String duyetTaiLieuById(@PathVariable("maTaiLieu") Integer maTaiLieu, ModelMap modelMap) {
+    public String duyetTaiLieuById(@PathVariable("maTaiLieu") Integer maTaiLieu, ModelMap modelMap,HttpSession session) {
+        if (!loginChecker.checkLoginAdmin(session)) {
+            return "redirect:/admin/login";
+        }
         TaiLieu taiLieu = taiLieuRepository.findTaiLieuByMaTaiLieu(maTaiLieu);
         String tenDanhMuc = getTenDanhMuc(taiLieu);
         modelMap.addAttribute("tenDanhMuc", tenDanhMuc);
@@ -163,7 +140,52 @@ public class AdminTaiLieuController {
         String tenKhoa = getTenKhoa(maKhoa);
         modelMap.addAttribute("tenKhoa", tenKhoa);
         modelMap.addAttribute("taiLieu", taiLieu);
+
+        // Kiểm tra nếu là file DOC hoặc DOCX và đọc nội dung
+        String fileContent = "";
+        String filePath = "../QuanLyHocLieu/src/main/" + taiLieu.getDuongDanTep();
+        File file = new File(filePath);
+        if (filePath.toLowerCase().endsWith(".doc")) {
+            try {
+                fileContent = extractTextFromDOC(file);
+            } catch (IOException e) {
+                e.printStackTrace();
+                modelMap.addAttribute("errorMessage", "Không thể đọc tệp");
+                return "error";
+            }
+        } else if (filePath.toLowerCase().endsWith(".docx")) {
+            try {
+                fileContent = extractTextFromDOCX(file);
+            } catch (IOException e) {
+                e.printStackTrace();
+                modelMap.addAttribute("errorMessage", "Không thể đọc tệp");
+                return "error";
+            }
+        }
+
+        modelMap.addAttribute("fileContent", fileContent);
         return "/admin/PheDuyetTaiLieu";
+    }
+
+
+    private String extractTextFromDOC(File file) throws IOException {
+        try (HWPFDocument document = new HWPFDocument(new FileInputStream(file))) {
+            WordExtractor extractor = new WordExtractor(document);
+            return extractor.getText();
+        }
+    }
+
+    private String extractTextFromDOCX(File file) throws IOException {
+        try (XWPFDocument document = new XWPFDocument(new FileInputStream(file))) {
+            StringBuilder text = new StringBuilder();
+            for (XWPFParagraph paragraph : document.getParagraphs()) {
+                for (XWPFRun run : paragraph.getRuns()) {
+                    text.append(run.toString());
+                }
+                text.append("\n");
+            }
+            return text.toString();
+        }
     }
 
     @PostMapping("/detail/action")

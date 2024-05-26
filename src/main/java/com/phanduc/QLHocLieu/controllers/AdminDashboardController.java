@@ -6,6 +6,9 @@ import com.phanduc.QLHocLieu.dto.TotalDocumentUser;
 import com.phanduc.QLHocLieu.models.*;
 import com.phanduc.QLHocLieu.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -33,7 +36,8 @@ public class AdminDashboardController {
 
     @GetMapping("")
     public String getDashboard(HttpSession session, ModelMap modelMap) {
-        if (session.getAttribute("loggedInAdmin") == null) {
+        CheckLogin loginChecker = new CheckLogin();
+        if (!loginChecker.checkLoginAdmin(session)) {
             return "redirect:/admin/login";
         }
 
@@ -89,12 +93,17 @@ public class AdminDashboardController {
     }
 
     @GetMapping("/api/soluongtailieu")
-    public ResponseEntity<List<TotalDocumentUser>> getSoLuongTaiLieuJson() {
-        List<TotalDocumentUser> soLuongTaiLieuByNguoiDung = taiLieuRepository.getSoLuongTaiLieuByNguoiDung();
-        return ResponseEntity.ok().body(soLuongTaiLieuByNguoiDung);
+    public ResponseEntity<Page<TotalDocumentUser>> getSoLuongTaiLieuJson(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size
+    ) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<TotalDocumentUser> taiLieuPage = taiLieuRepository.getSoLuongTaiLieuByNguoiDung(pageable);
+
+        return ResponseEntity.ok().body(taiLieuPage);
     }
 
-    @GetMapping("error")
+    @GetMapping("/error")
     public String eror404() {
         return "/admin/Error404";
     }

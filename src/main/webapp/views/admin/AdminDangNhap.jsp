@@ -14,17 +14,30 @@
     <link href="/css/style.min.css" rel="stylesheet">
 </head>
 
+<style>
+    .bg-loginadmin {
+        background-image: url('/assets/images/dhkh.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+    .bg-transparent {
+        background-color: rgba(255, 255, 255, 0.5) !important;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3) !important;;
+        border-radius: 10px !important;;
+        border: 5px solid rgba(0, 0, 0, 0.1) !important;;
+    }
+</style>
+
 <body>
-    <%@ include file="../ui/modal_login.jsp" %>
-    <div class="bg-light p-5" style="min-height: 100vh">
+    <div class="bg-loginadmin bg-light p-5" style="min-height: 100vh">
         <div class="container">
             <div class="row justify-content-md-center">
                 <div class="col-12 col-md-11 col-lg-8 col-xl-7 col-xxl-6">
-                    <div class="bg-white p-4 p-md-5 rounded shadow-sm">
+                    <div class="bg-transparent  p-4 p-md-5 rounded shadow-sm">
                         <div class="row">
                             <div class="col-12">
                                 <div class="mb-5 text-center">
-                                    <h3>Đăng nhập hệ thống Quản lý tài liệu sinh viên <br> Trường Đại học Khoa học - Đại học Huế</h3>
+                                    <h2 class="text-black">Đăng nhập hệ thống Quản lý tài liệu sinh viên Trường Đại học Khoa học - Đại học Huế</h2>
                                 </div>
                             </div>
                         </div>
@@ -36,16 +49,16 @@
                         <form action="/admin/login" method="post" class="">
                             <div class="row gy-3 gy-md-4">
                                 <div class="col-12">
-                                    <label for="tenNguoiDung" class="form-label">Tài khoản <span class="text-danger">*</span></label>
+                                    <label for="tenNguoiDung" class="form-label fs-5">Tài khoản <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="tenNguoiDung" id="tenNguoiDung" placeholder="Nhập tên tài khoản" required>
                                 </div>
                                 <div class="col-12">
-                                    <label for="matKhau" class="form-label">Mật khẩu <span class="text-danger">*</span></label>
+                                    <label for="matKhau" class="form-label fs-5">Mật khẩu <span class="text-danger">*</span></label>
                                     <input type="password" class="form-control" name="matKhau" id="matKhau" value="" placeholder="Nhập mật khẩu" required>
                                 </div>
                                 <div class="col-12">
                                     <div class="d-grid">
-                                        <button class="btn btn-lg btn-primary" type="submit">Đăng nhập</button>
+                                        <button class="btn btn-lg btn-info text-white" type="submit">Đăng nhập</button>
                                     </div>
                                 </div>
                             </div>
@@ -66,7 +79,7 @@
                     <div class="modal-content border border-3 rounded-circle" style="width: 300px; height: 300px;">
                         <div class="modal-body d-flex justify-content-center align-items-center p-0">
                             <div class="text-success text-center p-0 mb-4">
-                                <i class="bi bi-check-circle icon-login fs-1"></i>
+                                <i class="bi bi-check-circle icon-login"></i>
                                 <h2 class="text-center mt-2 fw-bold">Đăng nhập <br> thành công!</h2>
                             </div>
                         </div>
@@ -89,7 +102,6 @@
             </div>
         </c:otherwise>
     </c:choose>
-
     <script>
         $(document).ready(function() {
             var statusLogin = new URLSearchParams(window.location.search).get("statusLogin");

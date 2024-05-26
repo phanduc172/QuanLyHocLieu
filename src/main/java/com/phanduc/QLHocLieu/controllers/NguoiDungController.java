@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,6 +33,8 @@ public class NguoiDungController {
     @Autowired
     ChuyenNganhRepository chuyenNganhRepository;
     @Autowired
+    HoatDongGanDayRepository hoatDongGanDayRepository;
+    @Autowired
     @Qualifier("uploadImageService")
     private StorageService storageService;
 
@@ -49,6 +52,9 @@ public class NguoiDungController {
         if (loggedInUser == null) {
             return "redirect:/trangchu";
         }
+        if(loggedInUser != null) {
+            modelMap.addAttribute("currentPasswordHidden", loggedInUser.getMatKhau());
+        }
         NguoiDung nguoiDung = nguoiDungRepository.getUserByMaNguoiDung(maNguoiDung);
 //        List<TaiLieu> taiLieus = taiLieuRepository.findByTaiLenBoi(maNguoiDung);
         List<TaiLieu> taiLieus = taiLieuRepository.findByMaTrangThaiAndTaiLenBoi(trangThaiDaDuyet, maNguoiDung);
@@ -64,6 +70,7 @@ public class NguoiDungController {
         modelMap.addAttribute("taiLieus", taiLieus);
         modelMap.addAttribute("khoas", khoas);
         modelMap.addAttribute("chuyenNganhs", chuyenNganhs);
+
         return "UserInfo";
     }
 
@@ -144,28 +151,17 @@ public class NguoiDungController {
         if (existingUser == null) {
             return "trangchu";
         }
-
         existingUser.setHoTen(nguoiDung.getHoTen());
         existingUser.setTenNguoiDung(nguoiDung.getTenNguoiDung());
         existingUser.setEmail(nguoiDung.getEmail());
-
         nguoiDungRepository.save(existingUser);
-
+        HoatDongGanDay hoatDong = new HoatDongGanDay();
+        hoatDong.setMaNguoiDung(nguoiDung.getMaNguoiDung());
+        hoatDong.setLoaiHoatDong("Cập nhật");
+        hoatDong.setMoTaHoatDong("Cập nhật người dùng: " + existingUser.getHoTen());
+        hoatDong.setNgay(new Date());
         return "redirect:/userinfo/" + existingUser.getMaNguoiDung();
     }
-
-//    @PostMapping("/userinfo/update-avatar")
-//    public RedirectView updateAvatar(@RequestParam("file") MultipartFile file, HttpSession session) {
-//        Integer maNguoiDung = ((NguoiDung) session.getAttribute("loggedInUser")).getMaNguoiDung();
-//        NguoiDung nguoiDung = nguoiDungRepository.getUserByMaNguoiDung(maNguoiDung);
-//        String filePath = storageService.store(file);
-//        String prefixedFilePath = "/upload/images/" + filePath;
-//        nguoiDung.setAnh(prefixedFilePath);
-//        nguoiDungRepository.save(nguoiDung);
-//        System.out.println("Đường dẫn của tệp đã được lưu: " + prefixedFilePath);
-//        System.out.println("Lưu đường dẫn vào CSDL thành công");
-//        return new RedirectView("/userinfo/" + maNguoiDung.toString());
-//    }
 
     @PostMapping("/userinfo/update-avatar")
     public RedirectView updateAvatar(@RequestParam("file") MultipartFile file, HttpSession session) {
@@ -181,32 +177,16 @@ public class NguoiDungController {
         session.setAttribute("loggedInUser", nguoiDung);
         System.out.println("Đường dẫn của tệp đã được lưu: " + prefixedFilePath);
         System.out.println("Lưu đường dẫn vào CSDL thành công");
+
+        HoatDongGanDay hoatDong = new HoatDongGanDay();
+        hoatDong.setMaNguoiDung(nguoiDung.getMaNguoiDung());
+        hoatDong.setLoaiHoatDong("Cập nhật");
+        hoatDong.setMoTaHoatDong("Vừa cập nhật ảnh đại diện");
+        hoatDong.setNgay(new Date());
+        hoatDongGanDayRepository.save(hoatDong);
         return new RedirectView("/userinfo/" + maNguoiDung.toString());
     }
 
-
-//    @PostMapping("/changepassword")
-//    public String changePassword(@RequestParam("currentPassword") String currentPassword,@RequestParam("newPassword") String newPassword,
-//            @RequestParam("confirmNewPassword") String confirmNewPassword,ModelMap modelMap,HttpSession session) {
-//        NguoiDung loggedInUser = (NguoiDung) session.getAttribute("loggedInUser");
-//        // Kiểm tra xác thực mật khẩu hiện tại
-//        if (loggedInUser != null && loggedInUser.getMatKhau().equals(currentPassword)) {
-//            // Kiểm tra xác nhận mật khẩu mới
-//            if (!newPassword.equals(confirmNewPassword)) {
-//                modelMap.addAttribute("error", "Mật khẩu mới và xác nhận mật khẩu không khớp.");
-//                System.out.println("Mật khẩu mới không trùng nhau");
-//                return "redirect:/userinfo/" + loggedInUser.getMaNguoiDung();
-//            }
-//            loggedInUser.setMatKhau(newPassword);
-//            nguoiDungRepository.save(loggedInUser);
-//            modelMap.addAttribute("success", "Mật khẩu đã được thay đổi thành công.");
-//            System.out.println("Mật khẩu đã được thay đổi thành công");
-//        } else {
-//            modelMap.addAttribute("error", "Mật khẩu hiện tại không đúng.");
-//            System.out.println("Mật khẩu hiện tại không đúng");
-//        }
-//        return "redirect:/userinfo/" + loggedInUser.getMaNguoiDung();
-//    }
 
     @PostMapping("/changepassword")
     public String changePassword(@RequestParam("currentPassword") String currentPassword,
@@ -228,6 +208,7 @@ public class NguoiDungController {
             }
             loggedInUser.setMatKhau(newPassword);
             nguoiDungRepository.save(loggedInUser);
+
             System.out.println("Mật khẩu đã được thay đổi thành công");
         } else {
             System.out.println("Mật khẩu hiện tại không đúng");

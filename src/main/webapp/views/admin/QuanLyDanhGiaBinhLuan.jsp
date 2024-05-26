@@ -37,17 +37,21 @@
                 <ul class="navbar-nav me-auto mt-md-0 ">
                     <li class="nav-item hidden-sm-down">
                         <form class="app-search ps-3">
-                            <input type="text" class="form-control" placeholder="Search for..."> <a
-                                class="srh-btn"><i class="ti-search"></i></a>
+                            <input type="text" class="form-control" placeholder="Tìm kiếm...">
+                            <a class="srh-btn"><i class="ti-search"></i></a>
                         </form>
                     </li>
                 </ul>
                 <ul class="navbar-nav">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle waves-effect waves-dark" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="../assets/images/avt.png" alt="user" class="profile-pic me-2">Phan Đức
-                        </a>
-                        <ul class="dropdown-menu show" aria-labelledby="navbarDropdown"></ul>
+                        <div class="dropdown">
+                            <a class="nav-link dropdown-toggle waves-effect waves-dark" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="${loggedInAdmin.anh}" alt="user" class="profile-pic me-2">${loggedInAdmin.hoTen}
+                            </a>
+                            <ul class="dropdown-menu p-0" aria-labelledby="navbarDropdown">
+                                <li ><a class="dropdown-item" href="/admin/logout" id="logoutBtn">Đăng xuất</a></li>
+                            </ul>
+                        </div>
                     </li>
                 </ul>
             </div>
@@ -78,7 +82,7 @@
                     <ul>
                         <!-- Mục Quản lý -->
                         <li class="sidebar-item">
-                            <a class="sidebar-link waves-effect waves-dark sidebar-link" data-bs-toggle="collapse" href="#manageItems" aria-expanded="false" aria-controls="manageItems">
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link hide-below-1168" data-bs-toggle="collapse" href="#manageItems" aria-expanded="false" aria-controls="manageItems">
                                 <i class="me-3 fas fa-cogs" aria-hidden="true"></i>
                                 <span class="hide-menu">Quản lý</span>
                                 <i class="fas fa-chevron-down ms-auto"></i>
@@ -133,25 +137,7 @@
                         </li>
                     </ul>
                     <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="table-basic.html" aria-expanded="false">
-                            <i class="me-3 fas fa-chart-bar" aria-hidden="true"></i>
-                            <span class="hide-menu">Thống kê báo cáo</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="table-basic.html" aria-expanded="false">
-                            <i class="me-3 fas fa-bell" aria-hidden="true"></i>
-                            <span class="hide-menu">Thông báo và tương tác</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="table-basic.html" aria-expanded="false">
-                            <i class="me-3 fas fa-download" aria-hidden="true"></i>
-                            <span class="hide-menu">Truy cập Tài liệu</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="dashboard/error" aria-expanded="false">
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/dashboard/error" aria-expanded="false">
                             <i class="me-3 fas fa-exclamation-circle" aria-hidden="true"></i>
                             <span class="hide-menu">Lỗi 404</span>
                         </a>
@@ -194,10 +180,11 @@
                                         <th class="border-top-0 fs-5">Giá trị</th>
                                         <th class="border-top-0 fs-5">Nội dung</th>
                                         <th class="border-top-0 fs-5">Ngày</th>
+                                        <th class="border-top-0 fs-5">Hành động</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <c:forEach var="comment" items="${listComment}">
+                                    <c:forEach var="comment" items="${listComment.content}">
                                         <tr>
                                             <td>${comment[0]}</td>
                                             <td>${comment[1]}</td>
@@ -205,10 +192,7 @@
                                             <td>${comment[3]}</td>
                                             <td>${comment[4]}</td>
                                             <td class="text-center">
-                                                <button class="btn btn-sm btn-outline-info me-2 btn-edit"  data-bs-toggle="modal" data-bs-target="#capNhatDanhMucModal" style="width: 30px; height: 30px">
-                                                    <i class="fas fa-edit"></i>
-                                                </button>
-                                                <button id="btnXoa" class="btn btn-sm btn-outline-danger me-2" data-id="${danhmuc.maDanhMuc}" style="width: 30px; height: 30px" data-bs-toggle="modal" data-bs-target="#xoaDanhMucModal">
+                                                <button id="btnXoa" class="btn btn-sm btn-outline-danger me-2" data-id="${comment[0]}" style="width: 30px; height: 30px" data-bs-toggle="modal" data-bs-target="#xoaDanhGiaModal">
                                                     <i class="fas fa-trash-alt"></i>
                                                 </button>
                                             </td>
@@ -218,15 +202,36 @@
                                 </table>
                             </div>
 
+                            <div class="d-flex justify-content-center mt-4">
+                                <nav aria-label="Page navigation">
+                                    <ul class="pagination justify-content-center">
+                                        <li class="page-item ${listComment.first ? 'disabled' : ''}">
+                                            <a class="page-link" href="/manager/comment?page=${listComment.number - 1}&size=${listComment.size}" aria-label="Previous">
+                                                <span aria-hidden="true">&laquo;</span>
+                                            </a>
+                                        </li>
+                                        <c:forEach begin="0" end="${listComment.totalPages - 1}" var="pageNum">
+                                            <li class="page-item ${pageNum == listComment.number ? 'active' : ''}">
+                                                <a class="page-link" href="/manager/comment?page=${pageNum}&size=${listComment.size}">${pageNum + 1}</a>
+                                            </li>
+                                        </c:forEach>
+                                        <li class="page-item ${listComment.last ? 'disabled' : ''}">
+                                            <a class="page-link" href="/manager/comment?page=${listComment.number + 1}&size=${listComment.size}" aria-label="Next">
+                                                <span aria-hidden="true">&raquo;</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
                             <!-- Modal Xác nhận xóa-->
-                            <div class="modal fade" id="xoaDanhMucModal" tabindex="-1" aria-labelledby="xoaDanhMucModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="xoaDanhGiaModal" tabindex="-1" aria-labelledby="xoaDanhGiaModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="xoaDanhMucModalLabel">Xóa Danh Mục</h5>
+                                            <h5 class="modal-title" id="xoaDanhGiaModalLabel">Xóa Đánh giá và Bình luận</h5>
                                         </div>
                                         <div class="modal-body">
-                                            Bạn có chắc chắn muốn xóa danh mục này không?
+                                            Bạn có chắc chắn muốn xóa đánh giá và bình luận này không?
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btm-sm btn-outline-secondary " data-bs-dismiss="modal">Hủy</button>

@@ -11,4 +11,12 @@ public class CheckLogin {
     public static String redirectToHomePage() {
         return "redirect:/trangchu";
     }
+
+    public boolean checkLoginAdmin(HttpSession session) {
+        if (session.getAttribute("loggedInAdmin") == null) {
+            return false;
+        }
+        return true;
+    }
+
 }
