@@ -1,5 +1,6 @@
 package com.phanduc.QLHocLieu.controllers;
 
+import com.phanduc.QLHocLieu.models.CheckLogin;
 import com.phanduc.QLHocLieu.models.NguoiDung;
 import com.phanduc.QLHocLieu.repositories.NguoiDungRepository;
 import org.hibernate.engine.jdbc.connections.internal.UserSuppliedConnectionProviderImpl;
@@ -24,9 +25,13 @@ public class AdminNguoiDungController {
 
     @Autowired
     private NguoiDungRepository nguoiDungRepository;
+    private CheckLogin loginChecker = new CheckLogin();
 
     @GetMapping("/profile/{maNguoiDung}")
     public String getNguoiDungById(ModelMap modelMap, HttpSession session) {
+        if (!loginChecker.checkLoginAdmin(session)) {
+            return "redirect:/admin/login";
+        }
         NguoiDung nguoiDung = (NguoiDung) session.getAttribute("loggedInAdmin");
         modelMap.addAttribute("nguoiDung",nguoiDung);
         return "admin/AdminProfile";

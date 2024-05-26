@@ -40,17 +40,21 @@
                 <ul class="navbar-nav me-auto mt-md-0 ">
                     <li class="nav-item hidden-sm-down">
                         <form class="app-search ps-3">
-                            <input type="text" class="form-control" placeholder="Search for..."> <a
-                                class="srh-btn"><i class="ti-search"></i></a>
+                            <input type="text" class="form-control" placeholder="Tìm kiếm...">
+                            <a class="srh-btn"><i class="ti-search"></i></a>
                         </form>
                     </li>
                 </ul>
                 <ul class="navbar-nav">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle waves-effect waves-dark" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="../assets/images/avt.png" alt="user" class="profile-pic me-2">Phan Đức
-                        </a>
-                        <ul class="dropdown-menu show" aria-labelledby="navbarDropdown"></ul>
+                        <div class="dropdown">
+                            <a class="nav-link dropdown-toggle waves-effect waves-dark" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="${loggedInAdmin.anh}" alt="user" class="profile-pic me-2">${loggedInAdmin.hoTen}
+                            </a>
+                            <ul class="dropdown-menu p-0" aria-labelledby="navbarDropdown">
+                                <li ><a class="dropdown-item" href="/admin/logout" id="logoutBtn">Đăng xuất</a></li>
+                            </ul>
+                        </div>
                     </li>
                 </ul>
             </div>
@@ -81,7 +85,7 @@
                     <ul>
                         <!-- Mục Quản lý -->
                         <li class="sidebar-item">
-                            <a class="sidebar-link waves-effect waves-dark sidebar-link" data-bs-toggle="collapse" href="#manageItems" aria-expanded="false" aria-controls="manageItems">
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link hide-below-1168" data-bs-toggle="collapse" href="#manageItems" aria-expanded="false" aria-controls="manageItems">
                                 <i class="me-3 fas fa-cogs" aria-hidden="true"></i>
                                 <span class="hide-menu">Quản lý</span>
                                 <i class="fas fa-chevron-down ms-auto"></i>
@@ -126,7 +130,7 @@
                                         </a>
                                     </li>
                                     <li class="sidebar-item ms-3">
-                                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="table-basic.html" aria-expanded="false">
+                                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/manager/comment" aria-expanded="false">
                                             <i class="me-3 fas fa-comments" aria-hidden="true"></i>
                                             <span class="hide-menu">Bình luận & Đánh giá</span>
                                         </a>
@@ -136,25 +140,7 @@
                         </li>
                     </ul>
                     <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="table-basic.html" aria-expanded="false">
-                            <i class="me-3 fas fa-chart-bar" aria-hidden="true"></i>
-                            <span class="hide-menu">Thống kê báo cáo</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="table-basic.html" aria-expanded="false">
-                            <i class="me-3 fas fa-bell" aria-hidden="true"></i>
-                            <span class="hide-menu">Thông báo và tương tác</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="table-basic.html" aria-expanded="false">
-                            <i class="me-3 fas fa-download" aria-hidden="true"></i>
-                            <span class="hide-menu">Truy cập Tài liệu</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="dashboard/error" aria-expanded="false">
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/dashboard/error" aria-expanded="false">
                             <i class="me-3 fas fa-exclamation-circle" aria-hidden="true"></i>
                             <span class="hide-menu">Lỗi 404</span>
                         </a>
@@ -184,7 +170,10 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Tài liệu</h4>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h4 class="card-title m-0">Tài liệu</h4>
+                                <a href="/manager/export/tailieu/excel" class="btn btn-info text-white">Xuất Excel</a>
+                            </div>
                             <div class="table-responsive">
                                 <table class="table user-table no-wrap">
                                     <thead>
@@ -223,7 +212,7 @@
                                                 <button class="btn btn-sm btn-outline-info me-2" style="width: 30px; height: 30px">
                                                     <i class="fas fa-edit"></i>
                                                 </button>
-                                                <button class="btn btn-sm btn-outline-danger me-2" style="width: 30px; height: 30px">
+                                                <button class="btn btn-sm btn-outline-danger me-2" style="width: 30px; height: 30px" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" data-maTaiLieu="${tailieu.maTaiLieu}">
                                                     <i class="fas fa-trash-alt"></i>
                                                 </button>
                                             </td>
@@ -266,11 +255,66 @@
                 </div>
             </div>
         </div>
+        <!-- Modal Xác nhận xóa tài liệu -->
+        <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmDeleteModalLabel">Xác nhận xóa tài liệu</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="maTaiLieuInput">
+                        <p>Bạn có chắc chắn muốn xóa tài liệu này không?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Hủy</button>
+                        <button type="button" class="btn btn-danger text-white" id="confirmDeleteButton">Xóa</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <footer class="footer text-center">
             Copyright © 2024. Designed by Phan Đức
         </footer>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var myModalEl = document.getElementById('confirmDeleteModal');
+        myModalEl.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget;
+            var maTaiLieu = button.getAttribute('data-maTaiLieu');
+            var maTaiLieuInput = myModalEl.querySelector('#maTaiLieuInput');
+            maTaiLieuInput.value = maTaiLieu;
+            var documentIdText = myModalEl.querySelector('#documentIdText');
+            documentIdText.innerText = maTaiLieu;
+        });
+
+        var confirmDeleteButton = document.getElementById('confirmDeleteButton');
+        confirmDeleteButton.addEventListener('click', function () {
+            // Lấy mã tài liệu từ input ẩn
+            var maTaiLieu = document.getElementById('maTaiLieuInput').value;
+            deleteDocument(maTaiLieu);
+        });
+    });
+
+    function deleteDocument(maTaiLieu) {
+        fetch('/manager/delete/document/' + maTaiLieu, {
+            method: 'DELETE'
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Có lỗi xảy ra khi xóa tài liệu.');
+                }
+                location.reload();
+            })
+            .catch(error => {
+                console.error('Lỗi:', error);
+            });
+    }
+</script>
 
 
 <script src="/assets/plugins/jquery/dist/jquery.min.js"></script>

@@ -29,7 +29,7 @@
             <div class="navbar-header" data-logobg="skin6">
                 <a class="navbar-brand" href="/dashboard">
                     <span class="logo-text ms-3">
-                            <img src="../assets/images/PD.png" alt="homepage" class="dark-logo" style="width: 100px;"/>
+                            <img src="/assets/images/PD.png" alt="homepage" class="dark-logo" style="width: 100px;"/>
                         </span>
                 </a>
             </div>
@@ -150,12 +150,12 @@
         <div class="page-breadcrumb">
             <div class="row align-items-center">
                 <div class="col-md-6 col-8 align-self-center">
-                    <h3 class="page-title mb-0 p-0">Quản lý Thể loại</h3>
+                    <h3 class="page-title mb-0 p-0">Quản lý Đánh giá và Bình luận</h3>
                     <div class="d-flex align-items-center">
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="/dashboard/">Trang chủ</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Danh sách Thể loại</li>
+                                <li class="breadcrumb-item active" aria-current="page">Danh sách Đánh giá và Bình luận</li>
                             </ol>
                         </nav>
                     </div>
@@ -168,52 +168,31 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h4 class="card-title m-0">Thể loại</h4>
-                                <button type="button" class="btn btn-info text-white" data-bs-toggle="modal" data-bs-target="#themDanhMucModal">Thêm danh mục</button>
+                                <h4 class="card-title m-0">Tài liệu</h4>
+                                <a href="/manager/export/comment/excel" class="btn btn-info text-white">Xuất Excel</a>
                             </div>
-                            <!-- Modal Thêm Danh Mục -->
-                            <div class="modal fade" id="themDanhMucModal" tabindex="-1" aria-labelledby="themDanhMucModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered">
-                                    <div class="modal-content">
-                                        <div class="modal-header bg-info text-white">
-                                            <h5 class="modal-title" id="themDanhMucModalLabel">Thêm Danh Mục</h5>
-                                        </div>
-                                        <div class="modal-body">
-                                            <form id="themDanhMucForm" action="/manager/danhmuc/addcategory" method="post">
-                                                <div class="mb-3">
-                                                    <label for="tenDanhMuc" class="form-label">Tên danh mục:</label>
-                                                    <input type="text" class="form-control" id="tenDanhMuc" name="tenDanhMuc">
-                                                </div>
-                                            </form>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Đóng</button>
-                                            <button type="submit" form="themDanhMucForm" class="btn btn-info text-white">Thêm</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
                             <div class="table-responsive">
                                 <table class="table user-table no-wrap">
                                     <thead>
                                     <tr class="text-center">
-                                        <th class="border-top-0 fs-5 w-25">ID</th>
-                                        <th class="border-top-0 fs-5">Thể loại</th>
+                                        <th class="border-top-0 fs-5 w-25">Họ tên</th>
+                                        <th class="border-top-0 fs-5">Tiêu đề</th>
+                                        <th class="border-top-0 fs-5">Giá trị</th>
+                                        <th class="border-top-0 fs-5">Nội dung</th>
+                                        <th class="border-top-0 fs-5">Ngày</th>
                                         <th class="border-top-0 fs-5">Hành động</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <c:forEach var="danhmuc" items="${listDanhMuc}">
+                                    <c:forEach var="comment" items="${listComment.content}">
                                         <tr>
-                                            <td class="text-center">${danhmuc.maDanhMuc}</td>
-                                            <td>${danhmuc.tenDanhMuc}</td>
+                                            <td>${comment[0]}</td>
+                                            <td>${comment[1]}</td>
+                                            <td class="text-center">${comment[2]}</td>
+                                            <td>${comment[3]}</td>
+                                            <td>${comment[4]}</td>
                                             <td class="text-center">
-                                                <button class="btn btn-sm btn-outline-info me-2 btn-edit"  data-bs-toggle="modal" data-bs-target="#capNhatDanhMucModal" style="width: 30px; height: 30px"
-                                                        data-id="${danhmuc.maDanhMuc}" data-nameCategory="${danhmuc.tenDanhMuc}">
-                                                    <i class="fas fa-edit"></i>
-                                                </button>
-                                                <button id="btnXoa" class="btn btn-sm btn-outline-danger me-2" data-id="${danhmuc.maDanhMuc}" style="width: 30px; height: 30px" data-bs-toggle="modal" data-bs-target="#xoaDanhMucModal">
+                                                <button id="btnXoa" class="btn btn-sm btn-outline-danger me-2" data-id="${comment[0]}" style="width: 30px; height: 30px" data-bs-toggle="modal" data-bs-target="#xoaDanhGiaModal">
                                                     <i class="fas fa-trash-alt"></i>
                                                 </button>
                                             </td>
@@ -223,15 +202,36 @@
                                 </table>
                             </div>
 
+                            <div class="d-flex justify-content-center mt-4">
+                                <nav aria-label="Page navigation">
+                                    <ul class="pagination justify-content-center">
+                                        <li class="page-item ${listComment.first ? 'disabled' : ''}">
+                                            <a class="page-link" href="/manager/comment?page=${listComment.number - 1}&size=${listComment.size}" aria-label="Previous">
+                                                <span aria-hidden="true">&laquo;</span>
+                                            </a>
+                                        </li>
+                                        <c:forEach begin="0" end="${listComment.totalPages - 1}" var="pageNum">
+                                            <li class="page-item ${pageNum == listComment.number ? 'active' : ''}">
+                                                <a class="page-link" href="/manager/comment?page=${pageNum}&size=${listComment.size}">${pageNum + 1}</a>
+                                            </li>
+                                        </c:forEach>
+                                        <li class="page-item ${listComment.last ? 'disabled' : ''}">
+                                            <a class="page-link" href="/manager/comment?page=${listComment.number + 1}&size=${listComment.size}" aria-label="Next">
+                                                <span aria-hidden="true">&raquo;</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
                             <!-- Modal Xác nhận xóa-->
-                            <div class="modal fade" id="xoaDanhMucModal" tabindex="-1" aria-labelledby="xoaDanhMucModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="xoaDanhGiaModal" tabindex="-1" aria-labelledby="xoaDanhGiaModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="xoaDanhMucModalLabel">Xóa Danh Mục</h5>
+                                            <h5 class="modal-title" id="xoaDanhGiaModalLabel">Xóa Đánh giá và Bình luận</h5>
                                         </div>
                                         <div class="modal-body">
-                                            Bạn có chắc chắn muốn xóa danh mục này không?
+                                            Bạn có chắc chắn muốn xóa đánh giá và bình luận này không?
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btm-sm btn-outline-secondary " data-bs-dismiss="modal">Hủy</button>
@@ -240,30 +240,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- Modal Cập nhật Danh mục -->
-                            <div class="modal fade" id="capNhatDanhMucModal" tabindex="-1" aria-labelledby="capNhatDanhMucModalLabel" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content" style="border-radius: 25px">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="capNhatDanhMucModalLabel">Cập Nhật Danh Mục</h5>
-                                        </div>
-                                        <div class="modal-body">
-                                            <form id="formCapNhatDanhMuc" action="/manager/danhmuc/update" method="POST">
-                                                <input type="hidden" id="maDanhMuc" name="maDanhMuc">
-                                                <div class="mb-3">
-                                                    <label for="tenDanhMuc" class="form-label">Tên Danh Mục:</label>
-                                                    <input type="text" class="form-control" id="updatetenDanhMuc" name="tenDanhMuc">
-                                                </div>
-                                            </form>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-md btn-outline-secondary" data-bs-dismiss="modal">Hủy</button>
-                                            <button type="submit" form="formCapNhatDanhMuc" class="btn btn-md btn-info text-white" id="btnCapNhat">Cập nhật</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -281,28 +257,6 @@
 <!-- <script src="js/app-style-switcher.js"></script> -->
 <script src="/js/custom.js"></script>
 <!--This page JavaScript -->
-<script>
-    $(document).ready(function () {
-        $('#xoaDanhMucModal').on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget);
-            var maDanhMuc = button.data('id');
-            var confirmBtn = $(this).find('.modal-footer .btn-danger');
-            confirmBtn.click(function () {
-                $.ajax({
-                    type: "DELETE",
-                    url: "/manager/danhmuc/delete/" + maDanhMuc,
-                    success: function (response) {
-                        $('#xoaDanhMucModal').modal('hide');
-                        location.reload()
-                    },
-                    error: function (xhr, status, error) {
-                        console.log(error);
-                    }
-                });
-            });
-        });
-    });
-</script>
 </body>
 
 </html>

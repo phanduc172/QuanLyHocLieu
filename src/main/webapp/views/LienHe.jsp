@@ -16,15 +16,58 @@
 <body>
 
 <style>
-    .feature-list .list-group-item {
-        margin-bottom: 10px;
-        padding: 15px;
+
+    .contact-card {
+        margin-bottom: 20px;
+        padding: 20px;
         border-radius: 10px;
         background-color: #fff;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
-    .star-icon {
-        color: gold;
+    .contact-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    }
+    .contact-icon {
+        color: #003C6C;
+        margin-right: 10px;
+    }
+    .contact-card h5 {
+        border-bottom: 3px solid #007bff;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+    }
+    .contact-link a {
+        text-decoration: none;
+        color: #007bff;
+    }
+    .contact-link a:hover {
+        text-decoration: underline;
+    }
+    .contact-detail {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    .map-card {
+        margin-bottom: 20px;
+        padding: 20px;
+        border-radius: 10px;
+        background-color: #fff;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+    .map-card h5 {
+        border-bottom: 3px solid #007bff;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+    }
+    .map-iframe {
+        width: 100%;
+        height: 600px;
+        border: 0;
+        border-radius: 10px;
+        overflow: hidden;
     }
 </style>
 
@@ -263,55 +306,80 @@
 <div class="container main min-vh-100">
     <div class="row justify-content-center mt-5">
         <div class="col-lg-8 text-center">
-            <h2 class="text-danger">Hệ thống Quản lý và chia sẻ Tài liệu học tập của sinh viên Trường Đại học Khoa học - Đại học Huế</h2>
+            <h2 class="text-danger mb-4">Thông tin liên hệ</h2>
         </div>
     </div>
-    <section>
-        <div class="card p-3 my-3">
-            <h5 class="text-primary ms-3">Tính năng của người dùng</h5>
-            <ol class="list-group list-group-numbered feature-list">
-                <li class="list-group-item"><strong>Tìm kiếm tài liệu:</strong> Sinh viên có thể tìm kiếm tài liệu nhanh chóng.</li>
-                <li class="list-group-item"><strong>Tải lên tài liệu:</strong> Sinh viên có thể tải lên bài tập, báo cáo và các tài liệu khác.</li>
-                <li class="list-group-item"><strong>Tải xuống tài liệu:</strong> Người dùng có thể tải xuống tài liệu được chia sẻ bởi người khác.</li>
-                <li class="list-group-item"><strong>Đánh giá tài liệu:</strong> Đánh giá các giá trị từ 1 <i class="bi bi-star-fill star-icon"></i> đến 5 <i class="bi bi-star-fill star-icon"></i> về tài liệu có hữu ích với bạn.</li>
-                <li class="list-group-item"><strong>Bình luận:</strong> Để lại bình luận trên tài liệu để cung cấp phản hồi hoặc đặt câu hỏi.</li>
-            </ol>
-        </div>
-    </section>
 
-    <div class="row">
-        <div class="col-md-6">
-            <div class="card p-3 my-3">
-                <h5 class="text-primary ms-3">Cách thức để truy cập tài liệu</h5>
-                <ol class="list-group list-group-numbered access-steps">
-                    <li class="list-group-item">Người dùng truy cập vào Trang chủ.</li>
-                    <li class="list-group-item">Chọn tài liệu phù hợp ở Trang chủ hoặc Tìm kiếm tài liệu bằng từ khóa.</li>
-                    <li class="list-group-item">Hệ thống hiển thị danh sách tài liệu phù hợp hoặc Không tìm thấy tài liệu.</li>
-                    <li class="list-group-item">Chọn vào xem Chi tiết tài liệu.</li>
-                    <li class="list-group-item">Bạn chưa đăng nhập hệ thống quay về Trang chủ.</li>
-                    <li class="list-group-item">Bạn đã đăng nhập thành công vào hệ thống.</li>
-                    <li class="list-group-item">Hiển thị danh sách tài liệu phù hợp với bạn.</li>
-                    <li class="list-group-item">Người dùng đọc tài liệu, và tải xuống tài liệu nếu cần thiết.</li>
-                    <li class="list-group-item">Người dùng xem những đánh giá và nội dung bình luận của người khác.</li>
-                    <li class="list-group-item">Tham gia thảo luận bằng cách để lại bình luận trên tài liệu.</li>
-                </ol>
+    <div class="row ">
+        <div class="col-lg-6">
+            <div class="contact-card">
+                <h5 class="text-center">Liên hệ với chúng tôi</h5>
+                <div class="mb-2">
+                    <strong class="ms-4">Trường Đại học Khoa học - Đại học Huế</strong>
+                </div>
+                <div class="contact-detail">
+                    <i class="bi bi-geo-alt-fill contact-icon"></i>
+                    <div>
+                        <strong>Địa chỉ:</strong>77 Nguyễn Huệ, Thành phố Huế, Thừa Thiên Huế, Việt Nam
+                    </div>
+                </div>
+                <div class="contact-detail">
+                    <i class="bi bi-telephone-fill contact-icon"></i>
+                    <div>
+                        <strong>Điện thoại:</strong> (+84) 0234.3823290 – Fax: (+84) 0234.3824901
+                    </div>
+                </div>
+                <div class="contact-detail contact-link">
+                    <i class="bi bi-globe2 contact-icon"></i>
+                    <div>
+                        <strong>Website:</strong> <a href="http://husc.edu.vn" target="_blank">http://husc.edu.vn</a>
+                    </div>
+                </div>
+            </div>
+            <div class="contact-card mt-5">
+                <h5 class="mb-3 text-center">Gửi tin nhắn</h5>
+                <form id="contactForm">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Họ và tên</label>
+                        <input type="text" class="form-control" id="name" placeholder="Nhập họ và tên">
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" placeholder="Nhập email">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Gửi</button>
+                </form>
+
+                <script>
+                    document.getElementById('contactForm').addEventListener('submit', function(event) {
+                        event.preventDefault();
+                        const formData = {
+                            name: document.getElementById('name').value,
+                            email: document.getElementById('email').value
+                        };
+
+                        fetch('/api/contact/submit', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(formData)
+                        })
+                            .then(response => response.text())
+                            .then(data => alert(data))
+                            .catch(error => console.error('Error:', error));
+                    });
+                </script>
             </div>
         </div>
-        <div class="col-md-6">
-            <div class="card p-3 my-3">
-                <h5 class="text-primary ms-3">Cách thức để chia sẻ tài liệu lên hệ thống</h5>
-                <ol class="list-group list-group-numbered access-steps">
-                    <li class="list-group-item">Đăng nhập vào tài khoản của bạn.</li>
-                    <li class="list-group-item">Nếu bạn chưa có tài khoản thì vui lòng đăng ký tài khoản.</li>
-                    <li class="list-group-item">Tại bất cứ màn hình nào người dùng có thể bấm nút "Tải lên tài liệu".</li>
-                    <li class="list-group-item">Hệ thống hiển thị giao diện tải lên tài liệu.</li>
-                    <li class="list-group-item">Người dùng thực hiện chọn tệp và nội dung tài liệu.</li>
-                    <li class="list-group-item">Hệ thống thực hiện xử lý tài liệu tải lên ở trạng thái chờ duyệt.</li>
-                    <li class="list-group-item">Tham gia thảo luận bằng cách để lại bình luận trên tài liệu.</li>
-                </ol>
+        <div class="col-lg-6">
+            <div class="map-card">
+                <h5 class="mb-3 text-center">Vị trí trên bản đồ</h5>
+                <iframe class="map-iframe"
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3826.324044905867!2d107.59014767417914!3d16.459121584278318!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3141a13f462a1445%3A0x1b70ba6cb49fb526!2zVHLGsOG7nW5nIMSQ4bqhaSBo4buNYyBLaG9hIGjhu41jIEh14bq_!5e0!3m2!1svi!2s!4v1716175901979!5m2!1svi!2s"
+                        allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
         </div>
-
     </div>
 </div>
 

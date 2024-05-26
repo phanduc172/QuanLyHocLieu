@@ -38,17 +38,21 @@
                 <ul class="navbar-nav me-auto mt-md-0 ">
                     <li class="nav-item hidden-sm-down">
                         <form class="app-search ps-3">
-                            <input type="text" class="form-control" placeholder="Search for..."> <a
-                                class="srh-btn"><i class="ti-search"></i></a>
+                            <input type="text" class="form-control" placeholder="Tìm kiếm...">
+                            <a class="srh-btn"><i class="ti-search"></i></a>
                         </form>
                     </li>
                 </ul>
                 <ul class="navbar-nav">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle waves-effect waves-dark" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="/assets/images/avt.png" alt="user" class="profile-pic me-2">Phan Đức
-                        </a>
-                        <ul class="dropdown-menu show" aria-labelledby="navbarDropdown"></ul>
+                        <div class="dropdown">
+                            <a class="nav-link dropdown-toggle waves-effect waves-dark" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="${loggedInAdmin.anh}" alt="user" class="profile-pic me-2">${loggedInAdmin.hoTen}
+                            </a>
+                            <ul class="dropdown-menu p-0" aria-labelledby="navbarDropdown">
+                                <li ><a class="dropdown-item" href="/admin/logout" id="logoutBtn">Đăng xuất</a></li>
+                            </ul>
+                        </div>
                     </li>
                 </ul>
             </div>
@@ -79,7 +83,7 @@
                     <ul>
                         <!-- Mục Quản lý -->
                         <li class="sidebar-item">
-                            <a class="sidebar-link waves-effect waves-dark sidebar-link" data-bs-toggle="collapse" href="#manageItems" aria-expanded="false" aria-controls="manageItems">
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link hide-below-1168" data-bs-toggle="collapse" href="#manageItems" aria-expanded="false" aria-controls="manageItems">
                                 <i class="me-3 fas fa-cogs" aria-hidden="true"></i>
                                 <span class="hide-menu">Quản lý</span>
                                 <i class="fas fa-chevron-down ms-auto"></i>
@@ -124,7 +128,7 @@
                                         </a>
                                     </li>
                                     <li class="sidebar-item ms-3">
-                                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="table-basic.html" aria-expanded="false">
+                                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/manager/comment" aria-expanded="false">
                                             <i class="me-3 fas fa-comments" aria-hidden="true"></i>
                                             <span class="hide-menu">Bình luận & Đánh giá</span>
                                         </a>
@@ -134,25 +138,7 @@
                         </li>
                     </ul>
                     <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="table-basic.html" aria-expanded="false">
-                            <i class="me-3 fas fa-chart-bar" aria-hidden="true"></i>
-                            <span class="hide-menu">Thống kê báo cáo</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="table-basic.html" aria-expanded="false">
-                            <i class="me-3 fas fa-bell" aria-hidden="true"></i>
-                            <span class="hide-menu">Thông báo và tương tác</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="table-basic.html" aria-expanded="false">
-                            <i class="me-3 fas fa-download" aria-hidden="true"></i>
-                            <span class="hide-menu">Truy cập Tài liệu</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="dashboard/error" aria-expanded="false">
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/dashboard/error" aria-expanded="false">
                             <i class="me-3 fas fa-exclamation-circle" aria-hidden="true"></i>
                             <span class="hide-menu">Lỗi 404</span>
                         </a>

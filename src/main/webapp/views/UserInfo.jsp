@@ -15,7 +15,6 @@
 </head>
 <body>
 
-
 <header>
   <nav class="navbar navbar-expand-xl bg-light fixed-top" style="z-index: 1080">
     <div class="container">
@@ -73,10 +72,10 @@
             </ul>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Giới thiệu</a>
+            <a class="nav-link" href="/introduction">Giới thiệu</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Liên hệ</a>
+            <a class="nav-link" href="/contact">Liên hệ</a>
           </li>
         </ul>
 
@@ -349,7 +348,6 @@
           Danh sách tài liệu đã tải lên
         </div>
         <ul class="list-group list-group-flush">
-          <%-- Kiểm tra xem có danh sách tài liệu không --%>
           <c:if test="${empty taiLieus}">
             <li class="list-group-item">${noDocuments}</li>
           </c:if>
@@ -380,7 +378,7 @@
       <!-- Modal xem chi tiết tài liệu theo mã tài liệu -->
       <div class="modal fade" id="detailsDocumentModal" tabindex="-1" aria-labelledby="detailsDocumentModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-          <div class="modal-content">
+          <div class="modal-content main">
             <div class="modal-header text-white px-3 py-2 bg-custom-blue ">
               <span class="fas fa-info"></span>
               <h5 class="modal-title ms-2" id="detailsDocumentModalLabel">Chi tiết tài liệu</h5>
@@ -420,7 +418,7 @@
       <!-- Modal chỉnh sửa tài liệu -->
       <div class="modal fade" id="editDocumentModal" tabindex="-1" aria-labelledby="editDocumentModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
-          <div class="modal-content modelUser">
+          <div class="modal-content main">
             <div class="modal-header px-3 py-2 text-white bg-custom-blue">
               <i class="bi bi-pencil-fill"></i>
               <h5 class="modal-title ms-2" id="editDocumentModalLabel">Chỉnh sửa tài liệu</h5>
@@ -513,7 +511,7 @@
     }
   };
 </script>
-
+<script src="/js/password.js"></script>
 <script src="/js/main.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>

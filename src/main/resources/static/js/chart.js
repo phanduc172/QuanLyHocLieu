@@ -37,58 +37,75 @@ fetch('http://localhost:8080/dashboard/api/tailieu')
         console.error('Error fetching data:', error);
     });
 //Biểu đồ thống kê số lượng tài liệu tải lên
+// Tạo một đối tượng XMLHttpRequest
 
-//Biểu đồ thống kê hoạt động gần đây
-fetch('http://localhost:8080/dashboard/api/hoatdong')
-    .then(response => response.json())
-    .then(data => {
-        var labels = [];
-        var soLuongDangNhap = [];
-        var soLuongTaiLen = [];
-        var soLuongCapNhat = [];
+var xhttp = new XMLHttpRequest();
 
-        // Lấy tối đa 10 ngày cuối cùng
-        var lastTenDaysData = data.slice(-10);
+// Đặt hàm xử lý sự kiện cho khi nhận được phản hồi từ API
+xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        // Khi nhận được phản hồi, lấy dữ liệu JSON từ phản hồi
+        var activitiesData = JSON.parse(this.responseText);
 
-        lastTenDaysData.forEach(item => {
-            labels.push(item.ngay);
-            if (item.loaiHoatDong === 'Đăng nhập') {
-                soLuongDangNhap.push(item.soLuongHoatDong);
-            } else if (item.loaiHoatDong === 'Tải lên') {
-                soLuongTaiLen.push(item.soLuongHoatDong);
-            } else if (item.loaiHoatDong === 'Cập nhật') {
-                soLuongCapNhat.push(item.soLuongHoatDong);
+        // Tạo một đối tượng Map để lưu trữ dữ liệu của từng ngày
+        var dailyDataMap = {};
+
+        // Lặp qua dữ liệu và tính tổng số hoạt động của mỗi loại trong cùng một ngày
+        activitiesData.forEach(function(activity) {
+            var ngay = activity.ngay;
+            var loaiHoatDong = activity.loaiHoatDong;
+            var soLuongHoatDong = activity.soLuongHoatDong;
+
+            // Kiểm tra xem ngày đã tồn tại trong dailyDataMap chưa
+            if (!dailyDataMap[ngay]) {
+                dailyDataMap[ngay] = {};
+            }
+
+            // Tăng số lượng hoạt động của loại tương ứng trong ngày
+            if (!dailyDataMap[ngay][loaiHoatDong]) {
+                dailyDataMap[ngay][loaiHoatDong] = soLuongHoatDong;
+            } else {
+                dailyDataMap[ngay][loaiHoatDong] += soLuongHoatDong;
             }
         });
 
+        // Biến dữ liệu trong dailyDataMap thành mảng dữ liệu để tạo biểu đồ
+        var dates = Object.keys(dailyDataMap);
+        var loginCounts = [];
+        var uploadCounts = [];
+        var updateCounts = [];
+
+        dates.forEach(function(ngay) {
+            loginCounts.push(dailyDataMap[ngay]["Đăng nhập"] || 0);
+            uploadCounts.push(dailyDataMap[ngay]["Tải lên"] || 0);
+            updateCounts.push(dailyDataMap[ngay]["Cập nhật"] || 0);
+        });
+
+        // Tạo biểu đồ từ dữ liệu đã tính toán
         var ctx = document.getElementById('myChartActivity').getContext('2d');
-        var myChartActivity = new Chart(ctx, {
-            type: 'line',
+        var myChart = new Chart(ctx, {
+            type: 'bar',
             data: {
-                labels: labels,
-                datasets: [
-                    {
-                        label: 'Đăng nhập',
-                        data: soLuongDangNhap,
-                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                        borderColor: 'rgba(255, 99, 132, 1)',
-                        borderWidth: 1
-                    },
-                    {
-                        label: 'Tải lên',
-                        data: soLuongTaiLen,
-                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                        borderColor: 'rgba(54, 162, 235, 1)',
-                        borderWidth: 1
-                    },
-                    {
-                        label: 'Cập nhật',
-                        data: soLuongCapNhat,
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        borderWidth: 1
-                    }
-                ]
+                labels: dates,
+                datasets: [{
+                    label: 'Đăng nhập',
+                    data: loginCounts,
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }, {
+                    label: 'Tải lên',
+                    data: uploadCounts,
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }, {
+                    label: 'Cập nhật',
+                    data: updateCounts,
+                    backgroundColor: 'rgba(255, 206, 86, 0.2)',
+                    borderColor: 'rgba(255, 206, 86, 1)',
+                    borderWidth: 1
+                }]
             },
             options: {
                 scales: {
@@ -98,6 +115,11 @@ fetch('http://localhost:8080/dashboard/api/hoatdong')
                 }
             }
         });
-    })
-    .catch(error => console.error('Lỗi:', error));
-//Biểu đồ thống kê hoạt động gần đây
+    }
+};
+
+// Mở một yêu cầu GET đến API
+xhttp.open("GET", "http://localhost:8080/dashboard/api/hoatdong", true);
+xhttp.send();
+
+// //Biểu đồ thống kê hoạt động gần đây

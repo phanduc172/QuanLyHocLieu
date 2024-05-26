@@ -2,6 +2,8 @@ package com.phanduc.QLHocLieu.controllers;
 
 import com.phanduc.QLHocLieu.models.*;
 import com.phanduc.QLHocLieu.repositories.*;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,6 +14,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -29,16 +35,21 @@ public class AdminManagerController {
     private TaiLieuRepository taiLieuRepository;
     @Autowired
     private NguoiDungRepository nguoiDungRepository;
+    private CheckLogin loginChecker = new CheckLogin();
 
+    //Tài liệu
     @GetMapping("/tailieu")
     //http://localhost:8080/manager/tailieu
     public String getAllTaiLieu(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            ModelMap modelMap
-    ) {
+            ModelMap modelMap, HttpSession session
+            ) {
+        if (!loginChecker.checkLoginAdmin(session)) {
+            return "redirect:/admin/login";
+        }
         Pageable pageable = PageRequest.of(page, size);
-        Page<TaiLieu> taiLieuPage = taiLieuRepository.findAll(pageable);
+        Page<TaiLieu> taiLieuPage = taiLieuRepository.findByMaTrangThai(1,pageable);
         List<TaiLieu> listTaiLieu = taiLieuPage.getContent();
         modelMap.addAttribute("listTaiLieu", listTaiLieu);
         modelMap.addAttribute("currentPage", taiLieuPage.getNumber());
@@ -47,13 +58,85 @@ public class AdminManagerController {
 
         return "admin/QuanLyTaiLieu";
     }
+
+    @GetMapping("/export/tailieu/excel")
+    public void exportToExcel(HttpServletResponse response) throws IOException {
+        response.setContentType("application/octet-stream");
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=tailieu.xlsx";
+        response.setHeader(headerKey, headerValue);
+
+        List<TaiLieu> listTaiLieu = taiLieuRepository.findAll();
+
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("Tài Liệu");
+
+        Row headerRow = sheet.createRow(0);
+        CellStyle headerCellStyle = workbook.createCellStyle();
+        Font headerFont = workbook.createFont();
+        headerFont.setBold(true);
+        headerCellStyle.setFont(headerFont);
+
+        String[] columns = {"ID", "Tiêu đề", "Mô tả", "Đường dẫn tệp", "Ảnh tài liệu", "Người tải lên", "Ngày tải lên", "Tải xuống", "Danh mục", "Chuyên ngành", "Lượt truy cập", "Trạng thái"};
+        for (int i = 0; i < columns.length; i++) {
+            Cell cell = headerRow.createCell(i);
+            cell.setCellValue(columns[i]);
+            cell.setCellStyle(headerCellStyle);
+        }
+
+        int rowNum = 1;
+        for (TaiLieu tailieu : listTaiLieu) {
+            Row row = sheet.createRow(rowNum++);
+
+            row.createCell(0).setCellValue(tailieu.getMaTaiLieu());
+            row.createCell(1).setCellValue(tailieu.getTieuDe());
+            row.createCell(2).setCellValue(tailieu.getMoTa());
+            row.createCell(3).setCellValue(tailieu.getDuongDanTep());
+            row.createCell(4).setCellValue(tailieu.getAnhTaiLieu());
+            row.createCell(5).setCellValue(tailieu.getTaiLenBoi());
+            row.createCell(6).setCellValue(tailieu.getNgayTaiLen().toString());
+            row.createCell(7).setCellValue(tailieu.getSoLuotTaiXuong());
+            row.createCell(8).setCellValue(tailieu.getMaDanhMuc());
+            row.createCell(9).setCellValue(tailieu.getMaChuyenNganh());
+            row.createCell(10).setCellValue(tailieu.getSoLuotTruyCap());
+            row.createCell(11).setCellValue(tailieu.getMaTrangThai());
+        }
+
+        for (int i = 0; i < columns.length; i++) {
+            sheet.autoSizeColumn(i);
+        }
+
+        ServletOutputStream outputStream = response.getOutputStream();
+        workbook.write(outputStream);
+        workbook.close();
+
+        outputStream.close();
+    }
+
+    @DeleteMapping("/delete/document/{maTaiLieu}")
+    //http://localhost:8080/manager/delete/document/12
+    public ResponseEntity<String> deleteDocument(@PathVariable("maTaiLieu") Integer maTaiLieu) {
+        Optional<TaiLieu> taiLieuOptional = taiLieuRepository.findByMaTaiLieu(maTaiLieu);
+        if (taiLieuOptional.isPresent()) {
+            taiLieuRepository.deleteByMaTaiLieu(maTaiLieu);
+            return new ResponseEntity<>("Xóa tài liệu thành công", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Tài liệu không tồn tại", HttpStatus.NOT_FOUND);
+        }
+    }
+
+
+    //Tài liệu
     //Khoa - Chuyên ngành
     @GetMapping("/khoachuyennganh")
     //http://localhost:8080/manager/khoachuyennganh
     public String getKhoaChuyenNganh(@RequestParam(defaultValue = "0") int khoaPage,
                                      @RequestParam(defaultValue = "0") int chuyenNganhPage,
                                      @RequestParam(defaultValue = "10") int size,
-                                     ModelMap modelMap) {
+                                     ModelMap modelMap,HttpSession session) {
+        if (!loginChecker.checkLoginAdmin(session)) {
+            return "redirect:/admin/login";
+        }
         Page<Khoa> listKhoa = khoaRepository.findAll(PageRequest.of(khoaPage, size));
         Page<ChuyenNganh> listChuyenNganh = chuyenNganhRepository.findAll(PageRequest.of(chuyenNganhPage, size));
         modelMap.addAttribute("listKhoa", listKhoa.getContent());
@@ -140,18 +223,16 @@ public class AdminManagerController {
         return "redirect:/manager/khoachuyennganh";
     }
 
-
-
-
-
-
     //Khoa - Chuyên ngành
 
 
     //Danh mục
     @GetMapping("/danhmuc")
     //http://localhost:8080/manager/danhmuc
-    public String getAllDanhMuc(ModelMap modelMap) {
+    public String getAllDanhMuc(ModelMap modelMap,HttpSession session) {
+        if (!loginChecker.checkLoginAdmin(session)) {
+            return "redirect:/admin/login";
+        }
         List<DanhMuc> listDanhMuc = danhMucRepository.findAll();
         modelMap.addAttribute("listDanhMuc",listDanhMuc);
         return "admin/QuanLyDanhMuc";
@@ -199,7 +280,10 @@ public class AdminManagerController {
     public String getAllNguoiDung(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            ModelMap modelMap) {
+            ModelMap modelMap,HttpSession session) {
+        if (!loginChecker.checkLoginAdmin(session)) {
+            return "redirect:/admin/login";
+        }
         Pageable pageable = PageRequest.of(page, size);
         Page<NguoiDung> nguoiDungPage = nguoiDungRepository.findAll(pageable);
 
@@ -255,5 +339,60 @@ public class AdminManagerController {
     }
     // Người dùng//
 
+
+    //Đánh giá và bình luận
+    @GetMapping("/comment")
+    // http://localhost:8080/manager/comment?page=0&size=10
+    public String getAllReviewAndComment(ModelMap modelMap,
+                                         @RequestParam(defaultValue = "0") int page,
+                                         @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Object[]> listComment = taiLieuRepository.getBinhluanDanhGiaPage(pageable);
+        modelMap.addAttribute("listComment", listComment);
+        return "admin/QuanLyDanhGiaBinhLuan";
+    }
+
+    @GetMapping("/export/comment/excel")
+    @ResponseBody
+    public void exportCommentToExcel(HttpServletResponse response) throws IOException {
+        // Set content type and header
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        response.setHeader("Content-Disposition", "attachment; filename=comment_report.xlsx");
+
+        // Get data from repository
+        List<Object[]> listComment = taiLieuRepository.getBinhluanDanhGia();
+
+        // Create workbook and sheet
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("BinhLuan_DanhGia");
+
+        // Create header row
+        Row headerRow = sheet.createRow(0);
+        String[] headers = {"Họ tên", "Tiêu đề", "Giá trị", "Nội dung", "Ngày"};
+        for (int i = 0; i < headers.length; i++) {
+            Cell cell = headerRow.createCell(i);
+            cell.setCellValue(headers[i]);
+        }
+
+        // Populate data rows
+        int rowNum = 1;
+        for (Object[] comment : listComment) {
+            Row row = sheet.createRow(rowNum++);
+            for (int i = 0; i < comment.length; i++) {
+                Cell cell = row.createCell(i);
+                cell.setCellValue(String.valueOf(comment[i]));
+            }
+        }
+
+        // Auto-size columns
+        for (int i = 0; i < headers.length; i++) {
+            sheet.autoSizeColumn(i);
+        }
+
+        // Write to response stream
+        workbook.write(response.getOutputStream());
+        workbook.close();
+    }
+    //Đánh giá và bình luận
 
 }

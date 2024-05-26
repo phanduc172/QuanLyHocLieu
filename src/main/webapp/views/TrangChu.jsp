@@ -14,7 +14,33 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 
+<style>
+  .sidebar-fixed {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    height: 100%;
+    overflow-y: auto;
+    padding-top: 56px; /* Điều chỉnh nếu cần thiết để tạo khoảng cách từ đầu trang */
+    z-index: 1000; /* Đảm bảo sidebar luôn hiển thị trên nội dung chính */
+  }
+
+</style>
+
+
 <body>
+  <c:if test="${not empty messageRegister}">
+    <script>
+      alert("${messageRegister}");
+    </script>
+  </c:if>
+
+  <c:if test="${not empty messageRegisterSuccess}">
+    <script>
+      alert("${messageRegisterSuccess}");
+    </script>
+  </c:if>
+
   <%@ include file="ui/modal_login.jsp" %>
   <header>
   <nav class="navbar navbar-expand-xl bg-light fixed-top" style="z-index: 1080">
@@ -73,10 +99,10 @@
             </ul>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Giới thiệu</a>
+            <a class="nav-link" href="/introduction">Giới thiệu</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Liên hệ</a>
+            <a class="nav-link" href="/contact">Liên hệ</a>
           </li>
         </ul>
 
@@ -134,6 +160,7 @@
                                   <button type="button" class="btn btn-sm btn-secondary toggle-password" onclick="togglePasswordVisibility('loginForm')">
                                     <i class="bi bi-eye"></i>
                                   </button>
+
                                 </div>
                               </div>
                               <button class="btn btn-md btn btn-secondary btn-block" type="submit" id="loginButton">Đăng nhập</button>
@@ -155,6 +182,7 @@
                                   <button type="button" class="btn btn-sm btn-secondary toggle-password" onclick="togglePasswordVisibility('registerForm')">
                                     <i class="bi bi-eye"></i>
                                   </button>
+
                                 </div>
                               </div>
                               <input class="btn btn-md btn btn-secondary btn-block" type="submit" value="Đăng ký" />
@@ -246,10 +274,9 @@
     </div>
   </nav>
 </header>
-
   <div class="container-fluid main" >
     <div class="row">
-      <div class="col-2 col-md-2 d-none d-lg-block">
+      <div class="col-2 col-md-2 d-none d-lg-block bg-light sidebar-fixed mt-4">
         <h5 class="text-center fw-bold">Thể loại</h5>
         <c:forEach var="danhmuc" items="${danhMucs}">
           <ul class="list-group">
@@ -261,7 +288,13 @@
           </ul>
         </c:forEach>
       </div>
-      <div class="col-sm-12 col-md-12 col-lg-10 col-xl-8" style="min-height: 85vh">
+      <div class="col-sm-12 col-md-12 col-lg-10 offset-lg-2 col-xl-8 offset-xl-2" style="min-height: 85vh">
+        <!-- Display the login message if present -->
+        <c:if test="${not empty messageLogin}">
+          <div class="alert alert-danger">
+              ${messageLogin}
+          </div>
+        </c:if>
         <div id="carouselMain" class="carousel slide mb-3" data-bs-ride="carousel">
           <div class="carousel-indicators">
             <button type="button" data-bs-target="#carouselMain" data-bs-slide-to="0" class="active"
@@ -313,8 +346,8 @@
                       <div class="card p-1 docHover" style="width: 210px;height: 350px;">
                         <img src="${tailieu.anhTaiLieu}" class="card-img-top" alt="..." />
                         <div class="card-body">
-                          <h5 class="card-title">${tailieu.tieuDe}</h5>
-                            <%-- <p class="card-text truncate-text">${tailieu.moTa}</p> --%>
+                          <h5 class="card-title truncate-mota">${tailieu.tieuDe}</h5>
+<%--                           <p class="card-text truncate-text">${tailieu.moTa}</p>--%>
                         </div>
                       </div>
                     </a>
@@ -360,8 +393,43 @@
             </nav>
           </div>
         </c:if>
+        <div class="row">
+          <div class="col-lg-6">
+            <h4 class="text-center my-4 fw-bold">Lượt tải xuống nhiều</h4>
+            <div class="card">
+              <ul class="list-group list-group-flush">
+                <c:forEach var="tailieutop" items="${top10TaiLieus}">
+                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <a class="text-decoration-none" href="/document/${tailieutop.maTaiLieu}">
+                      <h6 class="card-title text-primary truncate-mota"><i class="bi bi-file-text text-dark"></i>
+                          ${tailieutop.tieuDe}</h6>
+                    </a>
+                    <span class="badge bg-light-info text-dark rounded-pill"><i class="bi bi-download me-2"></i>${tailieutop.soLuotTaiXuong}</span>
+                  </li>
+                </c:forEach>
+              </ul>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <h4 class="text-center my-4 fw-bold">Lượt tải xuống nhiều</h4>
+            <div class="card">
+              <div class="card">
+                <ul class="list-group list-group-flush">
+                  <c:forEach var="tailieudg" items="${top10DanhGia}">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                      <a class="text-decoration-none" href="/document/${tailieudg.maTaiLieu}">
+                        <h6 class="card-title text-primary truncate-mota"><i class="bi bi-file-text text-dark"></i>
+                            ${tailieudg.tieuDe}</h6>
+                      </a>
+                      <span class="badge rounded-pill text-dark"><i class="bi bi-star-fill me-2" style="color: gold"></i>${tailieudg.avgGiaTriDanhGia}</span>
+                    </li>
+                  </c:forEach>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-
       <div class="col-2 d-none d-xl-block">
         <h5 class="text-center fw-bold">Hoạt động gần đây</h5>
         <ul class="list-group">
@@ -369,7 +437,7 @@
             <li class="list-group-item">
               <div class="d-flex align-items-center justify-content-center text-center">
                 <img src="${anhNguoiDung[hoatDong.maHoatDong]}"
-                     class="rounded-circle me-2" width="40" height="40" alt="Avatar">
+                     class="rounded-circle me-2 userAvatar" alt="Avatar">
                 <div class="text-start">
                   <strong class="fs-6">${hoTenNguoiDung[hoatDong.maHoatDong]}</strong>
                   <p class="m-0" style="font-size: 14px; max-width: 200px; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; white-space: normal;">${moTaHoatDong[hoatDong.maHoatDong]}</p>
@@ -378,684 +446,21 @@
             </li>
           </c:forEach>
         </ul>
-
-      <%--        <ul class="list-group">--%>
-<%--          <li class="list-group-item">--%>
-<%--            <div class="d-flex align-items-center justify-content-center text-center">--%>
-<%--              <img--%>
-<%--                src="https://images.unsplash.com/photo-1599898534595-953006e0ba6b?q=80&w=1929&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"--%>
-<%--                class="rounded-circle me-2" width="50" height="50" alt="Avatar">--%>
-<%--              <div>--%>
-<%--                <strong>Người Dùng</strong>--%>
-<%--                <p>Hoạt động 1</p>--%>
-<%--              </div>--%>
-<%--            </div>--%>
-<%--          </li>--%>
-<%--          <li class="list-group-item">--%>
-<%--            <div class="d-flex align-items-center justify-content-center text-center">--%>
-<%--              <img--%>
-<%--                      src="https://images.unsplash.com/photo-1599898534595-953006e0ba6b?q=80&w=1929&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"--%>
-<%--                      class="rounded-circle me-2" width="50" height="50" alt="Avatar">--%>
-<%--              <div>--%>
-<%--                <strong>Người Dùng</strong>--%>
-<%--                <p>Hoạt động 1</p>--%>
-<%--              </div>--%>
-<%--            </div>--%>
-<%--          </li>--%>
-<%--          <li class="list-group-item">--%>
-<%--            <div class="d-flex align-items-center justify-content-center text-center">--%>
-<%--              <img--%>
-<%--                src="https://images.unsplash.com/photo-1599898534595-953006e0ba6b?q=80&w=1929&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"--%>
-<%--                class="rounded-circle me-2" width="50" height="50" alt="Avatar">--%>
-<%--              <div>--%>
-<%--                <strong>Người Dùng</strong>--%>
-<%--                <p>Hoạt động 1</p>--%>
-<%--              </div>--%>
-<%--            </div>--%>
-<%--          </li>--%>
-<%--          <li class="list-group-item">--%>
-<%--            <div class="d-flex align-items-center justify-content-center text-center">--%>
-<%--              <img--%>
-<%--                src="https://images.unsplash.com/photo-1599898534595-953006e0ba6b?q=80&w=1929&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"--%>
-<%--                class="rounded-circle me-2" width="50" height="50" alt="Avatar">--%>
-<%--              <div>--%>
-<%--                <strong>Người Dùng</strong>--%>
-<%--                <p>Hoạt động 1</p>--%>
-<%--              </div>--%>
-<%--            </div>--%>
-<%--          </li>--%>
-<%--          <li class="list-group-item">--%>
-<%--            <div class="d-flex align-items-center justify-content-center text-center">--%>
-<%--              <img--%>
-<%--                src="https://images.unsplash.com/photo-1599898534595-953006e0ba6b?q=80&w=1929&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"--%>
-<%--                class="rounded-circle me-2" width="50" height="50" alt="Avatar">--%>
-<%--              <div>--%>
-<%--                <strong>Người Dùng</strong>--%>
-<%--                <p>Hoạt động 1</p>--%>
-<%--              </div>--%>
-<%--            </div>--%>
-<%--          </li>--%>
-<%--          <li class="list-group-item">--%>
-<%--            <div class="d-flex align-items-center justify-content-center text-center">--%>
-<%--              <img--%>
-<%--                src="https://images.unsplash.com/photo-1599898534595-953006e0ba6b?q=80&w=1929&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"--%>
-<%--                class="rounded-circle me-2" width="50" height="50" alt="Avatar">--%>
-<%--              <div>--%>
-<%--                <strong>Người Dùng</strong>--%>
-<%--                <p>Hoạt động 1</p>--%>
-<%--              </div>--%>
-<%--            </div>--%>
-<%--          </li>--%>
-<%--          <li class="list-group-item">--%>
-<%--            <div class="d-flex align-items-center justify-content-center text-center">--%>
-<%--              <img--%>
-<%--                src="https://images.unsplash.com/photo-1599898534595-953006e0ba6b?q=80&w=1929&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"--%>
-<%--                class="rounded-circle me-2" width="50" height="50" alt="Avatar">--%>
-<%--              <div>--%>
-<%--                <strong>Người Dùng</strong>--%>
-<%--                <p>Hoạt động 1</p>--%>
-<%--              </div>--%>
-<%--            </div>--%>
-<%--          </li>--%>
-<%--          <li class="list-group-item">--%>
-<%--            <div class="d-flex align-items-center justify-content-center text-center">--%>
-<%--              <img--%>
-<%--                src="https://images.unsplash.com/photo-1599898534595-953006e0ba6b?q=80&w=1929&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"--%>
-<%--                class="rounded-circle me-2" width="50" height="50" alt="Avatar">--%>
-<%--              <div>--%>
-<%--                <strong>Người Dùng</strong>--%>
-<%--                <p>Hoạt động 1</p>--%>
-<%--              </div>--%>
-<%--            </div>--%>
-<%--          </li>--%>
-<%--        </ul>--%>
-      </div>
-    </div>
-    <h4 class="text-center my-4 fw-bold">Tài liệu mới đăng</h4>
-    <div class="row">
-      <div class="col-3">
-        <div class="bg-success p-3 mb-4 text-white fw-bold fs-6 rounded text-center">
-          Chuyên ngành kinh tế
-        </div>
-        <div class="row">
-          <div class="col-auto ms-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-              class="absolute left-0 top-1 w-4 h-4">
-              <rect width="24" height="24" rx="5" fill="#E2574C"></rect>
-              <path fill="#fff" d="M2 6h19v12H2z"></path>
-              <path
-                d="M20 3.5 5.333 2C4.626 2.002 3.5 2 3 2.5c-.5.5-1.998.793-2 1.5v14.5c0 1.467 1.033.5 2.5.5L18 20.5c1.467 0 4-1.033 4-2.5l.5-11c0-1.467-1.033-3.5-2.5-3.5ZM8.667 11.333c0 1.067-.934 2-2 2H5.333V16h-2V8h3.334c1.066 0 2 .933 2 2v1.333ZM15.333 14c0 1.067-.933 2-2 2H10V8h3.333c1.067 0 2 .933 2 2v4Zm5.334-4h-2v1.333h2v2h-2V16h-2V8h4v2ZM12 10h1.333v4H12v-4Zm-6.667 0h1.334v1.333H5.333V10Z"
-                fill="#E2574C"></path>
-            </svg>
-          </div>
-          <div class="col p-0 flex items-start">
-            <a href="#" class="text-start">
-              Ứng dụng thị giác máy tính cho mobile robot phục vụ tổng quan phân loại mobile robot
-            </a>
-            <ul class="list-unstyled d-flex flex-wrap gap-1 mt-1">
-              <li class="p-1" style="font-size: 0.75rem;">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 32 32" stroke-width="2"
-                  stroke="currentColor" width="24" height="24" class="w-4 h-4 mr-1 inline">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M26 19v-3.5a4.5 4.5 0 0 0-4.5-4.5h-2A1.5 1.5 0 0 1 18 9.5v-2A4.5 4.5 0 0 0 13.5 3H11m0 17h10m-10 4h5M14 3H7.5A1.5 1.5 0 0 0 6 4.5v23A1.5 1.5 0 0 0 7.5 29h17a1.5 1.5 0 0 0 1.5-1.5V15A12 12 0 0 0 14 3z">
-                  </path>
-                </svg>
-                23
-              </li>
-              <li class="p-1" style="font-size: 0.75rem;">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 32 32" stroke-width="2"
-                  stroke="currentColor" width="24" height="24" class="w-4 h-4 mr-1 inline">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M2.715 16.429a1.349 1.349 0 0 1 0-.852C4.564 10.013 9.813 6 16 6c6.184 0 11.431 4.009 13.284 9.571.093.276.093.575 0 .852C27.436 21.987 22.187 26 16 26c-6.184 0-11.431-4.009-13.284-9.571z">
-                  </path>
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M20 16a4 4 0 1 1-8 0 4 4 0 0 1 8 0z"></path>
-                </svg>
-                0
-              </li>
-              <li class="p-1" style="font-size: 0.75rem;">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 32 32" stroke-width="2"
-                  stroke="currentColor" width="24" height="24" class="w-4 h-4 mr-1 inline">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M4 22v3a3 3 0 0 0 3 3h18a3 3 0 0 0 3-3v-3m-6-6-6 6m0 0-6-6m6 6V4"></path>
-                </svg>
-                0
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-auto ms-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-              class="absolute left-0 top-1 w-4 h-4">
-              <rect width="24" height="24" rx="5" fill="#E2574C"></rect>
-              <path fill="#fff" d="M2 6h19v12H2z"></path>
-              <path
-                d="M20 3.5 5.333 2C4.626 2.002 3.5 2 3 2.5c-.5.5-1.998.793-2 1.5v14.5c0 1.467 1.033.5 2.5.5L18 20.5c1.467 0 4-1.033 4-2.5l.5-11c0-1.467-1.033-3.5-2.5-3.5ZM8.667 11.333c0 1.067-.934 2-2 2H5.333V16h-2V8h3.334c1.066 0 2 .933 2 2v1.333ZM15.333 14c0 1.067-.933 2-2 2H10V8h3.333c1.067 0 2 .933 2 2v4Zm5.334-4h-2v1.333h2v2h-2V16h-2V8h4v2ZM12 10h1.333v4H12v-4Zm-6.667 0h1.334v1.333H5.333V10Z"
-                fill="#E2574C"></path>
-            </svg>
-          </div>
-          <div class="col p-0 flex items-start">
-            <a href="#" class="text-start">
-              Ứng dụng thị giác máy tính cho mobile robot phục vụ tổng quan phân loại mobile robot
-            </a>
-            <ul class="list-unstyled d-flex flex-wrap gap-1 mt-1">
-              <li class="p-1" style="font-size: 0.75rem;">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 32 32" stroke-width="2"
-                  stroke="currentColor" width="24" height="24" class="w-4 h-4 mr-1 inline">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M26 19v-3.5a4.5 4.5 0 0 0-4.5-4.5h-2A1.5 1.5 0 0 1 18 9.5v-2A4.5 4.5 0 0 0 13.5 3H11m0 17h10m-10 4h5M14 3H7.5A1.5 1.5 0 0 0 6 4.5v23A1.5 1.5 0 0 0 7.5 29h17a1.5 1.5 0 0 0 1.5-1.5V15A12 12 0 0 0 14 3z">
-                  </path>
-                </svg>
-                23
-              </li>
-              <li class="p-1" style="font-size: 0.75rem;">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 32 32" stroke-width="2"
-                  stroke="currentColor" width="24" height="24" class="w-4 h-4 mr-1 inline">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M2.715 16.429a1.349 1.349 0 0 1 0-.852C4.564 10.013 9.813 6 16 6c6.184 0 11.431 4.009 13.284 9.571.093.276.093.575 0 .852C27.436 21.987 22.187 26 16 26c-6.184 0-11.431-4.009-13.284-9.571z">
-                  </path>
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M20 16a4 4 0 1 1-8 0 4 4 0 0 1 8 0z"></path>
-                </svg>
-                0
-              </li>
-              <li class="p-1" style="font-size: 0.75rem;">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 32 32" stroke-width="2"
-                  stroke="currentColor" width="24" height="24" class="w-4 h-4 mr-1 inline">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M4 22v3a3 3 0 0 0 3 3h18a3 3 0 0 0 3-3v-3m-6-6-6 6m0 0-6-6m6 6V4"></path>
-                </svg>
-                0
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-auto ms-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-              class="absolute left-0 top-1 w-4 h-4">
-              <rect width="24" height="24" rx="5" fill="#E2574C"></rect>
-              <path fill="#fff" d="M2 6h19v12H2z"></path>
-              <path
-                d="M20 3.5 5.333 2C4.626 2.002 3.5 2 3 2.5c-.5.5-1.998.793-2 1.5v14.5c0 1.467 1.033.5 2.5.5L18 20.5c1.467 0 4-1.033 4-2.5l.5-11c0-1.467-1.033-3.5-2.5-3.5ZM8.667 11.333c0 1.067-.934 2-2 2H5.333V16h-2V8h3.334c1.066 0 2 .933 2 2v1.333ZM15.333 14c0 1.067-.933 2-2 2H10V8h3.333c1.067 0 2 .933 2 2v4Zm5.334-4h-2v1.333h2v2h-2V16h-2V8h4v2ZM12 10h1.333v4H12v-4Zm-6.667 0h1.334v1.333H5.333V10Z"
-                fill="#E2574C"></path>
-            </svg>
-          </div>
-          <div class="col p-0 flex items-start">
-            <a href="#" class="text-start">
-              Ứng dụng thị giác máy tính cho mobile robot phục vụ tổng quan phân loại mobile robot
-            </a>
-            <ul class="list-unstyled d-flex flex-wrap gap-1 mt-1">
-              <li class="p-1" style="font-size: 0.75rem;">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 32 32" stroke-width="2"
-                  stroke="currentColor" width="24" height="24" class="w-4 h-4 mr-1 inline">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M26 19v-3.5a4.5 4.5 0 0 0-4.5-4.5h-2A1.5 1.5 0 0 1 18 9.5v-2A4.5 4.5 0 0 0 13.5 3H11m0 17h10m-10 4h5M14 3H7.5A1.5 1.5 0 0 0 6 4.5v23A1.5 1.5 0 0 0 7.5 29h17a1.5 1.5 0 0 0 1.5-1.5V15A12 12 0 0 0 14 3z">
-                  </path>
-                </svg>
-                23
-              </li>
-              <li class="p-1" style="font-size: 0.75rem;">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 32 32" stroke-width="2"
-                  stroke="currentColor" width="24" height="24" class="w-4 h-4 mr-1 inline">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M2.715 16.429a1.349 1.349 0 0 1 0-.852C4.564 10.013 9.813 6 16 6c6.184 0 11.431 4.009 13.284 9.571.093.276.093.575 0 .852C27.436 21.987 22.187 26 16 26c-6.184 0-11.431-4.009-13.284-9.571z">
-                  </path>
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M20 16a4 4 0 1 1-8 0 4 4 0 0 1 8 0z"></path>
-                </svg>
-              </li>
-              <li class="p-1" style="font-size: 0.75rem;">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 32 32" stroke-width="2"
-                  stroke="currentColor" width="24" height="24" class="w-4 h-4 mr-1 inline">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M4 22v3a3 3 0 0 0 3 3h18a3 3 0 0 0 3-3v-3m-6-6-6 6m0 0-6-6m6 6V4"></path>
-                </svg>
-                0
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="col-3">
-        <div class="bg-primary p-3 mb-4 text-white fw-bold fs-6 rounded text-center">
-          Công nghệ - Môi trường
-        </div>
-        <div class="row">
-          <div class="col-auto ms-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-              class="absolute left-0 top-1 w-4 h-4">
-              <rect width="24" height="24" rx="5" fill="#E2574C"></rect>
-              <path fill="#fff" d="M2 6h19v12H2z"></path>
-              <path
-                d="M20 3.5 5.333 2C4.626 2.002 3.5 2 3 2.5c-.5.5-1.998.793-2 1.5v14.5c0 1.467 1.033.5 2.5.5L18 20.5c1.467 0 4-1.033 4-2.5l.5-11c0-1.467-1.033-3.5-2.5-3.5ZM8.667 11.333c0 1.067-.934 2-2 2H5.333V16h-2V8h3.334c1.066 0 2 .933 2 2v1.333ZM15.333 14c0 1.067-.933 2-2 2H10V8h3.333c1.067 0 2 .933 2 2v4Zm5.334-4h-2v1.333h2v2h-2V16h-2V8h4v2ZM12 10h1.333v4H12v-4Zm-6.667 0h1.334v1.333H5.333V10Z"
-                fill="#E2574C"></path>
-            </svg>
-          </div>
-          <div class="col p-0 flex items-start">
-            <a href="#" class="text-start">
-              Ứng dụng thị giác máy tính cho mobile robot phục vụ tổng quan phân loại mobile robot
-            </a>
-            <ul class="list-unstyled d-flex flex-wrap gap-1 mt-1">
-              <li class="p-1" style="font-size: 0.75rem;">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 32 32" stroke-width="2"
-                  stroke="currentColor" width="24" height="24" class="w-4 h-4 mr-1 inline">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M26 19v-3.5a4.5 4.5 0 0 0-4.5-4.5h-2A1.5 1.5 0 0 1 18 9.5v-2A4.5 4.5 0 0 0 13.5 3H11m0 17h10m-10 4h5M14 3H7.5A1.5 1.5 0 0 0 6 4.5v23A1.5 1.5 0 0 0 7.5 29h17a1.5 1.5 0 0 0 1.5-1.5V15A12 12 0 0 0 14 3z">
-                  </path>
-                </svg>
-                23
-              </li>
-              <li class="p-1" style="font-size: 0.75rem;">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 32 32" stroke-width="2"
-                  stroke="currentColor" width="24" height="24" class="w-4 h-4 mr-1 inline">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M2.715 16.429a1.349 1.349 0 0 1 0-.852C4.564 10.013 9.813 6 16 6c6.184 0 11.431 4.009 13.284 9.571.093.276.093.575 0 .852C27.436 21.987 22.187 26 16 26c-6.184 0-11.431-4.009-13.284-9.571z">
-                  </path>
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M20 16a4 4 0 1 1-8 0 4 4 0 0 1 8 0z"></path>
-                </svg>
-                0
-              </li>
-              <li class="p-1" style="font-size: 0.75rem;">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 32 32" stroke-width="2"
-                  stroke="currentColor" width="24" height="24" class="w-4 h-4 mr-1 inline">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M4 22v3a3 3 0 0 0 3 3h18a3 3 0 0 0 3-3v-3m-6-6-6 6m0 0-6-6m6 6V4"></path>
-                </svg>
-                0
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-auto ms-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-              class="absolute left-0 top-1 w-4 h-4">
-              <rect width="24" height="24" rx="5" fill="#E2574C"></rect>
-              <path fill="#fff" d="M2 6h19v12H2z"></path>
-              <path
-                d="M20 3.5 5.333 2C4.626 2.002 3.5 2 3 2.5c-.5.5-1.998.793-2 1.5v14.5c0 1.467 1.033.5 2.5.5L18 20.5c1.467 0 4-1.033 4-2.5l.5-11c0-1.467-1.033-3.5-2.5-3.5ZM8.667 11.333c0 1.067-.934 2-2 2H5.333V16h-2V8h3.334c1.066 0 2 .933 2 2v1.333ZM15.333 14c0 1.067-.933 2-2 2H10V8h3.333c1.067 0 2 .933 2 2v4Zm5.334-4h-2v1.333h2v2h-2V16h-2V8h4v2ZM12 10h1.333v4H12v-4Zm-6.667 0h1.334v1.333H5.333V10Z"
-                fill="#E2574C"></path>
-            </svg>
-          </div>
-          <div class="col p-0 flex items-start">
-            <a href="#" class="text-start">
-              Ứng dụng thị giác máy tính cho mobile robot phục vụ tổng quan phân loại mobile robot
-            </a>
-            <ul class="list-unstyled d-flex flex-wrap gap-1 mt-1">
-              <li class="p-1" style="font-size: 0.75rem;">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 32 32" stroke-width="2"
-                  stroke="currentColor" width="24" height="24" class="w-4 h-4 mr-1 inline">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M26 19v-3.5a4.5 4.5 0 0 0-4.5-4.5h-2A1.5 1.5 0 0 1 18 9.5v-2A4.5 4.5 0 0 0 13.5 3H11m0 17h10m-10 4h5M14 3H7.5A1.5 1.5 0 0 0 6 4.5v23A1.5 1.5 0 0 0 7.5 29h17a1.5 1.5 0 0 0 1.5-1.5V15A12 12 0 0 0 14 3z">
-                  </path>
-                </svg>
-                23
-              </li>
-              <li class="p-1" style="font-size: 0.75rem;">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 32 32" stroke-width="2"
-                  stroke="currentColor" width="24" height="24" class="w-4 h-4 mr-1 inline">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M2.715 16.429a1.349 1.349 0 0 1 0-.852C4.564 10.013 9.813 6 16 6c6.184 0 11.431 4.009 13.284 9.571.093.276.093.575 0 .852C27.436 21.987 22.187 26 16 26c-6.184 0-11.431-4.009-13.284-9.571z">
-                  </path>
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M20 16a4 4 0 1 1-8 0 4 4 0 0 1 8 0z"></path>
-                </svg>
-                0
-              </li>
-              <li class="p-1" style="font-size: 0.75rem;">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 32 32" stroke-width="2"
-                  stroke="currentColor" width="24" height="24" class="w-4 h-4 mr-1 inline">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M4 22v3a3 3 0 0 0 3 3h18a3 3 0 0 0 3-3v-3m-6-6-6 6m0 0-6-6m6 6V4"></path>
-                </svg>
-                0
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-auto ms-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-              class="absolute left-0 top-1 w-4 h-4">
-              <rect width="24" height="24" rx="5" fill="#E2574C"></rect>
-              <path fill="#fff" d="M2 6h19v12H2z"></path>
-              <path
-                d="M20 3.5 5.333 2C4.626 2.002 3.5 2 3 2.5c-.5.5-1.998.793-2 1.5v14.5c0 1.467 1.033.5 2.5.5L18 20.5c1.467 0 4-1.033 4-2.5l.5-11c0-1.467-1.033-3.5-2.5-3.5ZM8.667 11.333c0 1.067-.934 2-2 2H5.333V16h-2V8h3.334c1.066 0 2 .933 2 2v1.333ZM15.333 14c0 1.067-.933 2-2 2H10V8h3.333c1.067 0 2 .933 2 2v4Zm5.334-4h-2v1.333h2v2h-2V16h-2V8h4v2ZM12 10h1.333v4H12v-4Zm-6.667 0h1.334v1.333H5.333V10Z"
-                fill="#E2574C"></path>
-            </svg>
-          </div>
-          <div class="col p-0 flex items-start">
-            <a href="#" class="text-start">
-              Ứng dụng thị giác máy tính cho mobile robot phục vụ tổng quan phân loại mobile robot
-            </a>
-            <ul class="list-unstyled d-flex flex-wrap gap-1 mt-1">
-              <li class="p-1" style="font-size: 0.75rem;">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 32 32" stroke-width="2"
-                  stroke="currentColor" width="24" height="24" class="w-4 h-4 mr-1 inline">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M26 19v-3.5a4.5 4.5 0 0 0-4.5-4.5h-2A1.5 1.5 0 0 1 18 9.5v-2A4.5 4.5 0 0 0 13.5 3H11m0 17h10m-10 4h5M14 3H7.5A1.5 1.5 0 0 0 6 4.5v23A1.5 1.5 0 0 0 7.5 29h17a1.5 1.5 0 0 0 1.5-1.5V15A12 12 0 0 0 14 3z">
-                  </path>
-                </svg>
-                23
-              </li>
-              <li class="p-1" style="font-size: 0.75rem;">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 32 32" stroke-width="2"
-                  stroke="currentColor" width="24" height="24" class="w-4 h-4 mr-1 inline">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M2.715 16.429a1.349 1.349 0 0 1 0-.852C4.564 10.013 9.813 6 16 6c6.184 0 11.431 4.009 13.284 9.571.093.276.093.575 0 .852C27.436 21.987 22.187 26 16 26c-6.184 0-11.431-4.009-13.284-9.571z">
-                  </path>
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M20 16a4 4 0 1 1-8 0 4 4 0 0 1 8 0z"></path>
-                </svg>
-                0
-              </li>
-              <li class="p-1" style="font-size: 0.75rem;">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 32 32" stroke-width="2"
-                  stroke="currentColor" width="24" height="24" class="w-4 h-4 mr-1 inline">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M4 22v3a3 3 0 0 0 3 3h18a3 3 0 0 0 3-3v-3m-6-6-6 6m0 0-6-6m6 6V4"></path>
-                </svg>
-                0
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="col-3">
-        <div class="bg-warning p-3 mb-4 text-white fw-bold fs-6 rounded text-center">
-          Kinh tế - Quản lý
-        </div>
-        <div class="row">
-          <div class="col-auto ms-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-              class="absolute left-0 top-1 w-4 h-4">
-              <rect width="24" height="24" rx="5" fill="#E2574C"></rect>
-              <path fill="#fff" d="M2 6h19v12H2z"></path>
-              <path
-                d="M20 3.5 5.333 2C4.626 2.002 3.5 2 3 2.5c-.5.5-1.998.793-2 1.5v14.5c0 1.467 1.033.5 2.5.5L18 20.5c1.467 0 4-1.033 4-2.5l.5-11c0-1.467-1.033-3.5-2.5-3.5ZM8.667 11.333c0 1.067-.934 2-2 2H5.333V16h-2V8h3.334c1.066 0 2 .933 2 2v1.333ZM15.333 14c0 1.067-.933 2-2 2H10V8h3.333c1.067 0 2 .933 2 2v4Zm5.334-4h-2v1.333h2v2h-2V16h-2V8h4v2ZM12 10h1.333v4H12v-4Zm-6.667 0h1.334v1.333H5.333V10Z"
-                fill="#E2574C"></path>
-            </svg>
-          </div>
-          <div class="col p-0 flex items-start">
-            <a href="#" class="text-start">
-              Ứng dụng thị giác máy tính cho mobile robot phục vụ tổng quan phân loại mobile robot
-            </a>
-            <ul class="list-unstyled d-flex flex-wrap gap-1 mt-1">
-              <li class="p-1" style="font-size: 0.75rem;">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 32 32" stroke-width="2"
-                  stroke="currentColor" width="24" height="24" class="w-4 h-4 mr-1 inline">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M26 19v-3.5a4.5 4.5 0 0 0-4.5-4.5h-2A1.5 1.5 0 0 1 18 9.5v-2A4.5 4.5 0 0 0 13.5 3H11m0 17h10m-10 4h5M14 3H7.5A1.5 1.5 0 0 0 6 4.5v23A1.5 1.5 0 0 0 7.5 29h17a1.5 1.5 0 0 0 1.5-1.5V15A12 12 0 0 0 14 3z">
-                  </path>
-                </svg>
-                23
-              </li>
-              <li class="p-1" style="font-size: 0.75rem;">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 32 32" stroke-width="2"
-                  stroke="currentColor" width="24" height="24" class="w-4 h-4 mr-1 inline">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M2.715 16.429a1.349 1.349 0 0 1 0-.852C4.564 10.013 9.813 6 16 6c6.184 0 11.431 4.009 13.284 9.571.093.276.093.575 0 .852C27.436 21.987 22.187 26 16 26c-6.184 0-11.431-4.009-13.284-9.571z">
-                  </path>
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M20 16a4 4 0 1 1-8 0 4 4 0 0 1 8 0z"></path>
-                </svg>
-                0
-              </li>
-              <li class="p-1" style="font-size: 0.75rem;">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 32 32" stroke-width="2"
-                  stroke="currentColor" width="24" height="24" class="w-4 h-4 mr-1 inline">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M4 22v3a3 3 0 0 0 3 3h18a3 3 0 0 0 3-3v-3m-6-6-6 6m0 0-6-6m6 6V4"></path>
-                </svg>
-                0
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-auto ms-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-              class="absolute left-0 top-1 w-4 h-4">
-              <rect width="24" height="24" rx="5" fill="#E2574C"></rect>
-              <path fill="#fff" d="M2 6h19v12H2z"></path>
-              <path
-                d="M20 3.5 5.333 2C4.626 2.002 3.5 2 3 2.5c-.5.5-1.998.793-2 1.5v14.5c0 1.467 1.033.5 2.5.5L18 20.5c1.467 0 4-1.033 4-2.5l.5-11c0-1.467-1.033-3.5-2.5-3.5ZM8.667 11.333c0 1.067-.934 2-2 2H5.333V16h-2V8h3.334c1.066 0 2 .933 2 2v1.333ZM15.333 14c0 1.067-.933 2-2 2H10V8h3.333c1.067 0 2 .933 2 2v4Zm5.334-4h-2v1.333h2v2h-2V16h-2V8h4v2ZM12 10h1.333v4H12v-4Zm-6.667 0h1.334v1.333H5.333V10Z"
-                fill="#E2574C"></path>
-            </svg>
-          </div>
-          <div class="col p-0 flex items-start">
-            <a href="#" class="text-start">
-              Ứng dụng thị giác máy tính cho mobile robot phục vụ tổng quan phân loại mobile robot
-            </a>
-            <ul class="list-unstyled d-flex flex-wrap gap-1 mt-1">
-              <li class="p-1" style="font-size: 0.75rem;">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 32 32" stroke-width="2"
-                  stroke="currentColor" width="24" height="24" class="w-4 h-4 mr-1 inline">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M26 19v-3.5a4.5 4.5 0 0 0-4.5-4.5h-2A1.5 1.5 0 0 1 18 9.5v-2A4.5 4.5 0 0 0 13.5 3H11m0 17h10m-10 4h5M14 3H7.5A1.5 1.5 0 0 0 6 4.5v23A1.5 1.5 0 0 0 7.5 29h17a1.5 1.5 0 0 0 1.5-1.5V15A12 12 0 0 0 14 3z">
-                  </path>
-                </svg>
-                23
-              </li>
-              <li class="p-1" style="font-size: 0.75rem;">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 32 32" stroke-width="2"
-                  stroke="currentColor" width="24" height="24" class="w-4 h-4 mr-1 inline">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M2.715 16.429a1.349 1.349 0 0 1 0-.852C4.564 10.013 9.813 6 16 6c6.184 0 11.431 4.009 13.284 9.571.093.276.093.575 0 .852C27.436 21.987 22.187 26 16 26c-6.184 0-11.431-4.009-13.284-9.571z">
-                  </path>
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M20 16a4 4 0 1 1-8 0 4 4 0 0 1 8 0z"></path>
-                </svg>
-                0
-              </li>
-              <li class="p-1" style="font-size: 0.75rem;">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 32 32" stroke-width="2"
-                  stroke="currentColor" width="24" height="24" class="w-4 h-4 mr-1 inline">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M4 22v3a3 3 0 0 0 3 3h18a3 3 0 0 0 3-3v-3m-6-6-6 6m0 0-6-6m6 6V4"></path>
-                </svg>
-                0
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-auto ms-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-              class="absolute left-0 top-1 w-4 h-4">
-              <rect width="24" height="24" rx="5" fill="#E2574C"></rect>
-              <path fill="#fff" d="M2 6h19v12H2z"></path>
-              <path
-                d="M20 3.5 5.333 2C4.626 2.002 3.5 2 3 2.5c-.5.5-1.998.793-2 1.5v14.5c0 1.467 1.033.5 2.5.5L18 20.5c1.467 0 4-1.033 4-2.5l.5-11c0-1.467-1.033-3.5-2.5-3.5ZM8.667 11.333c0 1.067-.934 2-2 2H5.333V16h-2V8h3.334c1.066 0 2 .933 2 2v1.333ZM15.333 14c0 1.067-.933 2-2 2H10V8h3.333c1.067 0 2 .933 2 2v4Zm5.334-4h-2v1.333h2v2h-2V16h-2V8h4v2ZM12 10h1.333v4H12v-4Zm-6.667 0h1.334v1.333H5.333V10Z"
-                fill="#E2574C"></path>
-            </svg>
-          </div>
-          <div class="col p-0 flex items-start">
-            <a href="#" class="text-start">
-              Ứng dụng thị giác máy tính cho mobile robot phục vụ tổng quan phân loại mobile robot
-            </a>
-            <ul class="list-unstyled d-flex flex-wrap gap-1 mt-1">
-              <li class="p-1" style="font-size: 0.75rem;">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 32 32" stroke-width="2"
-                  stroke="currentColor" width="24" height="24" class="w-4 h-4 mr-1 inline">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M26 19v-3.5a4.5 4.5 0 0 0-4.5-4.5h-2A1.5 1.5 0 0 1 18 9.5v-2A4.5 4.5 0 0 0 13.5 3H11m0 17h10m-10 4h5M14 3H7.5A1.5 1.5 0 0 0 6 4.5v23A1.5 1.5 0 0 0 7.5 29h17a1.5 1.5 0 0 0 1.5-1.5V15A12 12 0 0 0 14 3z">
-                  </path>
-                </svg>
-                23
-              </li>
-              <li class="p-1" style="font-size: 0.75rem;">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 32 32" stroke-width="2"
-                  stroke="currentColor" width="24" height="24" class="w-4 h-4 mr-1 inline">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M2.715 16.429a1.349 1.349 0 0 1 0-.852C4.564 10.013 9.813 6 16 6c6.184 0 11.431 4.009 13.284 9.571.093.276.093.575 0 .852C27.436 21.987 22.187 26 16 26c-6.184 0-11.431-4.009-13.284-9.571z">
-                  </path>
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M20 16a4 4 0 1 1-8 0 4 4 0 0 1 8 0z"></path>
-                </svg>
-                0
-              </li>
-              <li class="p-1" style="font-size: 0.75rem;">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 32 32" stroke-width="2"
-                  stroke="currentColor" width="24" height="24" class="w-4 h-4 mr-1 inline">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M4 22v3a3 3 0 0 0 3 3h18a3 3 0 0 0 3-3v-3m-6-6-6 6m0 0-6-6m6 6V4"></path>
-                </svg>
-                0
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="col-3">
-        <div class="bg-danger p-3 mb-4 text-white fw-bold fs-6 rounded text-center">
-          Thạc sĩ - Cao học
-        </div>
-        <div class="row">
-          <div class="col-auto ms-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-              class="absolute left-0 top-1 w-4 h-4">
-              <rect width="24" height="24" rx="5" fill="#E2574C"></rect>
-              <path fill="#fff" d="M2 6h19v12H2z"></path>
-              <path
-                d="M20 3.5 5.333 2C4.626 2.002 3.5 2 3 2.5c-.5.5-1.998.793-2 1.5v14.5c0 1.467 1.033.5 2.5.5L18 20.5c1.467 0 4-1.033 4-2.5l.5-11c0-1.467-1.033-3.5-2.5-3.5ZM8.667 11.333c0 1.067-.934 2-2 2H5.333V16h-2V8h3.334c1.066 0 2 .933 2 2v1.333ZM15.333 14c0 1.067-.933 2-2 2H10V8h3.333c1.067 0 2 .933 2 2v4Zm5.334-4h-2v1.333h2v2h-2V16h-2V8h4v2ZM12 10h1.333v4H12v-4Zm-6.667 0h1.334v1.333H5.333V10Z"
-                fill="#E2574C"></path>
-            </svg>
-          </div>
-          <div class="col p-0 flex items-start">
-            <a href="#" class="text-start">
-              Ứng dụng thị giác máy tính cho mobile robot phục vụ tổng quan phân loại mobile robot
-            </a>
-            <ul class="list-unstyled d-flex flex-wrap gap-1 mt-1">
-              <li class="p-1" style="font-size: 0.75rem;">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 32 32" stroke-width="2"
-                  stroke="currentColor" width="24" height="24" class="w-4 h-4 mr-1 inline">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M26 19v-3.5a4.5 4.5 0 0 0-4.5-4.5h-2A1.5 1.5 0 0 1 18 9.5v-2A4.5 4.5 0 0 0 13.5 3H11m0 17h10m-10 4h5M14 3H7.5A1.5 1.5 0 0 0 6 4.5v23A1.5 1.5 0 0 0 7.5 29h17a1.5 1.5 0 0 0 1.5-1.5V15A12 12 0 0 0 14 3z">
-                  </path>
-                </svg>
-                23
-              </li>
-              <li class="p-1" style="font-size: 0.75rem;">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 32 32" stroke-width="2"
-                  stroke="currentColor" width="24" height="24" class="w-4 h-4 mr-1 inline">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M2.715 16.429a1.349 1.349 0 0 1 0-.852C4.564 10.013 9.813 6 16 6c6.184 0 11.431 4.009 13.284 9.571.093.276.093.575 0 .852C27.436 21.987 22.187 26 16 26c-6.184 0-11.431-4.009-13.284-9.571z">
-                  </path>
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M20 16a4 4 0 1 1-8 0 4 4 0 0 1 8 0z"></path>
-                </svg>
-                0
-              </li>
-              <li class="p-1" style="font-size: 0.75rem;">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 32 32" stroke-width="2"
-                  stroke="currentColor" width="24" height="24" class="w-4 h-4 mr-1 inline">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M4 22v3a3 3 0 0 0 3 3h18a3 3 0 0 0 3-3v-3m-6-6-6 6m0 0-6-6m6 6V4"></path>
-                </svg>
-                0
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-auto ms-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-              class="absolute left-0 top-1 w-4 h-4">
-              <rect width="24" height="24" rx="5" fill="#E2574C"></rect>
-              <path fill="#fff" d="M2 6h19v12H2z"></path>
-              <path
-                d="M20 3.5 5.333 2C4.626 2.002 3.5 2 3 2.5c-.5.5-1.998.793-2 1.5v14.5c0 1.467 1.033.5 2.5.5L18 20.5c1.467 0 4-1.033 4-2.5l.5-11c0-1.467-1.033-3.5-2.5-3.5ZM8.667 11.333c0 1.067-.934 2-2 2H5.333V16h-2V8h3.334c1.066 0 2 .933 2 2v1.333ZM15.333 14c0 1.067-.933 2-2 2H10V8h3.333c1.067 0 2 .933 2 2v4Zm5.334-4h-2v1.333h2v2h-2V16h-2V8h4v2ZM12 10h1.333v4H12v-4Zm-6.667 0h1.334v1.333H5.333V10Z"
-                fill="#E2574C"></path>
-            </svg>
-          </div>
-          <div class="col p-0 flex items-start">
-            <a href="#" class="text-start">
-              Ứng dụng thị giác máy tính cho mobile robot phục vụ tổng quan phân loại mobile robot
-            </a>
-            <ul class="list-unstyled d-flex flex-wrap gap-1 mt-1">
-              <li class="p-1" style="font-size: 0.75rem;">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 32 32" stroke-width="2"
-                  stroke="currentColor" width="24" height="24" class="w-4 h-4 mr-1 inline">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M26 19v-3.5a4.5 4.5 0 0 0-4.5-4.5h-2A1.5 1.5 0 0 1 18 9.5v-2A4.5 4.5 0 0 0 13.5 3H11m0 17h10m-10 4h5M14 3H7.5A1.5 1.5 0 0 0 6 4.5v23A1.5 1.5 0 0 0 7.5 29h17a1.5 1.5 0 0 0 1.5-1.5V15A12 12 0 0 0 14 3z">
-                  </path>
-                </svg>
-                23
-              </li>
-              <li class="p-1" style="font-size: 0.75rem;">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 32 32" stroke-width="2"
-                  stroke="currentColor" width="24" height="24" class="w-4 h-4 mr-1 inline">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M2.715 16.429a1.349 1.349 0 0 1 0-.852C4.564 10.013 9.813 6 16 6c6.184 0 11.431 4.009 13.284 9.571.093.276.093.575 0 .852C27.436 21.987 22.187 26 16 26c-6.184 0-11.431-4.009-13.284-9.571z">
-                  </path>
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M20 16a4 4 0 1 1-8 0 4 4 0 0 1 8 0z"></path>
-                </svg>
-                0
-              </li>
-              <li class="p-1" style="font-size: 0.75rem;">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 32 32" stroke-width="2"
-                  stroke="currentColor" width="24" height="24" class="w-4 h-4 mr-1 inline">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M4 22v3a3 3 0 0 0 3 3h18a3 3 0 0 0 3-3v-3m-6-6-6 6m0 0-6-6m6 6V4"></path>
-                </svg>
-                0
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-auto ms-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-              class="absolute left-0 top-1 w-4 h-4">
-              <rect width="24" height="24" rx="5" fill="#E2574C"></rect>
-              <path fill="#fff" d="M2 6h19v12H2z"></path>
-              <path
-                d="M20 3.5 5.333 2C4.626 2.002 3.5 2 3 2.5c-.5.5-1.998.793-2 1.5v14.5c0 1.467 1.033.5 2.5.5L18 20.5c1.467 0 4-1.033 4-2.5l.5-11c0-1.467-1.033-3.5-2.5-3.5ZM8.667 11.333c0 1.067-.934 2-2 2H5.333V16h-2V8h3.334c1.066 0 2 .933 2 2v1.333ZM15.333 14c0 1.067-.933 2-2 2H10V8h3.333c1.067 0 2 .933 2 2v4Zm5.334-4h-2v1.333h2v2h-2V16h-2V8h4v2ZM12 10h1.333v4H12v-4Zm-6.667 0h1.334v1.333H5.333V10Z"
-                fill="#E2574C"></path>
-            </svg>
-          </div>
-          <div class="col p-0 flex items-start">
-            <a href="#" class="text-start">
-              Ứng dụng thị giác máy tính cho mobile robot phục vụ tổng quan phân loại mobile robot
-            </a>
-            <ul class="list-unstyled d-flex flex-wrap gap-1 mt-1">
-              <li class="p-1" style="font-size: 0.75rem;">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 32 32" stroke-width="2"
-                  stroke="currentColor" width="24" height="24" class="w-4 h-4 mr-1 inline">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M26 19v-3.5a4.5 4.5 0 0 0-4.5-4.5h-2A1.5 1.5 0 0 1 18 9.5v-2A4.5 4.5 0 0 0 13.5 3H11m0 17h10m-10 4h5M14 3H7.5A1.5 1.5 0 0 0 6 4.5v23A1.5 1.5 0 0 0 7.5 29h17a1.5 1.5 0 0 0 1.5-1.5V15A12 12 0 0 0 14 3z">
-                  </path>
-                </svg>
-                23
-              </li>
-              <li class="p-1" style="font-size: 0.75rem;">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 32 32" stroke-width="2"
-                  stroke="currentColor" width="24" height="24" class="w-4 h-4 mr-1 inline">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M2.715 16.429a1.349 1.349 0 0 1 0-.852C4.564 10.013 9.813 6 16 6c6.184 0 11.431 4.009 13.284 9.571.093.276.093.575 0 .852C27.436 21.987 22.187 26 16 26c-6.184 0-11.431-4.009-13.284-9.571z">
-                  </path>
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M20 16a4 4 0 1 1-8 0 4 4 0 0 1 8 0z"></path>
-                </svg>
-                0
-              </li>
-              <li class="p-1" style="font-size: 0.75rem;">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 32 32" stroke-width="2"
-                  stroke="currentColor" width="24" height="24" class="w-4 h-4 mr-1 inline">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M4 22v3a3 3 0 0 0 3 3h18a3 3 0 0 0 3-3v-3m-6-6-6 6m0 0-6-6m6 6V4"></path>
-                </svg>
-                0
-              </li>
-            </ul>
-          </div>
-        </div>
       </div>
     </div>
   </div>
+
   <div class="me-4 mb-4" style="position:fixed;right: 0;bottom: 0;">
     <a href="#" class="btn btn-success">
       <i class="bi bi-arrow-up fs-5"></i>
     </a>
   </div>
   <footer>
-    <div class="p-3 text-center bg-light text-danger fw-bold   fs-6">
+    <div class="p-3 text-center bg-light text-danger fw-bold fs-6 mt-4">
       Copyright © 2024. Designed by Phan Đức
     </div>
   </footer>
+
   <script src="/js/password.js"></script>
   <script src="/js/main.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>

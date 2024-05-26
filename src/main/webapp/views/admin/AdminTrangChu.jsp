@@ -13,7 +13,7 @@
     <link href="/css/style.min.css" rel="stylesheet">
     <link href="/css/reponsive.css" rel="stylesheet">
     <link href="/css/style.css" rel="stylesheet">
-</head>\
+</head>
 <style>
     .hover-cell:hover {
         background-color: #f0f0f0;
@@ -35,9 +35,6 @@
         <nav class="navbar top-navbar navbar-expand-md navbar-dark">
             <div class="navbar-header" data-logobg="skin6">
                 <a class="navbar-brand" href="/dashboard">
-                    <!-- <b class="logo-icon">
-                        <img src="../assets/images/logo-icon.png" alt="homepage" class="dark-logo" />
-                    </b> -->
                     <span class="logo-text ms-3">
                             <img src="../assets/images/PD.png" alt="homepage" class="dark-logo" style="width: 100px;"/>
                         </span>
@@ -47,8 +44,8 @@
                 <ul class="navbar-nav me-auto mt-md-0 ">
                     <li class="nav-item hidden-sm-down">
                         <form class="app-search ps-3">
-                            <input type="text" class="form-control" placeholder="Search for..."> <a
-                                class="srh-btn"><i class="ti-search"></i></a>
+                            <input type="text" class="form-control" placeholder="Tìm kiếm...">
+                            <a class="srh-btn"><i class="ti-search"></i></a>
                         </form>
                     </li>
                 </ul>
@@ -137,7 +134,7 @@
                                         </a>
                                     </li>
                                     <li class="sidebar-item ms-3">
-                                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="table-basic.html" aria-expanded="false">
+                                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/manager/comment" aria-expanded="false">
                                             <i class="me-3 fas fa-comments" aria-hidden="true"></i>
                                             <span class="hide-menu">Bình luận & Đánh giá</span>
                                         </a>
@@ -147,25 +144,7 @@
                         </li>
                     </ul>
                     <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="table-basic.html" aria-expanded="false">
-                            <i class="me-3 fas fa-chart-bar" aria-hidden="true"></i>
-                            <span class="hide-menu">Thống kê báo cáo</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="table-basic.html" aria-expanded="false">
-                            <i class="me-3 fas fa-bell" aria-hidden="true"></i>
-                            <span class="hide-menu">Thông báo và tương tác</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="table-basic.html" aria-expanded="false">
-                            <i class="me-3 fas fa-download" aria-hidden="true"></i>
-                            <span class="hide-menu">Truy cập Tài liệu</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="dashboard/error" aria-expanded="false">
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/dashboard/error" aria-expanded="false">
                             <i class="me-3 fas fa-exclamation-circle" aria-hidden="true"></i>
                             <span class="hide-menu">Lỗi 404</span>
                         </a>
@@ -247,119 +226,30 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="d-md-flex">
-                                <h4 class="card-title col-md-10 mb-md-0 mb-3 align-self-center">Projects of the Month</h4>
-                                <div class="col-md-2 ms-auto">
-                                    <select class="form-select shadow-none col-md-2 ml-auto">
-                                        <option selected>January</option>
-                                        <option value="1">February</option>
-                                        <option value="2">March</option>
-                                        <option value="3">April</option>
-                                    </select>
-                                </div>
+                                <h4 class="card-title col-md-10 mb-md-0 mb-3 align-self-center">Tổng số tài liệu của người dùng</h4>
                             </div>
-                            <div class="table-responsive mt-5">
-                                <table class="table stylish-table no-wrap">
+                            <div class="table-responsive mt-2">
+                                <table class="table stylish-table no-wrap" id="userDataTable">
                                     <thead>
                                     <tr>
-                                        <th class="border-top-0" colspan="2">Assigned</th>
-                                        <th class="border-top-0">Name</th>
-                                        <th class="border-top-0">Budget</th>
+                                        <th class="border-top-0 w-25">Ảnh</th>
+                                        <th class="border-top-0 w-50">Họ tên</th>
+                                        <th class="border-top-0 w-25 text-center">Số lượng tài liệu</th>
                                     </tr>
                                     </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td style="width:50px;"><span class="round">S</span></td>
-                                        <td class="align-middle">
-                                            <h6>Sunil Joshi</h6><small class="text-muted">Web Designer</small>
-                                        </td>
-                                        <td class="align-middle">Elite Admin</td>
-                                        <td class="align-middle">$3.9K</td>
-                                    </tr>
-                                    <tr class="active">
-                                        <td><span class="round"><img src="../assets/images/users/2.jpg"
-                                                                     alt="user" width="50"></span></td>
-                                        <td class="align-middle">
-                                            <h6>Andrew</h6><small class="text-muted">Project Manager</small>
-                                        </td>
-                                        <td class="align-middle">Real Homes</td>
-                                        <td class="align-middle">$23.9K</td>
-                                    </tr>
-                                    <tr>
-                                        <td><span class="round round-success">B</span></td>
-                                        <td class="align-middle">
-                                            <h6>Bhavesh patel</h6><small class="text-muted">Developer</small>
-                                        </td>
-                                        <td class="align-middle">MedicalPro Theme</td>
-                                        <td class="align-middle">$12.9K</td>
-                                    </tr>
-                                    <tr>
-                                        <td><span class="round round-primary">N</span></td>
-                                        <td class="align-middle">
-                                            <h6>Nirav Joshi</h6><small class="text-muted">Frontend Eng</small>
-                                        </td>
-                                        <td class="align-middle">Elite Admin</td>
-                                        <td class="align-middle">$10.9K</td>
-                                    </tr>
-                                    <tr>
-                                        <td><span class="round round-warning">M</span></td>
-                                        <td class="align-middle">
-                                            <h6>Micheal Doe</h6><small class="text-muted">Content Writer</small>
-                                        </td>
-                                        <td class="align-middle">Helping Hands</td>
-                                        <td class="align-middle">$12.9K</td>
-                                    </tr>
-                                    <tr>
-                                        <td><span class="round round-danger">N</span></td>
-                                        <td class="align-middle">
-                                            <h6>Johnathan</h6><small class="text-muted">Graphic</small>
-                                        </td>
-                                        <td class="align-middle">Digital Agency</td>
-                                        <td class="align-middle">$2.6K</td>
-                                    </tr>
+                                    <tbody id="userDataBody">
                                     </tbody>
                                 </table>
+                            </div>
+                            <div class="text-center mt-3">
+                                <span id="pagination"></span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
             <div class="row justify-content-center">
-                <div class="col-lg-4 col-md-6">
-                    <div class="card">
-                        <img class="card-img-top img-responsive" src="../assets/images/big/img1.jpg" alt="Card">
-                        <div class="card-body">
-                            <ul class="list-inline d-flex align-items-center">
-                                <li class="ps-0">20 May 2021</li>
-                                <li class="ms-auto"><a href="javascript:void(0)" class="link">3 Comment</a></li>
-                            </ul>
-                            <h3 class="font-normal">Featured Hydroflora Pots Garden &amp; Outdoors</h3>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="card">
-                        <img class="card-img-top img-responsive" src="../assets/images/big/img2.jpg" alt="Card">
-                        <div class="card-body">
-                            <ul class="list-inline d-flex align-items-center">
-                                <li class="ps-0">20 May 2021</li>
-                                <li class="ms-auto"><a href="javascript:void(0)" class="link">3 Comment</a></li>
-                            </ul>
-                            <h3 class="font-normal">Featured Hydroflora Pots Garden &amp; Outdoors</h3>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="card">
-                        <img class="card-img-top img-responsive" src="../assets/images/big/img4.jpg" alt="Card">
-                        <div class="card-body">
-                            <ul class="list-inline d-flex align-items-center">
-                                <li class="ps-0">20 May 2021</li>
-                                <li class="ms-auto"><a href="javascript:void(0)" class="link">3 Comment</a></li>
-                            </ul>
-                            <h3 class="font-normal">Featured Hydroflora Pots Garden &amp; Outdoors</h3>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
 
@@ -375,8 +265,89 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="/js/chart.js"></script>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var currentPage = 0;
+        var pageSize = 5; // Số lượng phần tử trên mỗi trang
+        var totalPages = 0;
 
-    <c:choose>
+        function fetchData(page, size) {
+            // Thực hiện yêu cầu API để lấy dữ liệu từ server
+            fetch('http://localhost:8080/dashboard/api/soluongtailieu?page=' + page + '&size=' + size)
+                .then(response => response.json())
+                .then(data => {
+                    // Sau khi nhận được dữ liệu, cập nhật bảng và phân trang
+                    populateTable(data.content);
+                    updatePagination(data.pageable.pageNumber, data.totalPages);
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        }
+
+        function populateTable(data) {
+            var tableBody = document.getElementById("userDataBody");
+            tableBody.innerHTML = "";
+            data.forEach(function(user) {
+                var row = document.createElement("tr");
+                row.innerHTML = "<td><span class='round'><img src='" + user.anh + "' alt='user' width='50'></span></td>" +
+                    "<td class='align-middle'>" + user.hoTen + "</td>" +
+                    "<td class='align-middle text-center'>" + user.soLuongTaiLieu + "</td>";
+                tableBody.appendChild(row);
+            });
+        }
+
+        function updatePagination(currentPage, totalPages) {
+            var pagination = document.getElementById("pagination");
+            pagination.innerHTML = "";
+
+            // Thêm nút "Trang trước"
+            var prevButton = createPaginationButton("<<", currentPage > 0, currentPage - 1);
+            pagination.appendChild(prevButton);
+
+            // Thêm các nút trang
+            for (var i = 0; i < totalPages; i++) {
+                var pageButton = createPaginationButton(i + 1, i !== currentPage, i);
+                pagination.appendChild(pageButton);
+            }
+
+            // Thêm nút "Trang tiếp theo"
+            var nextButton = createPaginationButton(">>", currentPage < totalPages - 1, currentPage + 1);
+            pagination.appendChild(nextButton);
+        }
+
+        function createPaginationButton(label, isEnabled, page, isActive) {
+            var button = document.createElement("button");
+            button.classList.add("btn", "ms-2");
+            if (isActive) {
+                    button.classList.add("btn-outline-info", "text-white");
+            } else {
+                button.classList.add("btn-info","btn-info","text-white");
+            }
+            button.textContent = label;
+            button.disabled = !isEnabled;
+
+            button.addEventListener("click", function() {
+                if (isEnabled) {
+                    currentPage = page;
+                    fetchData(currentPage, pageSize);
+                }
+            });
+
+            return button;
+        }
+
+
+        // Gọi hàm fetchData() khi trang web được tải lần đầu
+        fetchData(currentPage, pageSize);
+    });
+
+
+</script>
+
+
+
+
+
+<c:choose>
         <c:when test="${sessionScope.loggedInAdmin != null}">
             <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered modal-sm">
@@ -419,6 +390,7 @@
             }, 800);
         });
     </script>
+
 </body>
 
 </html>
